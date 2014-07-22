@@ -37,9 +37,9 @@ class Pritory < Sinatra::Base
 
   configure :production do
     # Setup 'cache'
-    # set :cache_enabled, true
-    # set :cache_output_dir, "#{File.dirname(__FILE__)}/cache"
-    # set :cache_logging, true
+    set :cache_enabled, true
+    set :cache_output_dir, "#{File.dirname(__FILE__)}/cache"
+    set :cache_logging, true
     set :haml, { :ugly=>true }
     set :clean_trace, true
     set :css_files, :blob

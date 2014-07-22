@@ -1,0 +1,28 @@
+%h3 Παρατηρητήριο τιμών 
+
+%table{align: 'center'}
+  %thead
+    %tr
+      - %w{Προϊόν Κατηγορία Περιγραφή BarCode Πηγή Τιμή}.each do |entry|
+        %th= entry
+  %tbody
+    - if @products
+      - s = @products.each do |product|
+        - product.source.each do |s|
+          %tr
+            - p = Product.find(id: s.product_id)
+            %td= p[:product_name]
+            %td= p[:category]
+            %td= p[:product_description]
+            %td= p[:product_barcode]
+            %td= s[:source]
+            %td= MyHelpers.cents_to_euro(s[:price])
+            %td
+              %a{href: "/del/:#{s.id}"} Διαγραφή
+    - else
+      %td n/a
+      %td n/a
+      %td n/a
+      %td n/a
+      %td n/a
+

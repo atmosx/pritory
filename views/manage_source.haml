@@ -1,0 +1,22 @@
+-# coding: UTF-8
+%h4 Διαχείριση πηγής
+%form(action="/manage_source" method="post")
+  %fieldset
+    %legend Προσθήκη
+    %ul
+      %li
+        %label(for="source") Πηγή:
+        %input#source(type="text" name="source")
+      %li
+        %label(for="name") Προϊόν:
+        %select{id: 'product_name', name: 'product_name'}
+          -if @products != nil
+            - @products.each do |p|
+              %option= p.product_name
+          - else
+            %option Δεν υπάρχει προϊόν
+      %li
+        %label(for="price") Τιμή (EUR):
+        %input#price{type: "number", min: "0", max: "999999", step: "0.01", size: "6", name: "price"}
+      %li
+        %input(type="submit" value="Καταχώριση") ή <a href="/panel">Ακύρωσε</a>

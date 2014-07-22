@@ -1,0 +1,38 @@
+/* Custom CSS3 settings */
+
+/* simple horizontal menu */
+#menu {
+    width: auto;
+    height: auto;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 8px;
+}
+
+#menu ul {
+    height: auto;
+    padding: 2px 0px;
+    margin: 0px;
+}
+
+#menu li { 
+display: inline; 
+padding: 5px; 
+}
+
+#footer {
+	text-align: center;
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+}
+
+
+.column1of2, .column2of2 {
+width:  300px;
+float: left;
+margin: 10px;
+}
+
+#caption {
+  font-style: bold;
+}

@@ -1,0 +1,17 @@
+.container
+  .sixteen.columns
+    %h1.remove-bottom{style: "margin-top: 40px"} Pritory
+    %p  Σύστημα Παρακολούθησης Τιμών
+    %hr/
+  .one-third.column
+    %h3 Σύνδεση
+    %form(action="/panel" method="post")
+      %fieldset
+        %legend Είσοδος
+        %div{:class => 'centerize'}
+          %label(for="username") Χρήστης:
+          %input#username(type="text" name="username")
+          %label(for="password") Κωδικός:
+          %input#password(type="password" name="password")
+          %input(type="submit" value="Αποστολή") || <a href="/">Ακύρωση</a>
+

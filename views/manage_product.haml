@@ -1,0 +1,42 @@
+%h4 Διαχείριση προϊόντος
+%form(action="/manage_product" method="post")
+  %fieldset
+    %legend Προσθήκη προϊόντος
+    %ul
+      %li
+        %label(for="category") Κατηγορία:
+        %input#category(type="text" name="category")
+      %li
+        %label(for="name") Προϊόν:
+        %input#name(type="text" name="name")
+      %li
+        %label(for="barcode") Barcode:
+        %input#barcode(type="text" name="barcode")
+      %li
+        %label(for="description") Περιγραφή:
+        %input#description(type="text" name="description")
+      %li
+        %input(type="submit" value="Αποστολή") ή <a href="/panel">Ακύρωσε</a>
+
+%table{align: 'center'}
+  %thead
+    %tr
+      - %w{Προϊόν Κατηγορία Περιγραφή BarCode}.each do |entry|
+        %th= entry
+  %tbody
+    - if @products
+      -  @products.each do |p|
+        %tr
+          %td= p[:product_name]
+          %td= p[:category]
+          %td= p[:product_description]
+          %td= p[:product_barcode]
+          %td
+            %a{href: "/delete_product/:#{p.id}"} Διαγραφή
+    - else
+      %td n/a
+      %td n/a
+      %td n/a
+      %td n/a
+      %td n/a
+

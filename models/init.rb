@@ -1,8 +1,9 @@
 # encoding: utf-8
 require 'sequel'
+require_relative "#{File.dirname(__FILE__)}/../mysecrets"
 
 # Database options
-DB = Sequel.mysql2 'pritory', user:'myuser', password:'ok12', host:'localhost'
+DB = Sequel.mysql2 'pritory', user:MySecrets::DBUSER, password: MySecrets::DBPASS, host:'localhost'
 
 # Create user table
 DB.create_table?(:users, engine: 'InnoDB') do 

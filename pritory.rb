@@ -88,7 +88,7 @@ class Pritory < Sinatra::Base
 
   get "/auth", agent: "pritory pre-alpha-testing"  do
     # redirect client.auth_code.authorize_url(:redirect_uri => redirect_uri,scope: ['Search'], access_type: "offline")
-    redirect client.auth_code.authorize_url(:redirect_uri => redirect_uri,scope: ['Search'], grant_type: "client_credentials")
+    redirect client.auth_code.authorize_url(redirect_uri: MySecrets::RDR_URL, scope: ['Search'], grant_type: "client_credentials")
     $log.info("auth accessed!")
   end
 

@@ -1,6 +1,8 @@
 # encoding: utf-8
 require 'sinatra'
 require 'haml'
+require 'oauth2'
+require 'json'
 require 'sinatra/session'
 require 'sinatra/partial'
 require 'sinatra/flash'
@@ -13,6 +15,8 @@ require_relative 'mysecrets'
 
 class Pritory < Sinatra::Base
   # enable :sessions
+
+  $log = Logger.new('log/output.log')
 
   configure do
     register Sinatra::Session
@@ -52,7 +56,7 @@ class Pritory < Sinatra::Base
     set :js_files,  MinifyResources::JS_FILES
   end
 
-  # Helpers magick!
+  # Helpers magic!
   helpers do
     include Rack::Utils
     alias_method :h, :escape_html
@@ -70,7 +74,43 @@ class Pritory < Sinatra::Base
     def protected?
       session? 
     end
+
+    # Skroytz OAuth2
+    def client
+      client ||= OAuth2::Client.new(MySecrets::SKROUTZ_OAUTH_CID, MySecrets::SKROUTZ_OAUTH_PAS, {
+        :site => 'https://skroutz.gr', 
+        :authorize_url => "/oauth2/authorizations/new", 
+        :token_url => "/oauth2/token"
+      })
+    end
+
   end
+
+  get "/auth", agent: "pritory pre-alpha-testing"  do
+    # redirect client.auth_code.authorize_url(:redirect_uri => redirect_uri,scope: ['Search'], access_type: "offline")
+    redirect client.auth_code.authorize_url(:redirect_uri => redirect_uri,scope: ['Search'], grant_type: "client_credentials")
+    $log.info("auth accessed!")
+  end
+
+  get '/callback' do
+    access_token = client.auth_code.get_token(params[:code], :redirect_uri => redirect_uri)
+    session[:access_token] = access_token.token
+    @message = "Successfully authenticated with the server"
+    @access_token = session[:access_token]
+    $log.info("#{@message}: #{@access_token}")
+
+    # parsed is a handy method on an OAuth2::Response object that will 
+    # intelligently try and parse the response.body
+    # @email = access_token.get('https://www.googleapis.com/userinfo/email?alt=json').parsed
+    haml :success
+  end
+
+  def redirect_uri
+    uri = URI.parse(request.url)
+    uri.path = '/callback'
+    uri.query = nil
+    uri.to_s
+  end 
 
   # When Page Not Found
   not_found do

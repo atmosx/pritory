@@ -9,6 +9,7 @@ require 'sinatra/flash'
 require 'bluecloth'
 require 'haml'
 require 'logger'
+require 'openssl'
 
 require_relative 'minify_resources'
 require_relative 'mysecrets'
@@ -16,6 +17,10 @@ require_relative 'mysecrets'
 class Pritory < Sinatra::Base
   # enable :sessions
 
+  # Faraday won't check SSL for now
+  OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
+
+  # Log what happens
   $log = Logger.new('log/output.log')
 
   configure do
@@ -78,23 +83,19 @@ class Pritory < Sinatra::Base
     # Skroytz OAuth2
     def client
       client ||= OAuth2::Client.new(MySecrets::SKROUTZ_OAUTH_CID, MySecrets::SKROUTZ_OAUTH_PAS, {
-        :site => 'https://skroutz.gr', 
-        :authorize_url => "/oauth2/authorizations/new", 
-        :token_url => "/oauth2/token",
-	      :user_agent => 'pritory testing'
+        site: 'https://skroutz.gr', 
+        authorize_url: "/oauth2/authorizations/new", 
+        token_url: "/oauth2/token",
+        user_agent: 'pritory testing'
       })
     end
-
   end
 
-  # redirect client.auth_code.authorize_url(:redirect_uri => redirect_uri,scope: ['Search'], access_type: "offline")
   # http://developer.skroutz.gr/authentication/permissions/
   get '/auth' do
     $log.info("auth accessed 1!")
-    scopes = ['Categories', 'Search', 'Products']   
-    $log.info("auth accessed 2!")
-    redirect client.auth_code.authorize_url(redirect_uri: 'https://pritory.convalesco.org/callback', scope: scopes.join(' '), grant_type: "client_credentials")
-    $log.info("auth accessed 3!")
+    redirect client.auth_code.authorize_url(redirect_uri: redirect_uri, scope: 'public', grant_type: "client_credentials")
+    $log.info("redirect done!")
   end
 
   get '/callback' do

@@ -89,9 +89,11 @@ class Pritory < Sinatra::Base
   get "/auth", agent: "pritory pre-alpha-testing"  do
     # redirect client.auth_code.authorize_url(:redirect_uri => redirect_uri,scope: ['Search'], access_type: "offline")
     # http://developer.skroutz.gr/authentication/permissions/
+    $log.info("auth accessed 1!")
     scopes = ['Categories', 'Search', 'Products']   
+    $log.info("auth accessed 2!")
     redirect client.auth_code.authorize_url(redirect_uri: 'https://pritory.convalesco.org/callback', scope: scopes.join(' '), grant_type: "client_credentials")
-    $log.info("auth accessed!")
+    $log.info("auth accessed 3!")
   end
 
   get '/callback' do

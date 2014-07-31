@@ -80,8 +80,8 @@ class Pritory < Sinatra::Base
       client ||= OAuth2::Client.new(MySecrets::SKROUTZ_OAUTH_CID, MySecrets::SKROUTZ_OAUTH_PAS, {
         :site => 'https://skroutz.gr', 
         :authorize_url => "/oauth2/authorizations/new", 
-        :token_url => "/oauth2/token"
-	:user_agent => 'pritory testing'
+        :token_url => "/oauth2/token",
+	      :user_agent => 'pritory testing'
       })
     end
 

@@ -81,14 +81,15 @@ class Pritory < Sinatra::Base
         :site => 'https://skroutz.gr', 
         :authorize_url => "/oauth2/authorizations/new", 
         :token_url => "/oauth2/token"
+	:user_agent => 'pritory testing'
       })
     end
 
   end
 
-  get "/auth", agent: "pritory pre-alpha-testing"  do
-    # redirect client.auth_code.authorize_url(:redirect_uri => redirect_uri,scope: ['Search'], access_type: "offline")
-    # http://developer.skroutz.gr/authentication/permissions/
+  # redirect client.auth_code.authorize_url(:redirect_uri => redirect_uri,scope: ['Search'], access_type: "offline")
+  # http://developer.skroutz.gr/authentication/permissions/
+  get '/auth' do
     $log.info("auth accessed 1!")
     scopes = ['Categories', 'Search', 'Products']   
     $log.info("auth accessed 2!")

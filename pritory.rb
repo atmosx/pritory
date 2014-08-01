@@ -92,19 +92,18 @@ class Pritory < Sinatra::Base
   end
 
   # http://developer.skroutz.gr/authentication/permissions/
-  get '/auth' do
-    redirect client.auth_code.authorize_url(redirect_uri: redirect_uri, scope: 'public', grant_type: "client_credentials")
+  get '/callback' do
+	  # do nothing
   end
 
-  get '/callback' do
+  get '/auth' do
     #access_token = client.auth_code.get_token(params[:code], redirect_uri: redirect_uri)
     t = client.client_credentials.get_token
-    session[:access_token] = t.token.to_s
-    @rtoken = t.refresh_token.to_s
+    session[:access_token] = t.methods.sort.join(', ')
     @message = "Successfully authenticated with the server"
     @access_token = session[:access_token]
     $log.info("#{@message}: #{@access_token}")
-    @tablets = get_response('http://skroutz.gr/api/search?q=Tablets')
+    #@tablets = get_response('http://skroutz.gr/api/search?q=Tablets')
     haml :success
   end
 

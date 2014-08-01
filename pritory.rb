@@ -93,21 +93,18 @@ class Pritory < Sinatra::Base
 
   # http://developer.skroutz.gr/authentication/permissions/
   get '/auth' do
-    $log.info("auth accessed 1!")
     redirect client.auth_code.authorize_url(redirect_uri: redirect_uri, scope: 'public', grant_type: "client_credentials")
-    $log.info("redirect done!")
   end
 
   get '/callback' do
-    access_token = client.auth_code.get_token(params[:code], :redirect_uri => redirect_uri)
-    session[:access_token] = access_token.token
+    #access_token = client.auth_code.get_token(params[:code], redirect_uri: redirect_uri)
+    t = client.client_credentials.get_token
+    session[:access_token] = t.token.to_s
+    @rtoken = t.refresh_token.to_s
     @message = "Successfully authenticated with the server"
     @access_token = session[:access_token]
     $log.info("#{@message}: #{@access_token}")
-
-    # parsed is a handy method on an OAuth2::Response object that will 
-    # intelligently try and parse the response.body
-    # @email = access_token.get('https://www.googleapis.com/userinfo/email?alt=json').parsed
+    @tablets = get_response('http://skroutz.gr/api/search?q=Tablets')
     haml :success
   end
 
@@ -117,6 +114,11 @@ class Pritory < Sinatra::Base
     uri.query = nil
     uri.to_s
   end 
+
+  def get_response(url)
+	  access_token = OAuth2::AccessToken.new(client, session[:access_token])
+	  JSON.parse(access_token.get("#{url}").body)
+  end
 
   # When Page Not Found
   not_found do

@@ -98,6 +98,8 @@ class Pritory < Sinatra::Base
 
   get '/callback' do
     #access_token = client.auth_code.get_token(params[:code], redirect_uri: redirect_uri)
+    
+    # Still getting: "/callback?error=invalid_scope&error_description=Scope+does+not+require+user%27s+permission"
     t = client.client_credentials.get_token
     session[:access_token] = t.token.to_s
     @rtoken = t.refresh_token.to_s

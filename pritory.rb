@@ -93,7 +93,8 @@ class Pritory < Sinatra::Base
 
   # http://developer.skroutz.gr/authentication/permissions/
   get '/auth' do
-    redirect client.auth_code.authorize_url(redirect_uri: redirect_uri, scope: 'public', grant_type: "client_credentials")
+    # redirect client.auth_code.authorize_url(redirect_uri: redirect_uri, scope: 'public', grant_type: "client_credentials")
+    redirect client.client_credentials.get_token
   end
 
   get '/callback' do

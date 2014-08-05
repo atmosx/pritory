@@ -1,0 +1,15 @@
+%h4 Προβολή προϊόντος
+
+%div#img
+  - if @product.img_url
+    %img{class: 'imgframe', src: "/images/#{@product.img_url}"}
+  - else
+    %img{class: 'imgframe', src: "/images/default.jpg"}
+
+%p{id: "desc"} #{@product.product_name}
+%p Κατηγορία: #{@product.category}
+%p Barcode: #{@product.product_barcode}
+%p Περιγραφή: #{@product.product_description}
+
+%h4 Τιμές
+      

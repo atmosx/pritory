@@ -16,6 +16,13 @@ class Pritory < Sinatra::Base
     @products = user.products
     haml :manage_product
   end
+
+  get '/view_product/:id' do
+      protected!
+      id = params['id'].delete(':')
+      @product = Product.find(id: id)
+      haml :view_product
+  end
   
   # Post product
   post '/manage_product' do

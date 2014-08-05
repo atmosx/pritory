@@ -16,7 +16,7 @@
         %label(for="description") Περιγραφή:
         %input#description(type="text" name="description")
       %li
-        %input(type="submit" value="Αποστολή") ή <a href="/panel">Ακύρωσε</a>
+        %input(type="submit" value="Προσθήκη") ή <a href="/panel">Ακύρωσε</a>
 
 %table{align: 'center'}
   %thead
@@ -32,6 +32,8 @@
           %td= p[:product_description]
           %td= p[:product_barcode]
           %td
+            %a{href: "/view_product/:#{p.id}"} Προβολή
+            |
             %a{href: "/delete_product/:#{p.id}"} Διαγραφή
     - else
       %td n/a

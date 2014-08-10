@@ -4,8 +4,8 @@ class Pritory < Sinatra::Base
   # User logged in
   get "/panel" do
     protected!
-    user = User.first(username: session['name'])
-    @products = user.products
+    @user = User.first(username: session['name'])
+    @products = @user.products
     haml :panel
   end
 
@@ -29,16 +29,32 @@ class Pritory < Sinatra::Base
     protected!
     user = User.first(username: session['name'])
     begin
+      # "9850780-orig.jpg"
+      filename = params['product_image'][:filename]
+      # ["public/images/9850780-orig.jpg", "public/images/apple-touch-icon-114x114.png", "public/images/apple-touch-icon-72x72.png", "public/images/apple-touch-icon.png", "public/images/default.jpg", "public/images/favicon.ico"]
+      images = Dir['public/images/*']
+
+      # Check for overwrites - DOESNT WORK
+      if images.include? "public/images/#{filename}"
+        raise ArgumentError.new("Παρακαλώ αλλάξτε όνομα στην εικόνα!") 
+      end
+
+      File.open('public/images/' + params['product_image'][:filename], "w") do |f|
+         f.write(params['product_image'][:tempfile].read)
+      end
       Product.create(
         user_id: user.id, 
         category: params['category'],
         product_name: params['name'], 
         product_barcode: params['barcode'], 
-        product_description: params['description'] 
+        product_description: params['description'], 
+        img_url: params['product_image'][:filename]
       )
       flash[:result] = "Το προϊόν προστέθηκε στην βάση δεδομένων"
       redirect '/manage_product'
     rescue Sequel::Error => e
+      flash[:error] = "#{e}"
+    rescue ArgumentError => e
       flash[:error] = "#{e}"
     end
   end
@@ -69,19 +85,21 @@ class Pritory < Sinatra::Base
     end
   end
 
-  # Delete product
-  get '/del/:id' do
+  # Delete source
+  get '/delete_source/:id' do
     protected!
     id = params['id'].delete(':')
     begin
+      product_id = Source.find(id: id).product_id
       Source.find(id: id).delete
       flash[:success] = "Η πηγή έχει διαγραφεί με επιτυχία από την βάση δεδομένων!"
-      redirect "/panel"
+      redirect "/view_product/:#{product_id}"
     rescue => e
       flash[:error] = "#{e}"
     end
   end
   
+  # Delete Product
   get '/delete_product/:id' do
     begin
       id = params['id'].delete(':')

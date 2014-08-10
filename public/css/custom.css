@@ -4,10 +4,13 @@
 #menu {
     width: auto;
     height: auto;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: bold;
     text-align: center;
-    border-radius: 8px;
+}
+
+#menu a {
+	color: #01013c;
 }
 
 #menu ul {
@@ -54,53 +57,10 @@ margin: 10px;
   margin-right: 5px;
 }
 
-/* other CSS http://css-tricks.com/fluid-width-equal-height-columns/ */
-
-#flexbox {    
-  display: -webkit-box;
-  -webkit-box-orient: horizontal;
-  -webkit-box-pack: start;
-  -webkit-box-align: start;
-  
-  display: -moz-box;
-  -moz-box-orient: horizontal;
-  -moz-box-pack: start;
-  -moz-box-align: start;
-  
-  display: box;
-  box-orient: horizontal;
-  box-pack: start;
-  box-align: start;
-  
-  overflow: hidden;
-}
-
-
-#flexbox .col {
-  width: 27.333%;
-  padding: 30px 3% 0;
-  
-  margin-bottom: -99999px;
-  padding-bottom: 99999px;
-}
-#flexbox .col p {
-  margin-bottom: 30px;
-}
-#flexbox .col:nth-child(1) {
-  -moz-box-ordinal-group: 2;
-  -webkit-box-ordinal-group: 2;
-  box-ordinal-group: 2;
-  background: #ccc;
-}
-#flexbox .col:nth-child(2) {
-  -moz-box-ordinal-group: 1;
-  -webkit-box-ordinal-group: 1;
-  box-ordinal-group: 1;
-  background: #eee;
-}
-#flexbox .col:nth-child(3) {
-  -moz-box-ordinal-group: 3;
-  -webkit-box-ordinal-group: 3;
-  box-ordinal-group: 3;
-  background: #eee;
+.ptable {
+  float: left;
+  margin-right: 5px;
+  padding: 2px;
+  background-color: white;
+  border-style: ridge;
 }

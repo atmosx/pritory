@@ -7,9 +7,28 @@
     %img{class: 'imgframe', src: "/images/default.jpg"}
 
 %p{id: "desc"} #{@product.product_name}
-%p Κατηγορία: #{@product.category}
-%p Barcode: #{@product.product_barcode}
-%p Περιγραφή: #{@product.product_description}
+%p <strong>Κατηγορία:</strong> #{@product.category}
+%p <strong>Barcode:</strong> #{@product.product_barcode}
+%p <strong>Περιγραφή:</strong> #{@product.product_description}
 
 %h4 Τιμές
-      
+- unless @product.source.empty?
+  %table
+    %tr
+      %th Πηγή
+      - @product.source.each do |p|
+        %td #{p.source}
+    %tr
+      %th Τιμή
+      - @product.source.each do |p|
+        %td #{MyHelpers.cents_to_euro(p.price.to_i)}
+    %tr
+      %th 
+      - @product.source.each do |p|
+        %td 
+          %a{href: "/delete_source/:#{p.id}"} Διαγραφή
+- else
+  %p 
+    %a{href: "/manage_sources"} Προσθήκη
+
+

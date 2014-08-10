@@ -1,9 +1,10 @@
 %h3 Παρατηρητήριο τιμών 
+%p  
+  <strong>Στοιχεία Χρήστη</strong>: #{@user.realname} (#{@user.username})
 
-%table{align: 'center'}
-  %thead
-    %tr
-      %th Προϊόν
+%h4 Προϊόντα Χρήστη
+
+%table{align: 'left'}
   %tbody
     - if @products
       - @products.each do |product|
@@ -13,9 +14,5 @@
           %td
             %a{href: "/view_product/:#{p.id}"} Λεπτομέρειες
     - else
-      %td n/a
-      %td n/a
-      %td n/a
-      %td n/a
-      %td n/a
+      %p Δεν υπάρχει κανένα προϊόν
 

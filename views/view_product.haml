@@ -6,10 +6,10 @@
   - else
     %img{class: 'imgframe', src: "/images/default.jpg"}
 
-%p{id: "desc"} #{@product.product_name}
+%p{id: "desc"} #{@product.name}
 %p <strong>Κατηγορία:</strong> #{@product.category}
-%p <strong>Barcode:</strong> #{@product.product_barcode}
-%p <strong>Περιγραφή:</strong> #{@product.product_description}
+%p <strong>Barcode:</strong> #{@product.barcode}
+%p <strong>Περιγραφή:</strong> #{@product.description}
 
 %h4 Τιμές
 - unless @product.source.empty?

@@ -14,7 +14,7 @@ module MyHelpers
 
   # convert euro to cents
   def self.euro_to_cents value
-     raise ArgumentError, 'Price is not numeric' unless value.is_a? Numeric
-     (value * 100).to_i
+     raise ArgumentError, 'Price is not numeric' unless value.is_a? String
+     (value.to_f * 100).to_i
   end
 end

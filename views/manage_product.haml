@@ -43,7 +43,7 @@
           %td= p[:category]
           %td= p[:description]
           %td= p[:barcode]
-          %td= MyHelpers.cents_to_euro(p[:cost].to_i)
+          %td= MyHelpers.cents_to_euro(p[:cost])
           %td= p[:notes]
           %td= p[:created_at]
           %td

@@ -29,7 +29,6 @@ class Pritory < Sinatra::Base
     protected!
     user = User.first(username: session['name'])
     img = params['image']
-    cost = MyHelpers.euro_to_cents(params['cost'].to_i)
     begin
       Product.create(
         user_id: user.id, 
@@ -37,7 +36,7 @@ class Pritory < Sinatra::Base
         name: params['name'], 
         barcode: params['barcode'], 
         description: params['description'], 
-        cost: cost, 
+        cost: MyHelpers.euro_to_cents(params['cost']), 
         notes: params['comment']
       )
       if img
@@ -77,7 +76,7 @@ class Pritory < Sinatra::Base
   post '/manage_source' do
     protected!
     pro = Product.find(name: params['name'])
-    price_in_cents = MyHelpers.euro_to_cents(params['price'].to_f)
+    price_in_cents = MyHelpers.euro_to_cents(params['price'])
     begin
       Source.create(
         product_id: pro.id,

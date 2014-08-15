@@ -5,7 +5,9 @@
     %ul
       %li
         %label(for="category") Κατηγορία:
-        %input#category(type="text" name="category")
+        %select{id: 'category', name: 'category'}
+          - %w{Καλλυντικά Συμπληρώματα Παραφάρμακα Βρεφικά}.each do |entry|
+            %option= entry
       %li
         %label(for="name") Προϊόν:
         %input#name(type="text" name="name")
@@ -16,32 +18,38 @@
         %label(for="description") Περιγραφή:
         %input#description(type="text" name="description")
       %li
+        %label(for="cost") Κόστος:
+        %input#cost{type: "number", min: "0", max: "999999", step: "0.01", size: "6", name: "cost"}
+      %li
+        %label(for="comment") Σχόλια (εκπτώσεις, κλπ.):
+        %input#comment(type="text" name="comment")
+      %li
         %label(for="image") Εικόνα:
-        %input#description(type="file" name="product_image")
+        %input#description(type="file" name="image")
       %li
         %input(type="submit" value="Προσθήκη") ή <a href="/panel">Ακύρωσε</a>
 
-%table{align: 'center'}
-  %thead
-    %tr
-      - %w{Προϊόν Κατηγορία Περιγραφή BarCode}.each do |entry|
-        %th= entry
-  %tbody
-    - if @products
-      -  @products.each do |p|
+
+- if @products.empty? == false
+  %table{align: 'center'}
+    %thead
+      %tr
+        - %w{Προϊόν Κατηγορία Περιγραφή Barcode Κόστος Σχόλια Δημιουργεία}.each do |entry|
+          %th= entry
+    %tbody
+      - @products.each do |p|
         %tr
-          %td= p[:product_name]
+          %td= p[:name]
           %td= p[:category]
-          %td= p[:product_description]
-          %td= p[:product_barcode]
+          %td= p[:description]
+          %td= p[:barcode]
+          %td= MyHelpers.cents_to_euro(p[:cost].to_i)
+          %td= p[:notes]
+          %td= p[:created_at]
           %td
             %a{href: "/view_product/:#{p.id}"} Προβολή
             |
             %a{href: "/delete_product/:#{p.id}"} Διαγραφή
-    - else
-      %td n/a
-      %td n/a
-      %td n/a
-      %td n/a
-      %td n/a
-
+- else
+  %p{align: 'center'}
+    <strong>Δεν υπάρχουν καταχωρημένα προϊόντα</strong>

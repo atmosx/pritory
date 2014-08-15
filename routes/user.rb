@@ -28,28 +28,34 @@ class Pritory < Sinatra::Base
   post '/manage_product' do
     protected!
     user = User.first(username: session['name'])
+    img = params['image']
+    cost = MyHelpers.euro_to_cents(params['cost'].to_i)
     begin
-      # "9850780-orig.jpg"
-      filename = params['product_image'][:filename]
-      # ["public/images/9850780-orig.jpg", "public/images/apple-touch-icon-114x114.png", "public/images/apple-touch-icon-72x72.png", "public/images/apple-touch-icon.png", "public/images/default.jpg", "public/images/favicon.ico"]
-      images = Dir['public/images/*']
-
-      # Check for overwrites - DOESNT WORK
-      if images.include? "public/images/#{filename}"
-        raise ArgumentError.new("Παρακαλώ αλλάξτε όνομα στην εικόνα!") 
-      end
-
-      File.open('public/images/' + params['product_image'][:filename], "w") do |f|
-         f.write(params['product_image'][:tempfile].read)
-      end
       Product.create(
         user_id: user.id, 
         category: params['category'],
-        product_name: params['name'], 
-        product_barcode: params['barcode'], 
-        product_description: params['description'], 
-        img_url: params['product_image'][:filename]
+        name: params['name'], 
+        barcode: params['barcode'], 
+        description: params['description'], 
+        cost: cost, 
+        notes: params['comment']
       )
+      if img
+        # "9850780-orig.jpg"
+        filename = params['product_image'][:filename]
+        # ["public/images/9850780-orig.jpg", "public/images/apple-touch-icon-114x114.png", "public/images/apple-touch-icon-72x72.png", "public/images/apple-touch-icon.png", "public/images/default.jpg", "public/images/favicon.ico"]
+        images = Dir['public/images/*']
+
+        # Check for overwrites - DOESNT WORK
+        if images.include? "public/images/#{filename}"
+          raise ArgumentError.new("Παρακαλώ αλλάξτε όνομα στην εικόνα!") 
+        end
+
+        File.open('public/images/' + params['product_image'][:filename], "w") do |f|
+           f.write(params['product_image'][:tempfile].read)
+        end
+        Product.update(img_url: params['product_image'][:filename])
+      end
       flash[:result] = "Το προϊόν προστέθηκε στην βάση δεδομένων"
       redirect '/manage_product'
     rescue Sequel::Error => e
@@ -70,7 +76,7 @@ class Pritory < Sinatra::Base
   # Post source
   post '/manage_source' do
     protected!
-    pro = Product.find(product_name: params['product_name'])
+    pro = Product.find(name: params['name'])
     price_in_cents = MyHelpers.euro_to_cents(params['price'].to_f)
     begin
       Source.create(

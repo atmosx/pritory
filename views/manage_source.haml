@@ -10,11 +10,11 @@
       %li
         %label(for="name") Προϊόν:
         %select{id: 'product_name', name: 'product_name'}
-          -if @products != nil
+          -if (@products || @products.empty?)
+            %option Δεν υπάρχει προϊόν
+          - else
             - @products.each do |p|
               %option= p.product_name
-          - else
-            %option Δεν υπάρχει προϊόν
       %li
         %label(for="price") Τιμή (EUR):
         %input#price{type: "number", min: "0", max: "999999", step: "0.01", size: "6", name: "price"}

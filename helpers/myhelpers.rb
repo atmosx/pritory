@@ -18,5 +18,3 @@ module MyHelpers
      (value * 100).to_i
   end
 end
-
-# p MyHelpers.euro_to_cents "12.12".to_f

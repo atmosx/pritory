@@ -40,9 +40,7 @@ class Pritory < Sinatra::Base
         notes: params['comment']
       )
       if img
-        # "9850780-orig.jpg"
-        filename = params['product_image'][:filename]
-        # ["public/images/9850780-orig.jpg", "public/images/apple-touch-icon-114x114.png", "public/images/apple-touch-icon-72x72.png", "public/images/apple-touch-icon.png", "public/images/default.jpg", "public/images/favicon.ico"]
+        filename = params['image'][:filename]
         images = Dir['public/images/*']
 
         # Check for overwrites - DOESNT WORK
@@ -50,17 +48,20 @@ class Pritory < Sinatra::Base
           raise ArgumentError.new("Παρακαλώ αλλάξτε όνομα στην εικόνα!") 
         end
 
-        File.open('public/images/' + params['product_image'][:filename], "w") do |f|
-           f.write(params['product_image'][:tempfile].read)
+        File.open('public/images/' + params['image'][:filename], "w") do |f|
+           f.write(params['image'][:tempfile].read)
         end
-        Product.update(img_url: params['product_image'][:filename])
+        a = Product.last
+        a.update(img_url: params['image'][:filename])
       end
       flash[:result] = "Το προϊόν προστέθηκε στην βάση δεδομένων"
       redirect '/manage_product'
     rescue Sequel::Error => e
       flash[:error] = "#{e}"
+      rediret "/manage_product"
     rescue ArgumentError => e
       flash[:error] = "#{e}"
+      rediret "/manage_product"
     end
   end
 

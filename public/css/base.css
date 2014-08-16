@@ -43,10 +43,10 @@
 	q:before, q:after {
 		content: '';
 		content: none; }
-	table {
+	/*table {
 		border-collapse: collapse;
 		border-spacing: 1;
-	}
+	}*/
 	table th {
 		font-weight: bold;
 		font-size: 120%;
@@ -54,10 +54,10 @@
 	table td {
 		text-align: center;
 	}
-	table th, td {
+	/*table th, td {
 		border: 1px solid black;
 		padding:  5px;
-	}
+	}*/
 
 
 /* #Basic Styles

@@ -5,12 +5,27 @@
     %img{class: 'imgframe', src: "/images/#{@product.img_url}"}
   - else
     %img{class: 'imgframe', src: "/images/default.jpg"}
+%table#hor-minimalist-a
+  %tr
+    %th Προϊόν: 
+    %td #{@product.name}
+  %tr
+    %th Ημ. Καταχώρησης:
+    %td #{@product.created_at.strftime("%d/%m/%Y")}
+  %tr 
+    %th Κατηγορία:
+    %td #{@product.category}
+  %tr
+    %th Barcode:
+    %td #{@product.barcode}
+  %tr
+    %th Κόστος:
+    %td #{MyHelpers.cents_to_euro @product.cost}
+  %tr
+    %th Περιγραφή:
+    %td #{@product.description}
 
-%p{id: "desc"} #{@product.name}
-%p <strong>Κατηγορία:</strong> #{@product.category}
-%p <strong>Barcode:</strong> #{@product.barcode}
-%p <strong>Περιγραφή:</strong> #{@product.description}
-
+%br
 %h4 Τιμές
 - unless @product.source.empty?
   %table

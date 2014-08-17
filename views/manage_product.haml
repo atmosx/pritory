@@ -45,7 +45,7 @@
           %td= p[:barcode]
           %td= MyHelpers.cents_to_euro(p[:cost])
           %td= p[:notes]
-          %td= p[:created_at]
+          %td= p[:created_at].strftime("%m/%d/%Y")
           %td
             %a{href: "/view_product/:#{p.id}"} Προβολή
             |

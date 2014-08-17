@@ -88,6 +88,7 @@ class Pritory < Sinatra::Base
       redirect '/manage_source'
     rescue Sequel::Error => e
       flash[:error] = "#{e}"
+      redirect '/manage_source'
     end
   end
 

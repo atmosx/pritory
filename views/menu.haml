@@ -1,11 +1,33 @@
 - if protected?
-  %ul#menu
+  -# old menu
+  -# %ul#menu
+  -#   %li
+  -#     %a{href: "/panel"} Πίνακας
+  -#   %li
+  -#     %a{href: "/manage_product"} Διαχείριση προϊόντος 
+  -#   %li
+  -#     %a{href: "/manage_source"} Διαχείριση πηγής
+  -#   %li
+  -#     %a{href: "/logout"} Έξοδος
+
+  -# http://www.cssportal.com/css3-menu-generator/
+  %ul#menu-bar
     %li
       %a{href: "/panel"} Πίνακας
     %li
-      %a{href: "/manage_product"} Διαχείριση προϊόντος 
+      %a{href: "/manage_product"} Διαχείριση προϊόντος
     %li
       %a{href: "/manage_source"} Διαχείριση πηγής
     %li
       %a{href: "/logout"} Έξοδος
-
+    -# %li
+    -#   %a{:href => "#"} Services
+    -#   %ul
+    -#     %li
+    -#       %a{:href => "#"} Services Sub Menu 1
+    -#     %li
+    -#       %a{:href => "#"} Services Sub Menu 2
+    -#     %li
+    -#       %a{:href => "#"} Services Sub Menu 3
+    -#     %li
+    -#       %a{:href => "#"} Services Sub Menu 4

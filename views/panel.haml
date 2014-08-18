@@ -10,7 +10,7 @@
       - @products.each do |product|
         %tr
           - p = product
-          %td= p[:product_name]
+          %td= p[:name]
           %td
             %a{href: "/view_product/:#{p.id}"} Λεπτομέρειες
     - else

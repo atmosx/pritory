@@ -39,6 +39,16 @@ class Pritory < Sinatra::Base
         cost: MyHelpers.euro_to_cents(params['cost']), 
         notes: params['comment']
       )
+      # Get product object
+      a = Product.last
+      
+      Source.create(
+        product_id: a.id,
+        source: user.store_name,
+        auto_update: false,
+        price: MyHelpers.euro_to_cents params['price']
+      )
+      
       if img
         filename = params['image'][:filename]
         images = Dir['public/images/*']
@@ -51,7 +61,6 @@ class Pritory < Sinatra::Base
         File.open('public/images/' + params['image'][:filename], "w") do |f|
            f.write(params['image'][:tempfile].read)
         end
-        a = Product.last
         a.update(img_url: params['image'][:filename])
       end
       flash[:result] = "Το προϊόν προστέθηκε στην βάση δεδομένων"

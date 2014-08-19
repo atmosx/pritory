@@ -22,9 +22,11 @@
     %th Κόστος:
     %td #{MyHelpers.cents_to_euro @product.cost}
   %tr
+    %th Τιμή πώλησης:
+    %td #{MyHelpers.cents_to_euro @source.price}
+  %tr
     %th Περιγραφή:
     %td #{@product.description}
-
 %br
 %h4 Τιμές
 - unless @product.source.empty?

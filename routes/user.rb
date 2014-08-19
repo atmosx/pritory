@@ -21,6 +21,8 @@ class Pritory < Sinatra::Base
       protected!
       id = params['id'].delete(':')
       @product = Product.find(id: id)
+      store = User.find(id: @product.user_id).store_name
+      @source = Source.find(source: @store).first
       haml :view_product
   end
   

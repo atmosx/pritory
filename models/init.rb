@@ -23,6 +23,7 @@ DB.create_table?(:products, engine: 'InnoDB') do
 	primary_key :id
   Integer :user_id, null: false
   String :category, null: false
+  Float  :vat_category, null: false
   String :name, null: false
   String :barcode
   String :description

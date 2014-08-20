@@ -148,7 +148,6 @@
   height: 1%;
 }
 
-
 /***************************************/
 
 /* The old simple horizontal menu */
@@ -182,7 +181,7 @@ padding: 5px;
 
 
 .column1of2, .column2of2 {
-width:  300px;
+width:  500px;
 float: left;
 margin: 10px;
 }

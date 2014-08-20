@@ -20,9 +20,14 @@ class Pritory < Sinatra::Base
   get '/view_product/:id' do
       protected!
       id = params['id'].delete(':')
+      # Margin and MarkUp explained simply http://www.qwerty.gr/howto/margin-vs-markup
       @product = Product.find(id: id)
-      store = User.find(id: @product.user_id).store_name
-      @source = Source.find(source: @store).first
+      @cost = MyHelpers.cents_to_euro(@product.cost)
+      @price = MyHelpers.cents_to_euro(@product.source[0][:price])
+      @price_plus_vat = MyHelpers.cents_to_euro(@product.source[0][:price] * ((@product.vat_category/100)+1))
+      margin = (@product.source[0][:price] - @product.cost)/@product.source[0][:price]
+      @markup = MyHelpers.cents_to_euro(@product.source[0][:price] - @product.cost)
+      @margin = MyHelpers.numeric_to_percentage(margin)
       haml :view_product
   end
   
@@ -35,12 +40,14 @@ class Pritory < Sinatra::Base
       Product.create(
         user_id: user.id, 
         category: params['category'],
+        vat_category: params['vat_category'].to_f,
         name: params['name'], 
         barcode: params['barcode'], 
         description: params['description'], 
         cost: MyHelpers.euro_to_cents(params['cost']), 
         notes: params['comment']
       )
+      
       # Get product object
       a = Product.last
       
@@ -48,7 +55,7 @@ class Pritory < Sinatra::Base
         product_id: a.id,
         source: user.store_name,
         auto_update: false,
-        price: MyHelpers.euro_to_cents params['price']
+        price: MyHelpers.euro_to_cents(params['price'])
       )
       
       if img
@@ -66,7 +73,7 @@ class Pritory < Sinatra::Base
         a.update(img_url: params['image'][:filename])
       end
       flash[:result] = "Το προϊόν προστέθηκε στην βάση δεδομένων"
-      redirect '/manage_product'
+      redirect "/skroutz_add/:#{params['name']}"
     rescue Sequel::Error => e
       flash[:error] = "#{e}"
       rediret "/manage_product"
@@ -74,6 +81,11 @@ class Pritory < Sinatra::Base
       flash[:error] = "#{e}"
       rediret "/manage_product"
     end
+  end
+
+  get '/skroutz_add/:name' do
+    protected!
+    name = params['name'].delete(':')
   end
 
   # Add Source

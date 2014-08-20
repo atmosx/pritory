@@ -17,4 +17,12 @@ module MyHelpers
      raise ArgumentError, 'Price is not numeric' unless value.is_a? String
      (value.to_f * 100).to_i
   end
+
+  def self.numeric_to_percentage value
+     raise ArgumentError, 'Value is not numeric' unless value.is_a? Numeric
+     v = value.to_f*100
+     p = sprintf("%0.2f", v)
+     # display value in European format
+     p.to_s.sub('.', ',') + " %"
+  end
 end

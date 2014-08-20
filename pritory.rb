@@ -80,49 +80,6 @@ class Pritory < Sinatra::Base
       session? 
     end
 
-    # Skroytz OAuth2
-    def client
-      client ||= OAuth2::Client.new(MySecrets::SKROUTZ_OAUTH_CID, MySecrets::SKROUTZ_OAUTH_PAS, {
-        site: 'https://skroutz.gr', 
-        authorize_url: "/oauth2/authorizations/new", 
-        token_url: "/oauth2/token",
-        user_agent: 'pritory testing'
-      })
-    end
-  end
-
-  # http://developer.skroutz.gr/authentication/permissions/
-  get '/auth' do
-    # redirect client.auth_code.authorize_url(redirect_uri: redirect_uri, scope: 'public', grant_type: "client_credentials")
-    redirect client.client_credentials.get_token
-  end
-
-  get '/callback' do
-    #access_token = client.auth_code.get_token(params[:code], redirect_uri: redirect_uri)
-    
-    # Still getting: "/callback?error=invalid_scope&error_description=Scope+does+not+require+user%27s+permission"
-    t = client.client_credentials.get_token
-    session[:access_token] = t.token.to_s
-    @rtoken = t.refresh_token.to_s
-    @message = "Successfully authenticated with the server"
-    @access_token = session[:access_token]
-    $log.info("#{@message}: #{@access_token}")
-    @tablets = get_response('http://skroutz.gr/api/search?q=Tablets')
-    haml :success
-  end
-
-  def redirect_uri
-    uri = URI.parse(request.url)
-    uri.path = '/callback'
-    uri.query = nil
-    uri.to_s
-  end 
-
-  def get_response(url)
-	  access_token = OAuth2::AccessToken.new(client, session[:access_token])
-	  JSON.parse(access_token.get("#{url}").body)
-  end
-
   # When Page Not Found
   not_found do
     haml :not_found

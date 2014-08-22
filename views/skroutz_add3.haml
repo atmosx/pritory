@@ -1,0 +1,13 @@
+%h1 Προϊόντα στο Skroutz.gr
+
+%form(action="/skroutz_add3" method="post")
+  %fieldset
+    %legend Καταχώρηση τιμής
+    %ul
+      %li
+        %label(for="product") Προϊόν:
+        %select{id: 'product', name: 'product'}
+          - @res3["products"].each do |p|
+            %option{value: p['price']}= "#{p['name']}"
+      %li
+        %input(type="submit" value="Επόμενο") ή <a href="/panel">Ακύρωσε</a>

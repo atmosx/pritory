@@ -23,6 +23,8 @@ class Pritory < Sinatra::Base
   # Log what happens
   $log = Logger.new('log/output.log')
 
+  
+  
   configure do
     register Sinatra::Session
     register Sinatra::Partial
@@ -80,13 +82,13 @@ class Pritory < Sinatra::Base
       session? 
     end
 
-  # When Page Not Found
-  not_found do
-    haml :not_found
+    # When Page Not Found
+    not_found do
+      haml :not_found
+    end
   end
-
 end
 
-require_relative 'helpers/init'
 require_relative 'models/init'
 require_relative 'routes/init'
+require_relative 'helpers/init'

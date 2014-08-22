@@ -23,7 +23,7 @@ module Skroutz
       end
     end
 
-    # Skroutz search product
+    # Skroutz search product category (step 1)
     def query_skroutz keyword
       begin
         raise ArgumentError.new("Keyword is too small!") if keyword.length < 3
@@ -41,38 +41,37 @@ module Skroutz
       end
     end
 
-    # def testing
-    #   token =  get_token.token
-    #   con = Faraday.new
-    #   con.params = {oauth_token: token}
-    #   con.headers = {user_agent: 'pritory'}
-    #   con.headers = {'Accept' => 'application/vnd.skroutz+json; version=3'}
-    #   r = con.get "https://api.skroutz.gr/api/skus/3378157/products "
-    #   p JSON.parse(r.body)
-    # end
+    # Search for categories (step 2)
+    def query_skroutz2 id, name
+      begin
+        token =  get_token.token
+        con = Faraday.new
+        con.params = {oauth_token: token}
+        con.headers = {user_agent: 'pritory'}
+        con.headers = {'Accept' => 'application/vnd.skroutz+json; version=3'}
+        r1 = con.get "http://api.skroutz.gr/api/categories/#{id}/skus?q=#{name}"
+        JSON.parse(r1.body)
+      rescue ArgumentError => e
+        puts e
+      rescue OAuth2::Error => e
+        puts "\nResponse headers: #{e.response.headers}"
+      end
+    end
 
-    # def fetch_category_id 
-    #   res = query_skroutz 'osteoflex'
-    #   p res
-    # p res["categories"][0]
-    # token =  get_token.token
-    # con = Faraday.new
-    # con.params = {oauth_token: token}
-    # con.headers = {user_agent: 'pritory'}
-    # con.headers = {'Accept' => 'application/vnd.skroutz+json; version=3'}
-    # resp = con.get "https://api.skroutz.gr/categories/#{cid}"
-    # begin
-    #   p JSON.parse(resp.body)
-    # rescue JSON::ParserError => e
-    #   p e
-    # end
-    # end
-
-    #fetch_category_id
-    # testing
+    def query_skroutz3 id
+      begin
+        token =  get_token.token
+        con = Faraday.new
+        con.params = {oauth_token: token}
+        con.headers = {user_agent: 'pritory'}
+        con.headers = {'Accept' => 'application/vnd.skroutz+json; version=3'}
+        r1 = con.get "http://api.skroutz.gr/api/skus/#{id}/products"
+        JSON.parse(r1.body)
+      rescue ArgumentError => e
+        puts e
+      rescue OAuth2::Error => e
+        puts "\nResponse headers: #{e.response.headers}"
+      end
+    end
   end
 end
-
-# x = Skroutz::Query.new
-# p x.query_skroutz('osteoflex')
-# {"categories"=>[{"id"=>1405, "name"=>"Συμπληρώματα Διατροφής", "children_count"=>0, "image_url"=>"http://d.scdn.gr/images/categories/large/1405.jpg", "parent_id"=>1281, "fashion"=>false, "show_specifications"=>false, "manufacturer_title"=>"Κατασκευαστές", "match_count"=>10}, {"id"=>1479, "name"=>"Φαρμακευτικά", "children_count"=>0, "image_url"=>"http://c.scdn.gr/images/categories/large/1479.jpg", "parent_id"=>1281, "fashion"=>false, "show_specifications"=>false, "manufacturer_title"=>"Κατασκευαστές", "match_count"=>1}], "meta"=>{"alternatives"=>[], "strong_matches"=>{}, "pagination"=>{"total_results"=>2, "total_pages"=>1, "page"=>1, "per"=>25}}}

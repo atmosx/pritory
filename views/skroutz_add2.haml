@@ -8,6 +8,6 @@
         %label(for="product_id") Περιγραφή:
         %select{id: 'product_id', name: 'product_id'}
           - @res2["skus"].each do |p|
-            %option{value: p['id']}= "#{p['display_name']}"
+            %option{value: p['id'] }= "#{p['display_name']}"
       %li
         %input(type="submit" value="Επόμενο") ή <a href="/panel">Ακύρωσε</a>

@@ -23,8 +23,6 @@ class Pritory < Sinatra::Base
   # Log what happens
   $log = Logger.new('log/output.log')
 
-  
-  
   configure do
     register Sinatra::Session
     register Sinatra::Partial

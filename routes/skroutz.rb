@@ -7,7 +7,7 @@ class Pritory < Sinatra::Base
     @name = params['name'].delete(':')
     # create object if doesn't exist
     # check instant access with threaded servers like puma!
-    @res = @squick.query_skroutz(@name)
+    @res = settings.squick.query_skroutz(@name)
     haml :skroutz_add
   end
 
@@ -19,7 +19,7 @@ class Pritory < Sinatra::Base
   get '/skroutz_add2/:values' do
     values = params['values'].delete(':').split('_')
     id, name = values[0], values[1]
-    @res2 = @squick.query_skroutz2 id, name
+    @res2 = settings.squick.query_skroutz2 id, name
     redirect '/manage_product' if @res2.nil?
     haml :skroutz_add2
   end
@@ -31,7 +31,7 @@ class Pritory < Sinatra::Base
 
   get '/skroutz_add3/:id' do
     id = params['id'].delete(':')
-    @res3 = @squick.query_skroutz3 id
+    @res3 = settings.squick.query_skroutz3 id
     # redirect '/manage_product' if @res2.nil?
     haml :skroutz_add3
   end

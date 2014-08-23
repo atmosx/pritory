@@ -6,18 +6,16 @@ require 'sinatra/partial'
 require 'sinatra/flash'
 require 'bluecloth'
 require 'haml'
-# require 'logger'
 require 'openssl'
-require 'oauth2'
-require 'net/http'
-require 'json'
-require 'faraday'
+# require 'logger'
 
 require_relative 'minify_resources'
 require_relative 'mysecrets'
+require_relative 'models/init'
+require_relative 'routes/init'
+require_relative 'helpers/init'
 
 class Pritory < Sinatra::Base
-  # enable :sessions
 
   # Faraday won't check SSL for now
   OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
@@ -30,13 +28,15 @@ class Pritory < Sinatra::Base
     register Sinatra::Partial
     register Sinatra::Flash
 
+    # Make object accessible through routes
+    set :squick, Skroutz::Query.new
+
     # Security measures for sessions	
     set :session_fail, '/login'
     set :session_secret, MySecrets::SESSION_SECRET
 
     # Setup environemnt 	
     set :environment, :development
-
     set :default_encoding, 'utf-8'
     set :dump_errors, true
 
@@ -138,9 +138,7 @@ class Pritory < Sinatra::Base
         end
       end
     end
-
-
-    # Access Control
+    
     # Login required
     def protected! 
       # halt [ 401, 'Not Authorized' ] unless session? 
@@ -165,6 +163,6 @@ class Pritory < Sinatra::Base
   @squick ||= Skroutz::Query.new
 end
 
-require_relative 'models/init'
-require_relative 'routes/init'
-require_relative 'helpers/init'
+# require_relative 'models/init'
+# require_relative 'routes/init'
+# require_relative 'helpers/init'

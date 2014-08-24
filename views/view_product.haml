@@ -7,61 +7,64 @@
     - else
       %img{class: 'imgframe', src: "/images/default.jpg"}
   %table
-    %legend Στοιχεία Προϊόντος
+    %legend Περιγραφή Προϊόντος
     %tr
-      %th Προϊόν: 
-      %td #{@product.name}
+      %th.style1 Προϊόν: 
+      %td.style1 #{@product.name}
     %tr 
-      %th Κατηγορία:
-      %td #{@product.category}
+      %th.style1 Κατηγορία:
+      %td.style1 #{@product.category}
     %tr 
-      %th Κατηγορία ΦΠΑ:
-      %td #{@product.vat_category.to_s}%
+      %th.style1 Κατηγορία ΦΠΑ:
+      %td.style1 #{@product.vat_category.to_s}%
     %tr
-      %th Barcode:
-      %td #{@product.barcode}
+      %th.style1 Barcode:
+      %td.style1 #{@product.barcode}
     %tr
-      %th Περιγραφή:
-      %td #{@product.description}
+      %th.style1 Περιγραφή:
+      %td.style1 #{@product.description}
     %tr
-      %th Ημ. Καταχ.:
-      %td #{@product.created_at.strftime("%d/%m/%Y")}
+      %th.style1 Καταχώρηση:
+      %td.style1 #{@product.created_at.strftime("%d/%m/%Y")}
 %div.column2of2
   %table
-    %legend Οικονομικά Στοιχεία
+    %legend Οικονομικά Στοιχεία (ανά τεμάχιο)
     %tr
-      %th Κόστος:
+      %th.style1
+      %th.style1 Χωρίς ΦΠΑ
+      %th.style1 Με ΦΠΑ
+    %tr
+      %th.style1 Αγορά:
       %td.number #{@cost}
+      %td.number #{@cost_plus_vat}
     %tr
-      %th Τιμή (χωρίς ΦΠΑ):
+      %th.style1 Λιανική:
       %td.number= @price 
-    %tr
-      %th Λιανική Τιμή:
       %td.number= @price_plus_vat
     %tr
-      %th MarkUp:
-      %td.number= @markup 
+      %th.style1 MarkUp:
+      %td{colspan: '2', class: 'style1'} #{@markup}
     %tr
-      %th Margin:
-      %td.number= @margin 
+      %th.style1 Margin:
+      %td{colspan: '2', class: 'style1'} #{@margin}
 
 %br{:style => "clear:both"}/
 %h4 Λιανικές Τιμές Πώλησης
 - unless @product.source.empty?
   %table
     %tr
-      %th Πηγή
+      %th.style1
       - @product.source.each do |p|
-        %td #{p.source}
+        %th.style1 #{p.source}
     %tr
-      %th Τιμή
+      %th.style1 Τιμή
       - @product.source.each do |p|
         -# Υπολογίζουμε τιμή + ΦΠΑ π.χ.: 22,12 * 1,23 (για 23% ΦΠΑ)
-        %td #{MyHelpers.cents_to_euro (p.price * ((@product.vat_category.to_f/100)+1))}
+        %td.style1 #{MyHelpers.cents_to_euro (p.price * ((@product.vat_category.to_f/100)+1))}
     %tr
-      %th
+      %td.style1
       - @product.source.each do |p|
-        %td 
+        %td.style1-simple
           %a{href: "/delete_source/:#{p.id}"} Διαγραφή
 - else
   %p 

@@ -23,6 +23,7 @@ class Pritory < Sinatra::Base
       # Margin and MarkUp explained simply http://www.qwerty.gr/howto/margin-vs-markup
       @product = Product.find(id: id)
       @cost = MyHelpers.cents_to_euro(@product.cost)
+      @cost_plus_vat = MyHelpers.cents_to_euro(@product.cost * ((@product.vat_category/100)+1))
       @price = MyHelpers.cents_to_euro(@product.source[0][:price])
       @price_plus_vat = MyHelpers.cents_to_euro(@product.source[0][:price] * ((@product.vat_category/100)+1))
       margin = (@product.source[0][:price] - @product.cost)/@product.source[0][:price]
@@ -99,8 +100,8 @@ class Pritory < Sinatra::Base
         source: params['source'],
         price: price_in_cents
       )
-      flash[:result] = "Η πηγή καταχωρήθηκε στην βάση δεδομένων"
       redirect '/manage_source'
+      flash[:result] = "Η πηγή καταχωρήθηκε στην βάση δεδομένων"
     rescue Sequel::Error => e
       flash[:error] = "#{e}"
       redirect '/manage_source'

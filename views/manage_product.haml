@@ -11,7 +11,7 @@
       %li
         %label(for="vat_category") Κατηφορία ΦΠΑ:
         %select{id: 'vat_category', name: 'vat_category'}
-          - %w{23 21 19 15 9.5 9 }.each do |entry|
+          - %w{23 13 }.each do |entry|
             %option= entry
       %li
         %label(for="name") Προϊόν:
@@ -23,10 +23,10 @@
         %label(for="description") Περιγραφή:
         %input#description(type="text" name="description")
       %li
-        %label(for="cost") Κόστος:
+        %label(for="cost") Αγορά (Χωρίς Φ.Π.Α.):
         %input#cost{type: "number", min: "0", max: "999999", step: "0.01", size: "6", name: "cost"}
       %li
-        %label(for="price") Τιμή Πώλησης:
+        %label(for="price") Τιμή Πώλησης (Χωρίς Φ.Π.Α.):
         %input#cost{type: "number", min: "0", max: "999999", step: "0.01", size: "6", name: "price"}
       %li
         %label(for="comment") Σχόλια (εκπτώσεις, κλπ.):
@@ -37,27 +37,3 @@
       %li
         %input(type="submit" value="Προσθήκη") ή <a href="/panel">Ακύρωσε</a>
 
-
-- if @products.empty? == false
-  %table{align: 'center'}
-    %thead
-      %tr
-        - %w{Προϊόν Κατηγορία Περιγραφή Barcode Κόστος Σχόλια Δημιουργεία}.each do |entry|
-          %th= entry
-    %tbody
-      - @products.each do |p|
-        %tr
-          %td= p[:name]
-          %td= p[:category]
-          %td= p[:description]
-          %td= p[:barcode]
-          %td= MyHelpers.cents_to_euro(p[:cost])
-          %td= p[:notes]
-          %td= p[:created_at].strftime("%m/%d/%Y")
-          %td
-            %a{href: "/view_product/:#{p.id}"} Προβολή
-            |
-            %a{href: "/delete_product/:#{p.id}"} Διαγραφή
-- else
-  %p{align: 'center'}
-    <strong>Δεν υπάρχουν καταχωρημένα προϊόντα</strong>

@@ -1,18 +1,29 @@
-%h3 Παρατηρητήριο τιμών 
-%p  
-  <strong>Στοιχεία Χρήστη</strong>: #{@user.realname} (#{@user.username})
-
-%h4 Προϊόντα Χρήστη
+%h3 Αρχική
+%p 
+  ="Υπάρχουν #{@products.length} καταχωρημένα προϊόντα."
 
 %table{align: 'left'}
+  %legend Κατάσταση προϊόντων
   %tbody
     - if @products
+      %tr
+        - %w{Α/Α Προϊόν Κατηγορία Περιγραφή Barcode Σχόλια Καταχώρηση}.each do |entry|
+          %th.style1= entry
       - @products.each do |product|
         %tr
           - p = product
-          %td= p[:name]
-          %td
-            %a{href: "/view_product/:#{p.id}"} Λεπτομέρειες
+          %td.style1= p[:id]
+          %td.style1= p[:name]
+          %td.style1= p[:category]
+          %td.style1= p[:description]
+          %td.style1= p[:barcode]
+          %td.style1= p[:notes]
+          %td.style1= p[:created_at].strftime("%m/%d/%Y")
+          %td.style1-simple
+            %a{href: "/view_product/:#{p.id}"} Προβολή
+            |
+            %a{href: "/delete_product/:#{p.id}"} Διαγραφή
     - else
       %p Δεν υπάρχει κανένα προϊόν
 
+%br{:style => "clear:both"}/

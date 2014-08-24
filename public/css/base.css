@@ -49,19 +49,43 @@
   }
 	table th {
 		font-weight: bold;
-		font-size: 120%;
 	}
 	table td {
 		text-align: center;
 	}
 
-	table td.number {
+		table td.number {
 		text-align: right;
+		border: 1px solid #ccc;
+		font-weight: bold;
+		
 	}
+	
 	table th, td {
 		border: 1px solid black;
 		padding:  5px;
 	}
+	
+	td.style1, th.style1 {
+	  border: 1px solid #ccc;
+	  text-align: center;
+	  font-weight: bold;
+	}
+	
+	th.style1 {
+	  background: #3B3B3B;
+	  border-color: white;
+	  color:  white;
+	}
+	
+	td.style1-simple {
+	  text-align: center;	  
+	  border: 1px solid #ccc;
+	}
+	/*body.style1 {
+	  padding: 1rem;
+	}*/
+	
 
 
 /* #Basic Styles

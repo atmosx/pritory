@@ -44,7 +44,7 @@ class Pritory < Sinatra::Base
       auto_update: true,
       price: MyHelpers.euro_to_cents(params['price'])
     )
-    redirect '/manage_product'
+    redirect '/panel'
     flash[:result] = "Προστέθηκε τιμή από skroutz!"
   end
 

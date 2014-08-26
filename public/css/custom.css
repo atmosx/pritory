@@ -190,6 +190,10 @@ margin: 10px;
   font-style: bold;
 }
 
+#product_desc {
+  margin-left: 10px;
+}
+
 .imgframe {
   background:#ffffff;
   padding:12px;

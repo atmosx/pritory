@@ -8,6 +8,6 @@
         %label(for="price") Προϊόν:
         %select{id: 'price', name: 'price'}
           - @res3["products"].each do |p|
-            %option{value: p['price']}= "#{p['name']}"
+            %option{value: p['price']}= "#{p['name']} - #{p['price'].to_s.sub('.',',')}"
       %li
         %input(type="submit" value="Επόμενο") ή <a href="/panel">Ακύρωσε</a>

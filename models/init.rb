@@ -39,7 +39,7 @@ DB.create_table?(:sources, engine: 'InnoDB') do
   primary_key :id
   Integer :product_id, null: false
   String :source, null: false
-  Boolean :auto_update, default: false
+  Integer :skroutz_id, default: 0
 	Numeric :price, size: [10,2] , null: false 
 	DateTime :created_at, default: tz.now
 end

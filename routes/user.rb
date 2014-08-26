@@ -18,18 +18,20 @@ class Pritory < Sinatra::Base
   end
 
   get '/view_product/:id' do
-      protected!
-      id = params['id'].delete(':')
-      # Margin and MarkUp explained simply http://www.qwerty.gr/howto/margin-vs-markup
-      @product = Product.find(id: id)
-      @cost = MyHelpers.cents_to_euro(@product.cost)
-      @cost_plus_vat = MyHelpers.cents_to_euro(@product.cost * ((@product.vat_category/100)+1))
-      @price = MyHelpers.cents_to_euro(@product.source[0][:price])
-      @price_plus_vat = MyHelpers.cents_to_euro(@product.source[0][:price] * ((@product.vat_category/100)+1))
-      margin = (@product.source[0][:price] - @product.cost)/@product.source[0][:price]
-      @markup = MyHelpers.cents_to_euro(@product.source[0][:price] - @product.cost)
-      @margin = MyHelpers.numeric_to_percentage(margin)
-      haml :view_product
+    protected!
+    id = params['id'].delete(':')
+    # Margin and MarkUp explained simply http://www.qwerty.gr/howto/margin-vs-markup
+    @user = User.first(username: session['name'])
+    @store = @user.store_name
+    @product = Product.find(id: id)
+    @cost = MyHelpers.cents_to_euro(@product.cost)
+    @cost_plus_vat = MyHelpers.cents_to_euro(@product.cost * ((@product.vat_category/100)+1))
+    @price = MyHelpers.cents_to_euro(@product.source[0][:price])
+    @price_plus_vat = MyHelpers.cents_to_euro(@product.source[0][:price] * ((@product.vat_category/100)+1))
+    margin = (@product.source[0][:price] - @product.cost)/@product.source[0][:price]
+    @markup = MyHelpers.cents_to_euro(@product.source[0][:price] - @product.cost)
+    @margin = MyHelpers.numeric_to_percentage(margin)
+    haml :view_product
   end
   
   # Post product
@@ -38,7 +40,7 @@ class Pritory < Sinatra::Base
     user = User.first(username: session['name'])
     img = params['image']
     begin
-      Product.create(
+      a = Product.create(
         user_id: user.id, 
         category: params['category'],
         vat_category: params['vat_category'].to_f,
@@ -48,11 +50,10 @@ class Pritory < Sinatra::Base
         cost: MyHelpers.euro_to_cents(params['cost']), 
         notes: params['comment']
       )
-      a = Product.last
+      # This technique is not safe if we have more than 1 users at the same time.
       Source.create(
         product_id: a.id,
         source: user.store_name,
-        auto_update: false,
         price: MyHelpers.euro_to_cents(params['price'])
       )
       if img
@@ -73,10 +74,10 @@ class Pritory < Sinatra::Base
       redirect "/skroutz_add/:#{params['name']}"
     rescue Sequel::Error => e
       flash[:error] = "#{e}"
-      rediret "/manage_product"
+      redirect "/manage_product"
     rescue ArgumentError => e
       flash[:error] = "#{e}"
-      rediret "/manage_product"
+      redirect "/manage_product"
     end
   end
 
@@ -124,6 +125,7 @@ class Pritory < Sinatra::Base
   
   # Delete Product
   get '/delete_product/:id' do
+    protected!
     begin
       id = params['id'].delete(':')
       product = Product.find(id: id)
@@ -139,8 +141,84 @@ class Pritory < Sinatra::Base
   end
 
   # Update product
-  get '/update/:id' do
+  get '/update_product/:id' do
     protected!
-    haml :update
+    @id = params['id'].delete(':')
+    @product = Product.find(id: @id)
+    @cost = MyHelpers.cents_to_euro(@product.cost)
+    @cost_plus_vat = MyHelpers.cents_to_euro(@product.cost * ((@product.vat_category/100)+1))
+    @price = MyHelpers.cents_to_euro(@product.source[0][:price])
+    @price_plus_vat = MyHelpers.cents_to_euro(@product.source[0][:price] * ((@product.vat_category/100)+1))
+    margin = (@product.source[0][:price] - @product.cost)/@product.source[0][:price]
+    @markup = MyHelpers.cents_to_euro(@product.source[0][:price] - @product.cost)
+    @margin = MyHelpers.numeric_to_percentage(margin)
+    user = User.first(username: session['name'])
+    img = params['image']
+    # a = Product.create(
+    #   user_id: user.id, 
+    #   category: params['category'],
+    #   vat_category: params['vat_category'].to_f,
+    #   name: params['name'], 
+    #   barcode: params['barcode'], 
+    #   description: params['description'], 
+    #   cost: MyHelpers.euro_to_cents(params['cost']), 
+    #   notes: params['comment']
+    # )
+    # # This technique is not safe if we have more than 1 users at the same time.
+    # Source.create(
+    #   product_id: a.id,
+    #   source: user.store_name,
+    #   price: MyHelpers.euro_to_cents(params['price'])
+    # )
+    haml :update_product
+  end
+  
+  # Post product
+  post '/update_product' do
+    protected!
+    id = params['id']
+    img = params['image']
+    a = Product.find(id: id)
+    user = User.first(username: session['name'])
+    store = @user.store_name
+    begin
+      a.update(
+        category: params['category'],
+        vat_category: params['vat_category'].to_f,
+        name: params['name'], 
+        barcode: params['barcode'], 
+        description: params['description'], 
+        cost: MyHelpers.euro_to_cents(params['cost']), 
+        notes: params['comment']
+      )
+      # This technique is not safe if we have more than 1 users at the same time.
+      Source.create(
+        product_id: a.id,
+        source: user.store_name,
+        price: MyHelpers.euro_to_cents(params['price'])
+      )
+      if img
+        filename = params['image'][:filename]
+        images = Dir['public/images/*']
+
+        # Check for overwrites - DOESNT WORK
+        if images.include? "public/images/#{filename}"
+          raise ArgumentError.new("Παρακαλώ αλλάξτε όνομα στην εικόνα!") 
+        end
+
+        File.open('public/images/' + params['image'][:filename], "w") do |f|
+           f.write(params['image'][:tempfile].read)
+        end
+        a.update(img_url: params['image'][:filename])
+      end
+      flash[:result] = "Το προϊόν προστέθηκε στην βάση δεδομένων"
+      redirect "/skroutz_add/:#{params['name']}"
+    rescue Sequel::Error => e
+      flash[:error] = "#{e}"
+      redirect "/manage_product"
+    rescue ArgumentError => e
+      flash[:error] = "#{e}"
+      redirect "/manage_product"
+    end
   end
 end

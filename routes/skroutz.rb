@@ -19,33 +19,36 @@ class Pritory < Sinatra::Base
   get '/skroutz_add2/:values' do
     values = params['values'].delete(':').split('_')
     id, name = values[0], values[1]
-    @res2 = settings.squick.query_skroutz2 id, name
-    redirect '/manage_product' if @res2.nil?
-    haml :skroutz_add2
+    tries = 3
+    begin
+      @res2 = settings.squick.query_skroutz2 id, name
+      # Faraday::ConnectionFailed
+      redirect '/manage_product' if @res2.nil?
+      haml :skroutz_add2
+    rescue Faraday::ConnectionFailed => e
+      puts "Farady connection failed: #{e}"
+      flash[:error] = "Αποτυχία σύνδεσης!"
+      if (tries -= 1) > 0
+        retry
+      else
+        redirect '/panel'
+        flash[:success] = "Προστέθηκε τιμή από skroutz!"
+      end
+    end
   end
 
   post '/skroutz_add2' do
-    id = params['product_id']
-    redirect "/skroutz_add3/:#{id}"
-  end
-
-  get '/skroutz_add3/:id' do
-    id = params['id'].delete(':')
-    @res3 = settings.squick.query_skroutz3 id
-    # redirect '/manage_product' if @res2.nil?
-    haml :skroutz_add3
-  end
-
-  post '/skroutz_add3' do
+    id = params['product_id'].to_i
+    r = settings.squick.query_skroutz3 id
+    price = r['products'][0]['price'].to_s
     source = Source.last
     Source.create(
       product_id: source.product_id,
       source: 'Skroutz',
-      auto_update: true,
-      price: MyHelpers.euro_to_cents(params['price'])
+      skroutz_id: id,
+      price: MyHelpers.euro_to_cents(price)
     )
     redirect '/panel'
-    flash[:result] = "Προστέθηκε τιμή από skroutz!"
+    flash[:success] = "Προστέθηκε τιμή από skroutz!"
   end
-
 end

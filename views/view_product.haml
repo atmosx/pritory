@@ -9,7 +9,7 @@
   %table
     %legend Περιγραφή Προϊόντος
     %tr
-      %th.style1 Προϊόν: 
+      %th.style1 Ονομασία: 
       %td.style1 #{@product.name}
     %tr 
       %th.style1 Κατηγορία:
@@ -20,9 +20,6 @@
     %tr
       %th.style1 Barcode:
       %td.style1 #{@product.barcode}
-    %tr
-      %th.style1 Περιγραφή:
-      %td.style1 #{@product.description}
     %tr
       %th.style1 Καταχώρηση:
       %td.style1 #{@product.created_at.strftime("%d/%m/%Y")}
@@ -49,6 +46,9 @@
       %td{colspan: '2', class: 'style1'} #{@margin}
 
 %br{:style => "clear:both"}/
+%p#product_desc
+  <strong>Περιγραφή:</strong> #{@product.description}
+
 %h4 Λιανικές Τιμές Πώλησης
 - unless @product.source.empty?
   %table
@@ -59,8 +59,12 @@
     %tr
       %th.style1 Τιμή
       - @product.source.each do |p|
-        -# Υπολογίζουμε τιμή + ΦΠΑ π.χ.: 22,12 * 1,23 (για 23% ΦΠΑ)
-        %td.style1 #{MyHelpers.cents_to_euro (p.price * ((@product.vat_category.to_f/100)+1))}
+        - if @store == p.source
+          -# Υπολογίζουμε τιμή + ΦΠΑ π.χ.: 22,12 * 1,23 (για 23% ΦΠΑ) μόνο για το δικό μας προϊόν!
+          %td.style1 #{MyHelpers.cents_to_euro (p.price * ((@product.vat_category.to_f/100)+1))}
+        - else
+          -# Λιανική για άλλες πηγές
+          %td.style1 #{MyHelpers.cents_to_euro p.price}
     %tr
       %td.style1
       - @product.source.each do |p|

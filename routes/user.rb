@@ -33,7 +33,7 @@ class Pritory < Sinatra::Base
     @margin = MyHelpers.numeric_to_percentage(margin)
     haml :view_product
   end
-  
+
   # Post product
   post '/manage_product' do
     protected!
@@ -66,7 +66,7 @@ class Pritory < Sinatra::Base
         end
 
         File.open('public/images/' + params['image'][:filename], "w") do |f|
-           f.write(params['image'][:tempfile].read)
+          f.write(params['image'][:tempfile].read)
         end
         a.update(img_url: params['image'][:filename])
       end
@@ -89,7 +89,7 @@ class Pritory < Sinatra::Base
     @products = user.products
     haml :manage_source
   end
-  
+
   # Post source
   post '/manage_source' do
     protected!
@@ -122,7 +122,7 @@ class Pritory < Sinatra::Base
       flash[:error] = "#{e}"
     end
   end
-  
+
   # Delete Product
   get '/delete_product/:id' do
     protected!
@@ -152,12 +152,8 @@ class Pritory < Sinatra::Base
 
   post '/update_source' do
     protected!
-    begin
-      a = Source.find(id: params['id'].to_i)
-      a.update(source: params['source'], price: MyHelpers.cents_to_euro(params['price'])
-    rescue Exception => e
-      puts "do something here: #{e}"
-    end
+    a = Source.find(id: params['id'].to_i)
+    a.update(source: params['source'], price: MyHelpers.cents_to_euro(params['price']))
   end
 
   # Update product
@@ -174,7 +170,7 @@ class Pritory < Sinatra::Base
     img = params['image']
     haml :update_product
   end
-  
+
   # Post product
   post '/update_product' do
     protected!
@@ -215,7 +211,7 @@ class Pritory < Sinatra::Base
         end
 
         File.open('public/images/' + params['image'][:filename], "w") do |f|
-           f.write(params['image'][:tempfile].read)
+          f.write(params['image'][:tempfile].read)
         end
         a.update(img_url: params['image'][:filename])
       end

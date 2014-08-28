@@ -140,47 +140,48 @@ class Pritory < Sinatra::Base
     end
   end
 
+  get '/update_source/:id' do
+    protected!
+    id = params['id'].delete(':')
+    a = Source.find(id: id.to_i)
+    @source = a.source
+    @name = a.product[:name]
+    @price = MyHelpers.cents_to_euro(a.price)
+    haml :update_source
+  end
+
+  post '/update_source' do
+    protected!
+    begin
+      a = Source.find(id: params['id'].to_i)
+      a.update(source: params['source'], price: MyHelpers.cents_to_euro(params['price'])
+    rescue Exception => e
+      puts "do something here: #{e}"
+    end
+  end
+
   # Update product
   get '/update_product/:id' do
     protected!
     @id = params['id'].delete(':')
     @product = Product.find(id: @id)
     @cost = MyHelpers.cents_to_euro(@product.cost)
-    @cost_plus_vat = MyHelpers.cents_to_euro(@product.cost * ((@product.vat_category/100)+1))
     @price = MyHelpers.cents_to_euro(@product.source[0][:price])
-    @price_plus_vat = MyHelpers.cents_to_euro(@product.source[0][:price] * ((@product.vat_category/100)+1))
     margin = (@product.source[0][:price] - @product.cost)/@product.source[0][:price]
     @markup = MyHelpers.cents_to_euro(@product.source[0][:price] - @product.cost)
     @margin = MyHelpers.numeric_to_percentage(margin)
     user = User.first(username: session['name'])
     img = params['image']
-    # a = Product.create(
-    #   user_id: user.id, 
-    #   category: params['category'],
-    #   vat_category: params['vat_category'].to_f,
-    #   name: params['name'], 
-    #   barcode: params['barcode'], 
-    #   description: params['description'], 
-    #   cost: MyHelpers.euro_to_cents(params['cost']), 
-    #   notes: params['comment']
-    # )
-    # # This technique is not safe if we have more than 1 users at the same time.
-    # Source.create(
-    #   product_id: a.id,
-    #   source: user.store_name,
-    #   price: MyHelpers.euro_to_cents(params['price'])
-    # )
     haml :update_product
   end
   
   # Post product
   post '/update_product' do
     protected!
-    id = params['id']
     img = params['image']
-    a = Product.find(id: id)
+    a = Product.find(id: params['id'].to_i)
     user = User.first(username: session['name'])
-    store = @user.store_name
+    store = user.store_name
     begin
       a.update(
         category: params['category'],
@@ -191,10 +192,17 @@ class Pritory < Sinatra::Base
         cost: MyHelpers.euro_to_cents(params['cost']), 
         notes: params['comment']
       )
-      # This technique is not safe if we have more than 1 users at the same time.
-      Source.create(
-        product_id: a.id,
-        source: user.store_name,
+
+      # find source_id
+      # NOTE: We could use a more elegant solution like: a.source_dataset.where(store: "Metropolis Pharmacy")
+      sid = nil
+      a.source.each do |entry|
+        if (entry[:product_id] == params['id'].to_i && entry[:source] == store)
+          sid = entry[:id]
+        end
+      end
+      b = Source.find(id: sid)
+      b.update(
         price: MyHelpers.euro_to_cents(params['price'])
       )
       if img
@@ -212,7 +220,7 @@ class Pritory < Sinatra::Base
         a.update(img_url: params['image'][:filename])
       end
       flash[:result] = "Το προϊόν προστέθηκε στην βάση δεδομένων"
-      redirect "/skroutz_add/:#{params['name']}"
+      redirect "/view_product/:#{params['id'].to_i}"
     rescue Sequel::Error => e
       flash[:error] = "#{e}"
       redirect "/manage_product"

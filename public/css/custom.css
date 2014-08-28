@@ -151,28 +151,28 @@
 /***************************************/
 
 /* The old simple horizontal menu */
-#menu {
-    width: auto;
-    height: auto;
-    font-size: 18px;
-    font-weight: bold;
-    text-align: center;
-}
+/* #menu { */
+/*     width: auto; */
+/*     height: auto; */
+/*     font-size: 18px; */
+/*     font-weight: bold; */
+/*     text-align: center; */
+/* } */
 
-#menu a {
-	color: #01013c;
-}
+/* #menu a { */
+/* 	color: #01013c; */
+/* } */
 
-#menu ul {
-    height: auto;
-    padding: 2px 0px;
-    margin: 0px;
-}
+/* #menu ul { */
+/*     height: auto; */
+/*     padding: 2px 0px; */
+/*     margin: 0px; */
+/* } */
 
-#menu li { 
-display: inline; 
-padding: 5px; 
-}
+/* #menu li { */ 
+/* display: inline; */ 
+/* padding: 5px; */ 
+/* } */
 
 #footer {
 	text-align: center;
@@ -181,9 +181,9 @@ padding: 5px;
 
 
 .column1of2, .column2of2 {
-width:  500px;
+width:  400px;
 float: left;
-margin: 10px;
+margin: 2px;
 }
 
 #caption {
@@ -198,6 +198,22 @@ margin: 10px;
   background:#ffffff;
   padding:12px;
   border:1px solid #999999; 
+}
+
+.small_blue {
+  text-align: right;
+  font-weight: normal;
+  font-size: 80%;
+  padding: 0;
+  margin: 0;
+  color: blue;
+}
+
+.small_bold_black {
+  font-weight: bold;
+  font-size: 80%;
+  padding: 0;
+  margin: 0;
 }
 
 #desc {

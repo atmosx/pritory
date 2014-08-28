@@ -49,8 +49,12 @@
 %p#product_desc
   <strong>Περιγραφή:</strong> #{@product.description}
 
+%form{:action => "/update_product/:#{@product.id}"}
+  %input{:type => "submit", :value => "Αλλαγή στοιχείων"}/
 %h4 Λιανικές Τιμές Πώλησης
 - unless @product.source.empty?
+  %p.small_blue{style: "text-align: left"}
+    * Ημερομηνία τελευταίας ενημέρωσης
   %table
     %tr
       %th.style1
@@ -61,17 +65,26 @@
       - @product.source.each do |p|
         - if @store == p.source
           -# Υπολογίζουμε τιμή + ΦΠΑ π.χ.: 22,12 * 1,23 (για 23% ΦΠΑ) μόνο για το δικό μας προϊόν!
-          %td.style1 #{MyHelpers.cents_to_euro (p.price * ((@product.vat_category.to_f/100)+1))}
+          %td.style1 
+            #{MyHelpers.cents_to_euro (p.price * ((@product.vat_category.to_f/100)+1))}
+            %br
+            %p.small_blue 
+              #{p.created_at.strftime("%d/%m/%y")}
         - else
           -# Λιανική για άλλες πηγές
-          %td.style1 #{MyHelpers.cents_to_euro p.price}
+          %td.style1 
+            #{MyHelpers.cents_to_euro p.price}
+            %br
+            %p.small_blue 
+              #{p.created_at.strftime("%d/%m/%y")}
     %tr
       %td.style1
       - @product.source.each do |p|
         %td.style1-simple
-          %a{href: "/delete_source/:#{p.id}"} Διαγραφή
+          %p.small_bold_black
+            %a{href: "/delete_source/:#{p.id}"} Διαγραφή
+            |
+            %a{href: "/update_source/:#{p.id}"} Μετατροπή
 - else
   %p 
     %a{href: "/manage_source"} Προσθήκη
-
-

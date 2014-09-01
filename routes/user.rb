@@ -154,7 +154,7 @@ class Pritory < Sinatra::Base
     protected!
     begin
       a = Source.find(id: params['id'].to_i)
-      a.update(source: params['source'], price: MyHelpers.cents_to_euro(params['price'])
+      a.update(source: params['source'], price: MyHelpers.cents_to_euro(params['price']))
     rescue Exception => e
       puts "do something here: #{e}"
     end

@@ -152,8 +152,17 @@ class Pritory < Sinatra::Base
 
   post '/update_source' do
     protected!
+<<<<<<< HEAD
     a = Source.find(id: params['id'].to_i)
     a.update(source: params['source'], price: MyHelpers.cents_to_euro(params['price']))
+=======
+    begin
+      a = Source.find(id: params['id'].to_i)
+      a.update(source: params['source'], price: MyHelpers.cents_to_euro(params['price']))
+    rescue Exception => e
+      puts "do something here: #{e}"
+    end
+>>>>>>> 898edaa78c5dcf4a902d7a3d9bc3c8ede0546415
   end
 
   # Update product

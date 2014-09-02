@@ -58,6 +58,7 @@ module Skroutz
       end
     end
 
+    # Search the product (step 3)
     def query_skroutz3 id
       begin
         token =  get_token.token
@@ -67,6 +68,26 @@ module Skroutz
         con.headers = {'Accept' => 'application/vnd.skroutz+json; version=3'}
         r1 = con.get "http://api.skroutz.gr/api/skus/#{id}/products"
         JSON.parse(r1.body)
+      rescue ArgumentError => e
+        puts e
+      rescue OAuth2::Error => e
+        puts "\nResponse headers: #{e.response.headers}"
+      end
+    end
+
+    # Check Skroutz price and update, returns price
+    def skroutz_check id
+      begin
+        token =  get_token.token
+        con = Faraday.new
+        con.params = {oauth_token: token}
+        con.headers = {user_agent: 'pritory'}
+        con.headers = {'Accept' => 'application/vnd.skroutz+json; version=3'}
+        r1 = con.get "http://api.skroutz.gr/api/skus/#{id}/products"
+        result = JSON.parse(r1.body)
+        result['products'][0]['price'].to_s
+      rescue JSON::ParserError => e
+        puts e
       rescue ArgumentError => e
         puts e
       rescue OAuth2::Error => e

@@ -1,5 +1,7 @@
 source "https://rubygems.org"
 gem 'sinatra'
+gem 'clockwork'
+gem 'redis'
 gem 'carrierwave-sequel'
 gem 'mini_magick'
 gem 'thin'

@@ -33,6 +33,9 @@ GEM
       sequel
     celluloid (0.15.2)
       timers (~> 1.1.0)
+    clockwork (1.0.0)
+      activesupport
+      tzinfo
     connection_pool (2.0.0)
     daemons (1.1.9)
     diff-lcs (1.2.5)
@@ -125,12 +128,14 @@ DEPENDENCIES
   bluecloth
   capybara
   carrierwave-sequel
+  clockwork
   haml
   json
   mini_magick
   mysql2
   oauth2
   rack-test
+  redis
   rspec
   sequel
   sidekiq

@@ -1,6 +1,6 @@
 # encoding: utf-8
 require 'sinatra'
-require 'haml'
+require 'clockwork'
 require 'sinatra/session'
 require 'sinatra/partial'
 require 'sinatra/flash'
@@ -70,9 +70,6 @@ class Pritory < Sinatra::Base
     include Rack::Utils
     include Sidekiq::Worker
     alias_method :h, :escape_html
-
-    def run_skroutz_check
-    end
     
     # Login required
     def protected! 

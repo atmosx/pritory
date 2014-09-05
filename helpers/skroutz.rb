@@ -4,6 +4,7 @@ require 'oauth2'
 require 'net/http'
 require 'json'
 require 'faraday'
+require 'sidekiq'
 require_relative "#{File.expand_path File.dirname(__FILE__)}/../mysecrets"
 
 module Skroutz
@@ -75,7 +76,7 @@ module Skroutz
       end
     end
 
-    # Check Skroutz price and update, returns price
+    # Check Skroutz price, returns price
     def skroutz_check id
       begin
         token =  get_token.token

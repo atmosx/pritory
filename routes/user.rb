@@ -134,7 +134,7 @@ class Pritory < Sinatra::Base
       end
       product.delete
       flash[:success] = "Το προϊόν έχει διαγραφεί με επιτυχία από την βάση δεδομένων!"
-      redirect "/manage_product"
+      redirect "/panel"
     rescue => e
       flash[:error] = "#{e}"
     end

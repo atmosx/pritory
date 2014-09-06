@@ -9,6 +9,19 @@ require_relative "#{File.expand_path File.dirname(__FILE__)}/../mysecrets"
 
 module Skroutz
   class Query
+
+    # Implement simple object counter
+    # http://stackoverflow.com/questions/12889509/can-a-class-in-ruby-store-the-number-of-instantiated-objects-using-a-class-inst
+    @counter = 0
+
+    class << self
+      attr_accessor :counter
+    end
+
+    def initialize
+      self.class.counter += 1
+    end
+
     # OAuth2 client object
     def client
       client ||= OAuth2::Client.new(MySecrets::SKROUTZ_OAUTH_CID, MySecrets::SKROUTZ_OAUTH_PAS, site: 'https://skroutz.gr', authorize_url: "/oauth2/authorizations/new", token_url: "/oauth2/token", user_agent: 'pritory')

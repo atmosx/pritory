@@ -1,10 +1,13 @@
-require_relative "pritory"
+require_relative "#{File.expand_path File.dirname(__FILE__)}/../pritory"
 
 class SkroutzWorker
   include Sidekiq::Worker
   
+  # Sidekiq perform method
+  # queries skroutz for any price change
   def perform
     squick = Skroutz::Query.new
+    puts Skroutz::Query.counter
     list = Source.where('skroutz_id > 0')
     list.each do |entry|
       id = entry[:skroutz_id]
@@ -26,8 +29,7 @@ end
 # Clockwork
 include Clockwork
 
-every(1.hour, 'Queueing interval job') do
-  r = SkroutzWorker.new
-  # r.perform_async => ERROR -- : undefined method `perform_async' for #<SkroutzWorker:0x007fc98aedd928> (NoMethodError)
-  r.perform
+# every(1.hour, 'perfoming prices update from skroutz') do
+every(7.seconds, 'perfoming prices update from skroutz') do
+  SkroutzWorker.perform_async
 end

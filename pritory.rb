@@ -9,7 +9,7 @@ require 'haml'
 require 'openssl'
 require 'redis'
 require 'sidekiq'
-# require 'logger'
+require 'logger'
 
 require_relative 'minify_resources'
 require_relative 'mysecrets'
@@ -19,18 +19,22 @@ require_relative 'helpers/init'
 
 class Pritory < Sinatra::Base
 
-  # Faraday won't check SSL for now
-  OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 
-  # Log what happens
-  # $log = Logger.new('log/output.log')
+  # Logger implementation for Sinatra
+  ::Logger.class_eval { alias :write :'<<' }
+  access_log = ::File.join(::File.dirname(::File.expand_path(__FILE__)),'log','access.log')
+  access_logger = ::Logger.new(access_log)
+  # info_log = ::File.join(::File.dirname(::File.expand_path(__FILE__)),'log','info.log')
+  # log = ::Logger.new(info_log)
+  error_logger = ::File.new(::File.join(::File.dirname(::File.expand_path(__FILE__)),'log','error.log'),"a+")
+  error_logger.sync = true
 
   configure do
     register Sinatra::Session
     register Sinatra::Partial
     register Sinatra::Flash
 
-    # Make object accessible through routes
+    # Make object accessible through routes - not sure if it's thread-safe e.g. better than $squick!
     set :squick, Skroutz::Query.new
 
     # Security measures for sessions	
@@ -46,6 +50,9 @@ class Pritory < Sinatra::Base
     set :root, File.dirname(__FILE__)
     set :public_dir, "#{File.dirname(__FILE__)}/public"
     set :public_folder, 'public'
+
+    # Dump Rack access logs to access_logger
+    use ::Rack::CommonLogger, access_logger
   end
 
   configure :production do
@@ -61,9 +68,17 @@ class Pritory < Sinatra::Base
   end
 
   configure :development do
+    # Faraday won't check SSL for ssl in 'development mode'
+    OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
+    
     set :css_files, MinifyResources::CSS_FILES
     set :js_files,  MinifyResources::JS_FILES
   end
+
+  # set 'env' before every request and dump errors to error_logger
+  before {
+    env["rack.errors"] = error_logger
+  }
 
   # Helpers magic!
   helpers do

@@ -5,7 +5,7 @@ require_relative "#{File.dirname(__FILE__)}/../mysecrets"
 
 # Database options
 DB = Sequel.mysql2 'pritory', user:MySecrets::DBUSER, password: MySecrets::DBPASS, host:'localhost'
-tz = TZInfo::Timezone.get('Europe/Athens')
+# Not dynamic, change it in the next version to UTC. All dates in the DB should be in UTC
 
 # Create user table
 DB.create_table?(:users, engine: 'InnoDB') do 
@@ -15,7 +15,7 @@ DB.create_table?(:users, engine: 'InnoDB') do
   String :realname
   String :email, null: false, unique: true
   String :store_name, default: "MyStore"
-	DateTime :created_at, default: tz.now
+	DateTime :created_at, default: TZInfo::Timezone.get('Europe/Athens').now
 end
 
 # Create product table
@@ -31,7 +31,7 @@ DB.create_table?(:products, engine: 'InnoDB') do
   # For details: http://stackoverflow.com/questions/3730019/why-not-use-double-or-float-to-represent-currency
 	Numeric :cost, size: [10,2] , null: false 
 	String :notes 
-	DateTime :created_at, default: tz.now
+	DateTime :created_at, default: TZInfo::Timezone.get('Europe/Athens').now
 end
 
 # Create price source
@@ -41,7 +41,8 @@ DB.create_table?(:sources, engine: 'InnoDB') do
   String :source, null: false
   Integer :skroutz_id, default: 0
 	Numeric :price, size: [10,2] , null: false 
-	DateTime :created_at, default: tz.now
+  # for some reason I can't tell, this returns always the esame exact time!
+	DateTime :created_at, default: TZInfo::Timezone.get('Europe/Athens').now
 end
 
 require_relative 'user'

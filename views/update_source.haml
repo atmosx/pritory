@@ -1,6 +1,6 @@
 -# coding: UTF-8
-%h4 Ενημέρωηση τιμής για πηγή "#{@source}"
-%form(action="/manage_source" method="post")
+%h4 Ενημέρωση τιμής για πηγή "#{@source}"
+%form(action="/update_source" method="post")
   %fieldset
     %legend #{@name}
     %ul
@@ -10,6 +10,6 @@
       %li
         %label(for="price") Τιμή (EUR):
         %input#price{type: "number", min: "0", max: "999999", step: "0.01", size: "6", name: "price", value: "#{@price.to_f}"}
-        %input#name(type="hidden" name="id" value="#{@id}")
+        %input#id(type="hidden" name="id" value="#{@id}")
       %li
-        %input(type="submit" value="Καταχώριση") ή <a href="/panel">Ακύρωσε</a>
+        %input(type="submit" value="Ανανέωση") ή <a href="/panel">Ακύρωσε</a>

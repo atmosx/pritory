@@ -5,21 +5,41 @@ require 'net/http'
 require 'json'
 require 'faraday'
 require 'sidekiq'
+require 'logger'
 require_relative "#{File.expand_path File.dirname(__FILE__)}/../mysecrets"
 
 module Skroutz
   class Query
+    
+    # Logger class
+    def initialize 
+      info_log = ::File.join(::File.dirname(::File.expand_path(__FILE__)),'..', 'log','info.log')
+      @log = ::Logger.new(info_log)
+    end
 
     # Implement simple object counter
     # http://stackoverflow.com/questions/12889509/can-a-class-in-ruby-store-the-number-of-instantiated-objects-using-a-class-inst
-    @counter = 0
+    # This can be used to count created objects
+    # @counter = 0
 
-    class << self
-      attr_accessor :counter
-    end
+    # class << self
+    #   attr_accessor :counter
+    # end
 
-    def initialize
-      self.class.counter += 1
+    # def initialize
+    #   self.class.counter += 1
+    # end
+
+    # Check Skrouz API limit (max 100 req per minute)
+    def check_limit response
+      if response.headers['x-ratelimit-remaining'].to_i <= 1
+        @log.info("API Limit reached! Waiting for reset") 
+        # wait reset time + 1 second (jut to make sure we're good)
+        wait = (Time.at(response.headers['x-ratelimit-reset'].to_i).utc - Time.now.utc).to_i + 1
+        sleep(wait)
+      # else
+      #   @log.info("API limit is #{response.headers['x-ratelimit-remaining']}")
+      end
     end
 
     # OAuth2 client object
@@ -53,6 +73,8 @@ module Skroutz
       rescue OAuth2::Error => e
         puts "\nResponse headers: #{e.response.headers}"
       end
+      # check limit after execution ended
+      check_limit r1
     end
 
     # Search for categories (step 2)
@@ -70,6 +92,7 @@ module Skroutz
       rescue OAuth2::Error => e
         puts "\nResponse headers: #{e.response.headers}"
       end
+      check_limit r1
     end
 
     # Search the product (step 3)
@@ -87,6 +110,7 @@ module Skroutz
       rescue OAuth2::Error => e
         puts "\nResponse headers: #{e.response.headers}"
       end
+      check_limit r1
     end
 
     # Check Skroutz price, returns price
@@ -99,7 +123,7 @@ module Skroutz
         con.headers = {'Accept' => 'application/vnd.skroutz+json; version=3'}
         r1 = con.get "http://api.skroutz.gr/api/skus/#{id}/products"
         result = JSON.parse(r1.body)
-        result['products'][0]['price'].to_s
+        return result['products'][0]['price'].to_s
       rescue JSON::ParserError => e
         puts e
       rescue ArgumentError => e
@@ -107,6 +131,10 @@ module Skroutz
       rescue OAuth2::Error => e
         puts "\nResponse headers: #{e.response.headers}"
       end
+      check_limit r1
     end
   end
 end
+
+# x = Skroutz::Query.new
+# x.skroutz_check '3517212'

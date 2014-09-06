@@ -51,6 +51,7 @@
 
 %form{:action => "/update_product/:#{@product.id}"}
   %input{:type => "submit", :value => "Αλλαγή στοιχείων"}/
+
 %h4 Λιανικές Τιμές Πώλησης
 - unless @product.source.empty?
   %p.small_blue{style: "text-align: left"}
@@ -82,6 +83,8 @@
       - @product.source.each do |p|
         %td.style1-simple
           %p.small_bold_black
+            %a{href: "/update_source_np/:#{p.id}"} Προσθήκη Τιμής
+            %br
             %a{href: "/delete_source/:#{p.id}"} Διαγραφή
             |
             %a{href: "/update_source/:#{p.id}"} Μετατροπή

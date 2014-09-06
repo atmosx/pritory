@@ -26,10 +26,11 @@ class Pritory < Sinatra::Base
     @product = Product.find(id: id)
     @cost = MyHelpers.cents_to_euro(@product.cost)
     @cost_plus_vat = MyHelpers.cents_to_euro(@product.cost * ((@product.vat_category/100)+1))
-    @price = MyHelpers.cents_to_euro(@product.source[0][:price])
-    @price_plus_vat = MyHelpers.cents_to_euro(@product.source[0][:price] * ((@product.vat_category/100)+1))
-    margin = (@product.source[0][:price] - @product.cost)/@product.source[0][:price]
-    @markup = MyHelpers.cents_to_euro(@product.source[0][:price] - @product.cost)
+    sorted = @product.source_dataset.where(source: @store).sort_by {|h| h[:created_at]}
+    @price = MyHelpers.cents_to_euro(sorted.last[:price])
+    @price_plus_vat = MyHelpers.cents_to_euro(sorted.last[:price] * ((@product.vat_category/100)+1))
+    margin = (sorted.last[:price] - @product.cost)/@product.source[0][:price]
+    @markup = MyHelpers.cents_to_euro(sorted.last[:price] - @product.cost)
     @margin = MyHelpers.numeric_to_percentage(margin)
     haml :view_product
   end
@@ -48,13 +49,15 @@ class Pritory < Sinatra::Base
         barcode: params['barcode'], 
         description: params['description'], 
         cost: MyHelpers.euro_to_cents(params['cost']), 
-        notes: params['comment']
+        notes: params['comment'],
+        created_at: TZInfo::Timezone.get('Europe/Athens').now
       )
       # This technique is not safe if we have more than 1 users at the same time.
       Source.create(
         product_id: a.id,
         source: user.store_name,
-        price: MyHelpers.euro_to_cents(params['price'])
+        price: MyHelpers.euro_to_cents(params['price']),
+        created_at: TZInfo::Timezone.get('Europe/Athens').now
       )
       if img
         filename = params['image'][:filename]
@@ -99,7 +102,8 @@ class Pritory < Sinatra::Base
       Source.create(
         product_id: pro.id,
         source: params['source'],
-        price: price_in_cents
+        price: price_in_cents,
+        created_at: TZInfo::Timezone.get('Europe/Athens').now
       )
       redirect '/manage_source'
       flash[:result] = "Η πηγή καταχωρήθηκε στην βάση δεδομένων"
@@ -140,11 +144,35 @@ class Pritory < Sinatra::Base
     end
   end
 
+  # Update the source
+  get '/update_source_np/:id' do
+    protected!
+    id = params['id'].delete(':')
+    a = Source.find(id: id)
+    @source = a.source
+    @pid = a.product_id
+    @name = a.product[:name]
+    @price = MyHelpers.cents_to_euro(a.price)
+    haml :update_source_np
+  end
+
+  post '/update_source_np' do
+    protected!
+    begin
+      Source.create(source: params['source'], product_id: params['pid'], price: MyHelpers.euro_to_cents(params['price']), created_at: TZInfo::Timezone.get('Europe/Athens').now)
+      redirect '/panel'
+    rescue Exception => e
+      puts "do something here: #{e}"
+    end
+  end
+
+  # Update the source
   get '/update_source/:id' do
     protected!
     id = params['id'].delete(':')
-    a = Source.find(id: id.to_i)
+    a = Source.find(id: id)
     @source = a.source
+    @id = a.id
     @name = a.product[:name]
     @price = MyHelpers.cents_to_euro(a.price)
     haml :update_source
@@ -152,11 +180,11 @@ class Pritory < Sinatra::Base
 
   post '/update_source' do
     protected!
-    a = Source.find(id: params['id'].to_i)
-    # a.update(source: params['source'], price: MyHelpers.cents_to_euro(params['price']))
+    puts "I'm in post!"
     begin
-      a = Source.find(id: params['id'].to_i)
-      a.update(source: params['source'], price: MyHelpers.cents_to_euro(params['price']))
+      a = Source.find(id: params['id'])
+      a.update(source: params['source'], price: MyHelpers.euro_to_cents(params['price']))
+      redirect '/panel'
     rescue Exception => e
       puts "do something here: #{e}"
     end

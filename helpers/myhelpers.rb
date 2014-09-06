@@ -3,7 +3,7 @@
 module MyHelpers
   # We save cents in the SQL database
   # http://stackoverflow.com/questions/3730019/why-not-use-double-or-float-to-represent-currency
-  # convert cents to euro
+  # convert cents to euro. cents value must be NUMERIC
   def self.cents_to_euro value
      raise ArgumentError, 'Price is not numeric' unless value.is_a? Numeric
      euro = value.to_f/100
@@ -12,9 +12,9 @@ module MyHelpers
      p.to_s.sub('.', ',') + " €"
   end
 
-  # convert euro to cents
+  # convert euro to cents. Euro value must be STRING
   def self.euro_to_cents value
-     raise ArgumentError, 'Price is not numeric' unless value.is_a? String
+     raise ArgumentError, 'Price is not string' unless value.is_a? String
      (value.to_f * 100).to_i
   end
 

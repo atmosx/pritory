@@ -20,15 +20,23 @@ class Pritory < Sinatra::Base
   get '/view_product/:id' do
     protected!
     id = params['id'].delete(':')
-    # Margin and MarkUp explained simply http://www.qwerty.gr/howto/margin-vs-markup
     @user = User.first(username: session['name'])
     @store = @user.store_name
     @product = Product.find(id: id)
     @cost = MyHelpers.cents_to_euro(@product.cost)
     @cost_plus_vat = MyHelpers.cents_to_euro(@product.cost * ((@product.vat_category/100)+1))
+    # Sort prices for products on our store. Display the latest is '.last'
     sorted = @product.source_dataset.where(source: @store).sort_by {|h| h[:created_at]}
     @price = MyHelpers.cents_to_euro(sorted.last[:price])
     @price_plus_vat = MyHelpers.cents_to_euro(sorted.last[:price] * ((@product.vat_category/100)+1))
+    list_of_sources = []
+    @product.source.each {|e| list_of_sources << e[:source] unless list_of_sources.include? e[:source]}
+    @latest_prices = [] 
+    list_of_sources.each do |s|
+      sorted = @product.source_dataset.where(source: s).sort_by {|h| h[:created_at]}
+      @latest_prices << sorted.last
+    end
+    # Margin and MarkUp explained simply http://www.qwerty.gr/howto/margin-vs-markup
     margin = (sorted.last[:price] - @product.cost)/@product.source[0][:price]
     @markup = MyHelpers.cents_to_euro(sorted.last[:price] - @product.cost)
     @margin = MyHelpers.numeric_to_percentage(margin)
@@ -52,7 +60,6 @@ class Pritory < Sinatra::Base
         notes: params['comment'],
         created_at: TZInfo::Timezone.get('Europe/Athens').now
       )
-      # This technique is not safe if we have more than 1 users at the same time.
       Source.create(
         product_id: a.id,
         source: user.store_name,

@@ -7,6 +7,7 @@ class Pritory < Sinatra::Base
     @name = params['name'].delete(':')
     # create object if doesn't exist
     # check instant access with threaded servers like puma!
+    redirect '/product_add_ns' if @res.nil?
     @res = settings.squick.query_skroutz(@name)
     haml :skroutz_add
   end

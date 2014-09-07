@@ -3,7 +3,7 @@ class Pritory < Sinatra::Base
   
   # Main page
   get "/" do
-    @title = "Pritory System"				
+    @title = "Σύστημα Pritory"				
     haml :main
   end
 
@@ -13,10 +13,10 @@ class Pritory < Sinatra::Base
     if User.login_user_id(username, password)
       session_start!
       session[:name] = username
-      flash[:success] = "Καλώς ορίσατε"
+      flash[:success] = "Καλώς ορίσατε στο Pritory!"
       redirect "/panel" 
     else
-      flash[:error] = "Δεν βρέθηκε το όνομα χρήστη ή o κωδικός."
+      flash[:error] = "Δεν βρέθηκε το όνομα χρήστη ή o κωδικός"
       redirect '/'
     end
   end
@@ -24,6 +24,7 @@ class Pritory < Sinatra::Base
   # Logout
   get '/logout' do
     session_end!
+    flash[:success] = "Έχετε αποσυνδεθεί από το σύστημα"
     redirect '/'
   end
 end

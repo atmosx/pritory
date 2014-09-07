@@ -1,7 +1,7 @@
 # encoding: utf-8
 class Pritory < Sinatra::Base
 
-  # User logged in
+  # User panel
   get "/panel" do
     protected!
     @user = User.first(username: session['name'])

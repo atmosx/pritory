@@ -20,9 +20,14 @@ class Pritory < Sinatra::Base
   get '/view_product/:id' do
     protected!
     id = params['id'].delete(':')
+    protected_product!(id)
     @user = User.first(username: session['name'])
     @store = @user.store_name
     @product = Product.find(id: id)
+    if @product.nil?
+      flash[:error] = "Το προϊόν που ψάχνετε δεν υπάρχει!"
+      redirect '/panel'
+    end
     @cost = MyHelpers.cents_to_euro(@product.cost)
     @cost_plus_vat = MyHelpers.cents_to_euro(@product.cost * ((@product.vat_category/100)+1))
     # Sort prices for products on our store. Display the latest is '.last'
@@ -80,7 +85,7 @@ class Pritory < Sinatra::Base
         end
         a.update(img_url: params['image'][:filename])
       end
-      flash[:result] = "Το προϊόν προστέθηκε στην βάση δεδομένων"
+      flash[:success] = "Το προϊόν προστέθηκε στην βάση δεδομένων"
       redirect "/skroutz_add/:#{params['name']}"
     rescue Sequel::Error => e
       flash[:error] = "#{e}"
@@ -94,8 +99,9 @@ class Pritory < Sinatra::Base
   # Delete Product
   get '/delete_product/:id' do
     protected!
+    id = params['id'].delete(':')
+    protected_product!(id)
     begin
-      id = params['id'].delete(':')
       product = Product.find(id: id)
       product.source.each do |s|
         s.delete
@@ -111,6 +117,7 @@ class Pritory < Sinatra::Base
   # Update product
   get '/update_product/:id' do
     protected!
+    protected_product!
     @id = params['id'].delete(':')
     @product = Product.find(id: @id)
     @cost = MyHelpers.cents_to_euro(@product.cost)

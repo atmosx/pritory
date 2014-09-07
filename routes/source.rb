@@ -33,6 +33,7 @@ class Pritory < Sinatra::Base
   get '/delete_source/:id' do
     protected!
     id = params['id'].delete(':')
+    protected_source!(id)
     begin
       product_id = Source.find(id: id).product_id
       Source.find(id: id).delete
@@ -47,6 +48,7 @@ class Pritory < Sinatra::Base
   get '/update_source_np/:id' do
     protected!
     id = params['id'].delete(':')
+    protected_source!(id)
     a = Source.find(id: id)
     @source = a.source
     @pid = a.product_id
@@ -69,6 +71,7 @@ class Pritory < Sinatra::Base
   get '/update_source/:id' do
     protected!
     id = params['id'].delete(':')
+    protected_source!(id)
     a = Source.find(id: id)
     @source = a.source
     @id = a.id
@@ -79,7 +82,6 @@ class Pritory < Sinatra::Base
 
   post '/update_source' do
     protected!
-    puts "I'm in post!"
     begin
       a = Source.find(id: params['id'])
       a.update(source: params['source'], price: MyHelpers.euro_to_cents(params['price']))

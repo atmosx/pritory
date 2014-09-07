@@ -6,6 +6,13 @@ class SkroutzWorker
   # Sidekiq perform method
   # queries skroutz for any price change
   def perform
+    
+    # Logger class
+    def initialize 
+      info_log = File.join(::File.dirname(::File.expand_path(__FILE__)),'..', 'log','info.log')
+      @log = Logger.new(info_log)
+    end
+    
     begin
       squick = Skroutz::Query.new
       list = Source.where('skroutz_id > 0')
@@ -16,13 +23,13 @@ class SkroutzWorker
           price = MyHelpers.euro_to_cents(current_price)
           pid, skroutz_id, source = entry[:product_id], entry[:skroutz_id], entry[:source]
           Source.create(price: price, product_id: product_id, source: source, skroutz_id: skroutz_id)
-          puts "price updated!"
-        else
-          puts "price not updated"
+          @log.info("Price update for #{Product.find(id: entry[:product_id]).name}")
+        # else
+        #   @log.info("Price for #{Product.find(id: entry[:product_id]).name} was not updated")
         end
       end
     rescue ArgumentError => e
-      puts "An error has occured: #{e}"
+      @log.error("ERROR (SkroutzWorker perform method): #{e}")
     end
   end
 end
@@ -33,6 +40,3 @@ include Clockwork
 every(1.hour, 'perfoming prices update from skroutz') do
   SkroutzWorker.perform_async
 end
-
-# x = SkroutzWorker.new
-# x.perform

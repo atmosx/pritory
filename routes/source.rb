@@ -93,6 +93,7 @@ class Pritory < Sinatra::Base
       settings.log.error("(route/source.rb:93) #{e}")
       flash[:error] = "#{e}"
       redirect '/panel'
+    end
   end
 
   post '/update_source' do

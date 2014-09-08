@@ -16,6 +16,8 @@ class Pritory < Sinatra::Base
       flash[:success] = "Καλώς ορίσατε στο Pritory!"
       redirect "/panel" 
     else
+      # fix this IP variable at some point in time.
+      settings.log.error("[SECURITY]: bad username and password from <IP>")
       flash[:error] = "Δεν βρέθηκε το όνομα χρήστη ή o κωδικός"
       redirect '/'
     end

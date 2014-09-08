@@ -26,6 +26,7 @@ class Pritory < Sinatra::Base
     @product = Product.find(id: id)
     if @product.nil?
       flash[:error] = "Το προϊόν που ψάχνετε δεν υπάρχει!"
+      settings.log.warn("[SECURITY] user #{@user} tried to access product that doesn't exist, with id #{id}!")
       redirect '/panel'
     end
     @cost = MyHelpers.cents_to_euro(@product.cost)
@@ -88,10 +89,12 @@ class Pritory < Sinatra::Base
       flash[:success] = "Το προϊόν προστέθηκε στην βάση δεδομένων"
       redirect "/skroutz_add/:#{params['name']}"
     rescue Sequel::Error => e
-      flash[:error] = "#{e}"
+      flash[:error] = "An SQL error occured!"
+      settings.log.error("ERROR SQL: #{e}")
       redirect "/manage_product"
     rescue ArgumentError => e
-      flash[:error] = "#{e}"
+      flash[:error] = "ArgumentError occured!"
+      settings.log.error("ERROR ArgumentError: #{e}")
       redirect "/manage_product"
     end
   end
@@ -103,9 +106,7 @@ class Pritory < Sinatra::Base
     protected_product!(id)
     begin
       product = Product.find(id: id)
-      product.source.each do |s|
-        s.delete
-      end
+      product.source.each {|s| s.delete}
       product.delete
       flash[:success] = "Το προϊόν έχει διαγραφεί με επιτυχία από την βάση δεδομένων!"
       redirect "/panel"
@@ -117,9 +118,13 @@ class Pritory < Sinatra::Base
   # Update product
   get '/update_product/:id' do
     protected!
-    protected_product!
     @id = params['id'].delete(':')
+    protected_product!(@id)
     @product = Product.find(id: @id)
+    if @product.nil?
+      flash[:error] = "Το προϊόν δεν υπάρχει!"
+      redirect '/panel'
+    end
     @cost = MyHelpers.cents_to_euro(@product.cost)
     @price = MyHelpers.cents_to_euro(@product.source[0][:price])
     margin = (@product.source[0][:price] - @product.cost)/@product.source[0][:price]
@@ -177,9 +182,11 @@ class Pritory < Sinatra::Base
       flash[:result] = "Το προϊόν προστέθηκε στην βάση δεδομένων"
       redirect "/view_product/:#{params['id'].to_i}"
     rescue Sequel::Error => e
+      settings.log.error("ERROR: #{e}")
       flash[:error] = "#{e}"
       redirect "/manage_product"
     rescue ArgumentError => e
+      settings.log.error("ERROR: #{e}")
       flash[:error] = "#{e}"
       redirect "/manage_product"
     end

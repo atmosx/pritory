@@ -5,10 +5,8 @@ class Pritory < Sinatra::Base
   get '/skroutz_add/:name' do
     protected!
     @name = params['name'].delete(':')
-    # create object if doesn't exist
-    # check instant access with threaded servers like puma!
-    redirect '/product_add_ns' if @res.nil?
     @res = settings.squick.query_skroutz(@name)
+    redirect '/panel' if @res.nil?
     haml :skroutz_add
   end
 
@@ -17,6 +15,7 @@ class Pritory < Sinatra::Base
     redirect "/skroutz_add2/:#{values}"
   end
 
+  # Choose from category and fetch price
   get '/skroutz_add2/:values' do
     values = params['values'].delete(':').split('_')
     id, name = values[0], values[1]
@@ -27,8 +26,8 @@ class Pritory < Sinatra::Base
       redirect '/manage_product' if @res2.nil?
       haml :skroutz_add2
     rescue Faraday::ConnectionFailed => e
-      puts "Farady connection failed: #{e}"
       flash[:error] = "Αποτυχία σύνδεσης!"
+      settings.log("Farrady connection failed for id: #{id} and name: #{name}, προσπάθεια #{tries}")
       if (tries -= 1) > 0
         retry
       else

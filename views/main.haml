@@ -1,10 +1,11 @@
 .container
   .sixteen.columns
-    %h1.remove-bottom{style: "margin-top: 40px"} Pritory
-    %p  Σύστημα Παρακολούθησης Τιμών
-    %hr/
+    %h1 Pritory
+    :markdown 
+      Σύστημα παρακούθησης τιμών για εμπορικά καταστήματα.
   .one-third.column
-    %h3 Σύνδεση
+    %img{src: "/images/pritory_logo.png"}
+  .two-third.column
     %form(action="/panel" method="post")
       %fieldset
         %legend Είσοδος
@@ -14,4 +15,3 @@
           %label(for="password") Κωδικός:
           %input#password(type="password" name="password")
           %input(type="submit" value="Αποστολή") || <a href="/">Ακύρωση</a>
-

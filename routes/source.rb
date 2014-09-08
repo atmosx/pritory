@@ -24,6 +24,7 @@ class Pritory < Sinatra::Base
       redirect '/manage_source'
       flash[:result] = "Η πηγή καταχωρήθηκε στην βάση δεδομένων"
     rescue Sequel::Error => e
+      settings.log.error("(route/source.rb:27) #{e}")
       flash[:error] = "#{e}"
       redirect '/manage_source'
     end
@@ -40,6 +41,7 @@ class Pritory < Sinatra::Base
       flash[:success] = "Η πηγή έχει διαγραφεί με επιτυχία από την βάση δεδομένων!"
       redirect "/view_product/:#{product_id}"
     rescue => e
+      settings.log.error("(route/source.rb:44) #{e}")
       flash[:error] = "#{e}"
     end
   end
@@ -49,12 +51,18 @@ class Pritory < Sinatra::Base
     protected!
     id = params['id'].delete(':')
     protected_source!(id)
-    a = Source.find(id: id)
-    @source = a.source
-    @pid = a.product_id
-    @name = a.product[:name]
-    @price = MyHelpers.cents_to_euro(a.price)
-    haml :update_source_np
+    begin
+      a = Source.find(id: id)
+      @source = a.source
+      @pid = a.product_id
+      @name = a.product[:name]
+      @price = MyHelpers.cents_to_euro(a.price)
+      haml :update_source_np
+    rescue Exception => e
+      settings.log.error("#{e}")
+      flash[:error] = "#{e}"
+      redirect '/panel'
+    end
   end
 
   post '/update_source_np' do
@@ -63,7 +71,9 @@ class Pritory < Sinatra::Base
       Source.create(source: params['source'], product_id: params['pid'], price: MyHelpers.euro_to_cents(params['price']), created_at: TZInfo::Timezone.get('Europe/Athens').now)
       redirect '/panel'
     rescue Exception => e
-      puts "do something here: #{e}"
+      settings.log.error("(route/source.rb:74) #{e}")
+      flash[:error] = "#{e}"
+      redirect '/panel'
     end
   end
 
@@ -72,12 +82,17 @@ class Pritory < Sinatra::Base
     protected!
     id = params['id'].delete(':')
     protected_source!(id)
-    a = Source.find(id: id)
-    @source = a.source
-    @id = a.id
-    @name = a.product[:name]
-    @price = MyHelpers.cents_to_euro(a.price)
-    haml :update_source
+    begin
+      a = Source.find(id: id)
+      @source = a.source
+      @id = a.id
+      @name = a.product[:name]
+      @price = MyHelpers.cents_to_euro(a.price)
+      haml :update_source
+    rescue => e #StandardError
+      settings.log.error("(route/source.rb:93) #{e}")
+      flash[:error] = "#{e}"
+      redirect '/panel'
   end
 
   post '/update_source' do
@@ -87,7 +102,9 @@ class Pritory < Sinatra::Base
       a.update(source: params['source'], price: MyHelpers.euro_to_cents(params['price']))
       redirect '/panel'
     rescue Exception => e
-      puts "do something here: #{e}"
+      settings.log.error("(route/source.rb:105) #{e}")
+      flash[:error] = "#{e}"
+      redirect '/panel'
     end
   end
 end

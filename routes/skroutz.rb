@@ -46,7 +46,8 @@ class Pritory < Sinatra::Base
       product_id: source.product_id,
       source: 'Skroutz',
       skroutz_id: id,
-      price: MyHelpers.euro_to_cents(price)
+      price: MyHelpers.euro_to_cents(price),
+      created_at: TZInfo::Timezone.get('Europe/Athens').now
     )
     redirect '/panel'
     flash[:success] = "Προστέθηκε τιμή από skroutz!"

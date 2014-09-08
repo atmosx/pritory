@@ -112,6 +112,8 @@ class Pritory < Sinatra::Base
       redirect "/panel"
     rescue => e
       flash[:error] = "#{e}"
+      settings.log.error("ERROR: #{e}")
+      redirect "/manage_product"
     end
   end
 

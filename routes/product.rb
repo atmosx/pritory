@@ -77,16 +77,27 @@ class Pritory < Sinatra::Base
       )
       if img
         filename = params['image'][:filename]
-        images = Dir['public/images/*']
+        images_dir = "public/images/users/#{user.id}/products/"
+        FileUtils::mkdir_p images_dir unless File.directory?(images_dir)
 
         # Check for overwrites - DOESNT WORK
-        if images.include? "public/images/#{filename}"
-          raise ArgumentError.new("Παρακαλώ αλλάξτε όνομα στην εικόνα!") 
-        end
-
-        File.open('public/images/' + params['image'][:filename], "w") do |f|
+        #
+        # if images.include? "public/images/#{user.id}/products/#{filename}"
+        #   raise ArgumentError.new("Παρακαλώ αλλάξτε όνομα στην εικόνα!") 
+        # end
+        
+        image_path = images_dir + params['image'][:filename]
+        File.open(image_path, "w") do |f|
           f.write(params['image'][:tempfile].read)
         end
+
+        # Convert all images to 150px height for the time being
+        # NOTE: Fore more complex processing try: https://github.com/markevans/dragonfly
+        # I believe this processing is considerably easy/fast even for underpowered servers,
+        # If further processing on images is needed it can be using sidekiq_async in the background.
+        process_image = MiniMagick::Image.open(image_path)
+        process_image.resize "150x150"
+        process_image.write image_path
         a.update(img_url: params['image'][:filename])
       end
       flash[:success] = "Το προϊόν προστέθηκε στην βάση δεδομένων"
@@ -110,6 +121,8 @@ class Pritory < Sinatra::Base
     begin
       product = Product.find(id: id)
       product.source.each {|s| s.delete}
+      img_path = "/public/users/#{product.user_id}/products/#{product.img_url}"
+      FileUtils.rm(img_path) if File.exist? img_path
       product.delete
       flash[:success] = "Το προϊόν έχει διαγραφεί με επιτυχία από την βάση δεδομένων!"
       redirect "/panel"
@@ -178,14 +191,14 @@ class Pritory < Sinatra::Base
       )
       if img
         filename = params['image'][:filename]
-        images = Dir['public/images/*']
+        images_dir = Dir["public/images/users/#{@user.id}/products/"]
 
         # Check for overwrites - DOESNT WORK
-        if images.include? "public/images/#{filename}"
+        if images_dir.include? "#{images_dir}/#{filename}"
           raise ArgumentError.new("Παρακαλώ αλλάξτε όνομα στην εικόνα!") 
         end
-
-        File.open('public/images/' + params['image'][:filename], "w") do |f|
+        image_path = images_dir + params['image'][:filename]
+        File.open(image_path, "w") do |f|
           f.write(params['image'][:tempfile].read)
         end
         a.update(img_url: params['image'][:filename])

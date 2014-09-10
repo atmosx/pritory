@@ -2,7 +2,7 @@
 %div.column1of2
   %div#img
     - if @product.img_url
-      %img{class: 'imgframe', src: "/images/#{@product.img_url}"}
+      %img{class: 'imgframe', src: "/images/users/#{@user.id}/products/#{@product.img_url}"}
     - else
       %img{class: 'imgframe', src: "/images/default.jpg"}
   %table

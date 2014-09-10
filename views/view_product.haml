@@ -35,8 +35,8 @@
       %td.number #{@cost_plus_vat}
     %tr
       %th.style1 Λιανική:
-      %td.number= @price 
-      %td.number= @price_plus_vat
+      %td.number= @price_without_vat 
+      %td.number= @price
     %tr
       %th.style1 MarkUp:
       %td{colspan: '2', class: 'style1'} #{@markup}
@@ -64,20 +64,11 @@
     %tr
       %th.style1 Τιμή
       - @latest_prices.each do |p|
-        - if @store == p.source
-          -# Υπολογίζουμε τιμή + ΦΠΑ π.χ.: 22,12 * 1,23 (για 23% ΦΠΑ) μόνο για το δικό μας προϊόν!
-          %td.style1 
-            #{MyHelpers.cents_to_euro (p.price * ((@product.vat_category.to_f/100)+1))}
-            %br
-            %p.small_blue 
-              #{p.created_at.strftime("%d/%m/%y")}
-        - else
-          -# Λιανική για άλλες πηγές
-          %td.style1 
-            #{MyHelpers.cents_to_euro p.price}
-            %br
-            %p.small_blue 
-              #{p.created_at.strftime("%d/%m/%y")}
+        %td.style1 
+          #{MyHelpers.cents_to_euro p.price}
+          %br
+          %p.small_blue 
+            #{p.created_at.strftime("%d/%m/%y")}
     %tr
       %td.style1
       - @latest_prices.each do |p|

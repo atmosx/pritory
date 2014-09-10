@@ -36,7 +36,7 @@ class Pritory < Sinatra::Base
     # Sort prices for products on our store. Display the latest is '.last'
     sorted = @product.source_dataset.where(source: @store).sort_by {|h| h[:created_at]}
     @price = MyHelpers.cents_to_euro(sorted.last[:price])
-    @price_plus_vat = MyHelpers.cents_to_euro(sorted.last[:price] * ((@product.vat_category/100)+1))
+    @price_without_vat = MyHelpers.cents_to_euro(sorted.last[:price] / ((@product.vat_category/100)+1))
     list_of_sources = []
     @product.source.each {|e| list_of_sources << e[:source] unless list_of_sources.include? e[:source]}
     @latest_prices = [] 
@@ -45,8 +45,8 @@ class Pritory < Sinatra::Base
       @latest_prices << sorted.last
     end
     # Margin and MarkUp explained simply http://www.qwerty.gr/howto/margin-vs-markup
-    margin = (sorted.last[:price] - @product.cost)/@product.source[0][:price]
-    @markup = MyHelpers.cents_to_euro(sorted.last[:price] - @product.cost)
+    margin = ((sorted.last[:price]/(@product.vat_category/100 + 1)) - @product.cost)/@product.source[0][:price]
+    @markup = MyHelpers.cents_to_euro((sorted.last[:price] / (@product.vat_category/100 + 1)) - @product.cost)
     @margin = MyHelpers.numeric_to_percentage(margin)
     @data = MyHelpers.make_graph(@product.source)
     haml :view_product

@@ -33,14 +33,14 @@ module MyHelpers
     array.each {|e| stores << e[:source] unless stores.include? e[:source]}
     h = {}
     stores.each do |s|
-      list = []
+      h1 = {}
       array.each do |e|
         if e[:source] == s
-          # list << {price: (e[:price].to_i/100).to_f, date: e[:created_at]}
-          list << [ e[:created_at].to_i, (e[:price].to_i/100).to_f ]
+          h1[e[:created_at]] = (e[:price].to_i/100).to_f
         end
       end
-      h[s] = list
+      sorted = h1.sort_by {|a, b| a}
+      h[s] = sorted 
     end
     return h
   end

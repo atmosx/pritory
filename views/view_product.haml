@@ -1,5 +1,4 @@
 %h4 Προβολή προϊόντος
-
 %div.column1of2
   %div#img
     - if @product.img_url
@@ -46,6 +45,7 @@
       %td{colspan: '2', class: 'style1'} #{@margin}
 
 %br{:style => "clear:both"}/
+
 %p#product_desc
   <strong>Περιγραφή:</strong> #{@product.description}
 
@@ -91,33 +91,10 @@
 - else
   %p 
     %a{href: "/manage_source"} Προσθήκη
+%div{:style => "clear: both;"}  
 
-= line_chart @data.map {|e| {name: e[0], data: e[1]}}
--#  #pricegraph{:style => "width:90%; height:350px;"}
+- unless @data.nil?
+  %div.graph
+    = line_chart @data.map {|name, values| {name: name, data: values}}, id: 'product_price_graph'
 
--#  :javascript
--#    $(function () { 
--#        $('#pricegraph').highcharts({
--#            chart: {
--#                type: 'line'
--#            },
--#            title: {
--#                text: 'Πίνακας Τιμών'
--#            },
--#            xAxis: {
--#              type: 'datetime'
--#            },
--#            yAxis: {
--#                title: {
--#                    text: 'EUR €'
--#                }
--#            },
--#            series: [{
--#                name: 'Skroutz',
--#                data: [[1406945122000, 60.34], [1408345061000, 50.23], [1410345183000, 69.92]
--#            }, {
--#                name: 'MyStore',
--#                data: [51.23]
--#            }]
--#        });
--#    });
+%div{:style => "clear: both;"}  

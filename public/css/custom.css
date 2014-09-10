@@ -186,6 +186,11 @@ float: left;
 margin: 2px;
 }
 
+.graph {
+  position: relative;
+  width: auto;
+}
+
 #caption {
   font-style: bold;
 }

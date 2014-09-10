@@ -21,7 +21,6 @@ require_relative 'helpers/init'
 
 class Pritory < Sinatra::Base
 
-
   # Logger implementation for Sinatra
   ::Logger.class_eval { alias :write :'<<' }
   access_log = ::File.join(::File.dirname(::File.expand_path(__FILE__)),'log','access.log')

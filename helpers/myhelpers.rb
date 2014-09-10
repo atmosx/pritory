@@ -26,4 +26,22 @@ module MyHelpers
     # display value in European format
     p.to_s.sub('.', ',') + " %"
   end
+
+  # Make graph out of @product.source array
+  def self.make_graph array
+    stores = []
+    array.each {|e| stores << e[:source] unless stores.include? e[:source]}
+    h = {}
+    stores.each do |s|
+      list = []
+      array.each do |e|
+        if e[:source] == s
+          # list << {price: (e[:price].to_i/100).to_f, date: e[:created_at]}
+          list << [ e[:created_at].to_i, (e[:price].to_i/100).to_f ]
+        end
+      end
+      h[s] = list
+    end
+    return h
+  end
 end

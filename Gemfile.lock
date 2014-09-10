@@ -21,6 +21,7 @@ GEM
       xpath (~> 2.0)
     celluloid (0.15.2)
       timers (~> 1.1.0)
+    chartkick (1.2.4)
     clockwork (1.0.0)
       activesupport
       tzinfo
@@ -37,11 +38,17 @@ GEM
     foreman (0.75.0)
       dotenv (~> 0.11.1)
       thor (~> 0.19.1)
+    groupdate (2.3.0)
+      activesupport (>= 3)
     haml (4.0.5)
       tilt
+    hash-deep-merge (0.1.1)
     i18n (0.6.11)
     json (1.8.1)
     jwt (1.0.0)
+    lazy_high_charts (1.5.4)
+      bundler (>= 1.0)
+      hash-deep-merge
     mime-types (2.3)
     mini_magick (3.8.0)
       subexec (~> 0.2.1)
@@ -122,10 +129,13 @@ DEPENDENCIES
   bcrypt
   bluecloth
   capybara
+  chartkick
   clockwork
   foreman
+  groupdate
   haml
   json
+  lazy_high_charts
   mini_magick
   mysql2
   oauth2

@@ -6,6 +6,8 @@ require 'sinatra/partial'
 require 'sinatra/flash'
 require 'bluecloth'
 require 'haml'
+require 'groupdate'
+require 'chartkick'
 require 'openssl'
 require 'redis'
 require 'sidekiq'
@@ -70,7 +72,7 @@ class Pritory < Sinatra::Base
 
   configure :development do
     # Faraday won't check SSL for ssl in 'development mode'
-    OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
+    # OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 
     set :css_files, MinifyResources::CSS_FILES
     set :js_files,  MinifyResources::JS_FILES

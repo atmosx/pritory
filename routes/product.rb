@@ -17,6 +17,8 @@ class Pritory < Sinatra::Base
     haml :manage_product
   end
 
+  # View Product and related info
+  # That's the main panel
   get '/view_product/:id' do
     protected!
     id = params['id'].delete(':')
@@ -46,6 +48,7 @@ class Pritory < Sinatra::Base
     margin = (sorted.last[:price] - @product.cost)/@product.source[0][:price]
     @markup = MyHelpers.cents_to_euro(sorted.last[:price] - @product.cost)
     @margin = MyHelpers.numeric_to_percentage(margin)
+    @data = MyHelpers.make_graph(@product.source)
     haml :view_product
   end
 
@@ -122,19 +125,25 @@ class Pritory < Sinatra::Base
     protected!
     @id = params['id'].delete(':')
     protected_product!(@id)
-    @product = Product.find(id: @id)
-    if @product.nil?
-      flash[:error] = "Το προϊόν δεν υπάρχει!"
-      redirect '/panel'
+    begin
+      @product = Product.find(id: @id)
+      if @product.nil?
+        flash[:error] = "Το προϊόν δεν υπάρχει!"
+        redirect '/panel'
+      end
+      @cost = MyHelpers.cents_to_euro(@product.cost)
+      @price = MyHelpers.cents_to_euro(@product.source[0][:price])
+      margin = (@product.source[0][:price] - @product.cost)/@product.source[0][:price]
+      @markup = MyHelpers.cents_to_euro(@product.source[0][:price] - @product.cost)
+      @margin = MyHelpers.numeric_to_percentage(margin)
+      user = User.first(username: session['name'])
+      img = params['image']
+      haml :update_product
+    rescue => e
+      flash[:error] = "#{e}"
+      settings.log.error("ERROR: (routes/product.rb:121): #{e}")
+      redirect "/manage_product"
     end
-    @cost = MyHelpers.cents_to_euro(@product.cost)
-    @price = MyHelpers.cents_to_euro(@product.source[0][:price])
-    margin = (@product.source[0][:price] - @product.cost)/@product.source[0][:price]
-    @markup = MyHelpers.cents_to_euro(@product.source[0][:price] - @product.cost)
-    @margin = MyHelpers.numeric_to_percentage(margin)
-    user = User.first(username: session['name'])
-    img = params['image']
-    haml :update_product
   end
 
   # Post product

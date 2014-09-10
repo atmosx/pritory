@@ -56,7 +56,7 @@
 - unless @latest_prices.empty?
   %p.small_blue{style: "text-align: left"}
     * Ημερομηνία τελευταίας ενημέρωσης
-  %table
+  %table{align: 'left'}
     %tr
       %th.style1
       - @latest_prices.each do |p|
@@ -91,3 +91,33 @@
 - else
   %p 
     %a{href: "/manage_source"} Προσθήκη
+
+= line_chart @data.map {|e| {name: e[0], data: e[1]}}
+-#  #pricegraph{:style => "width:90%; height:350px;"}
+
+-#  :javascript
+-#    $(function () { 
+-#        $('#pricegraph').highcharts({
+-#            chart: {
+-#                type: 'line'
+-#            },
+-#            title: {
+-#                text: 'Πίνακας Τιμών'
+-#            },
+-#            xAxis: {
+-#              type: 'datetime'
+-#            },
+-#            yAxis: {
+-#                title: {
+-#                    text: 'EUR €'
+-#                }
+-#            },
+-#            series: [{
+-#                name: 'Skroutz',
+-#                data: [[1406945122000, 60.34], [1408345061000, 50.23], [1410345183000, 69.92]
+-#            }, {
+-#                name: 'MyStore',
+-#                data: [51.23]
+-#            }]
+-#        });
+-#    });

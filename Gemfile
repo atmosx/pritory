@@ -1,8 +1,12 @@
 source "https://rubygems.org"
 gem 'sinatra'
-gem 'carrierwave-sequel'
+gem 'clockwork'
+gem 'redis'
+gem 'lazy_high_charts'
 gem 'mini_magick'
 gem 'thin'
+gem 'chartkick'
+gem 'foreman'
 gem 'oauth2'
 gem 'json'
 gem 'sinatra-session'
@@ -12,6 +16,7 @@ gem 'bluecloth'
 gem 'haml'
 gem 'mysql2'
 gem 'sequel'
+gem 'sidekiq'
 gem 'bcrypt'
 
 group :test do

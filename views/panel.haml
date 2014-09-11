@@ -1,28 +1,29 @@
-%h3 Παρατηρητήριο τιμών 
+%h3 Αρχική
+%p 
+  ="Υπάρχουν #{@products.length} καταχωρημένα προϊόντα στην βάση δεδομένων."
 
-%table{align: 'center'}
-  %thead
-    %tr
-      - %w{Προϊόν Κατηγορία Περιγραφή BarCode Πηγή Τιμή}.each do |entry|
-        %th= entry
+%table{align: 'left'}
+  %legend Κατάσταση προϊόντων
   %tbody
     - if @products
-      - s = @products.each do |product|
-        - product.source.each do |s|
-          %tr
-            - p = Product.find(id: s.product_id)
-            %td= p[:product_name]
-            %td= p[:category]
-            %td= p[:product_description]
-            %td= p[:product_barcode]
-            %td= s[:source]
-            %td= MyHelpers.cents_to_euro(s[:price])
-            %td
-              %a{href: "/del/:#{s.id}"} Διαγραφή
+      %tr
+        - %w{Α/Α Προϊόν Κατηγορία Barcode Σχόλια Καταχώρηση}.each do |entry|
+          %th.style1= entry
+      - @products.each do |product|
+        %tr
+          - p = product
+          %td.style1= p[:id]
+          %td.style1= p[:name]
+          %td.style1= p[:category]
+          -# %td.style1= p[:description]
+          %td.style1= p[:barcode]
+          %td.style1= p[:notes]
+          %td.style1= p[:created_at].strftime("%m/%d/%Y")
+          %td.style1-simple
+            %a{href: "/view_product/:#{p.id}"} Προβολή
+            |
+            %a{href: "/delete_product/:#{p.id}"} Διαγραφή
     - else
-      %td n/a
-      %td n/a
-      %td n/a
-      %td n/a
-      %td n/a
+      %p Δεν υπάρχει κανένα προϊόν
 
+%br{:style => "clear:both"}/

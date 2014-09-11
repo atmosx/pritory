@@ -1,9 +1,11 @@
 # encoding: utf-8
 require 'sequel'
+require 'tzinfo'
 require_relative "#{File.dirname(__FILE__)}/../mysecrets"
 
 # Database options
 DB = Sequel.mysql2 'pritory', user:MySecrets::DBUSER, password: MySecrets::DBPASS, host:'localhost'
+# Not dynamic, change it in the next version to UTC. All dates in the DB should be in UTC
 
 # Create user table
 DB.create_table?(:users, engine: 'InnoDB') do 
@@ -11,26 +13,36 @@ DB.create_table?(:users, engine: 'InnoDB') do
 	String :username, null: false, unique: true
 	String :password_hash, 	null: false
   String :realname
+  String :email, null: false, unique: true
+  String :store_name, default: "MyStore"
+	DateTime :created_at, default: TZInfo::Timezone.get('Europe/Athens').now
 end
 
 # Create product table
 DB.create_table?(:products, engine: 'InnoDB') do
 	primary_key :id
   Integer :user_id, null: false
-  String :category
-  String :product_name, null: false
-  String :product_barcode
-  String :product_description
+  String :category, null: false
+  Float  :vat_category, null: false
+  String :name, null: false
+  String :barcode
+  String :description
   String :img_url
-	DateTime :created_at, default: Time.now
+  # For details: http://stackoverflow.com/questions/3730019/why-not-use-double-or-float-to-represent-currency
+	Numeric :cost, size: [10,2] , null: false 
+	String :notes 
+	DateTime :created_at, default: TZInfo::Timezone.get('Europe/Athens').now
 end
 
-# Create source
+# Create price source
 DB.create_table?(:sources, engine: 'InnoDB') do
   primary_key :id
   Integer :product_id, null: false
   String :source, null: false
-	Numeric :price, size: [10,2] , null: false # For details: http://stackoverflow.com/questions/3730019/why-not-use-double-or-float-to-represent-currency 
+  Integer :skroutz_id, default: 0
+	Numeric :price, size: [10,2] , null: false 
+  # for some reason I can't tell, this returns always the esame exact time!
+	DateTime :created_at, default: TZInfo::Timezone.get('Europe/Athens').now
 end
 
 require_relative 'user'

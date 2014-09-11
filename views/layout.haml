@@ -9,6 +9,11 @@
     %meta(http-equiv="X-UA-Compatible" content="IE=8")
     %meta(name="author" content="Panagiotis Atmatzidis")
     %link(rel="icon" type="image/png" href="/favicon.png")
+    -# %script{:src => "//www.google.com/jsapi"}
+    %script{:src => "http://0.0.0.0:3000/js/chartkick.js"}
+    %script{:src => "http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"}
+    %script{:src => "http://code.highcharts.com/highcharts.js"}
+
     %title= @title
     - if settings.css_files == :blob
       %link(type="text/css" rel="stylesheet" href="/blob.css?modified=#{File.mtime('public/blob.css').to_i}" )
@@ -28,9 +33,12 @@
       .alert-error
         = flash[:error]
     = partial :menu
+    -#  = partial :userdata
     #content
       %br
         =yield
     #footer
       %br
-      %p{class: 'footer'} Pritory © 2014 Panagiotis Atmatzidis, All rights reserved
+      %p{class: 'footer'} 
+        %a{href: "https://github.com/atmosx/pritory"} Pritory
+        © 2014 Panagiotis Atmatzidis, All rights reserved

@@ -1,0 +1,13 @@
+%h1 Προϊόντα στο Skroutz.gr
+
+%form(action="/skroutz_add" method="post")
+  %fieldset
+    %legend Επιλογή
+    %ul
+      %li
+        %label(for="category") Κατηγορία:
+        %select{id: 'category', name: 'category'}
+          - @res["categories"].each do |p|
+            %option{value: "#{p['id']}_#{@name}"}= p['name']
+      %li
+        %input(type="submit" value="Επόμενο") ή <a href="/panel">Ακύρωσε</a>

@@ -1,0 +1,15 @@
+-# coding: UTF-8
+%h4 Ενημέρωση τιμής για πηγή "#{@source}"
+%form(action="/update_source" method="post")
+  %fieldset
+    %legend #{@name}
+    %ul
+      %li
+        %label(for="source") Πηγή:
+        %input#source(type="text" name="source" value="#{@source}")
+      %li
+        %label(for="price") Τιμή (EUR):
+        %input#price{type: "number", min: "0", max: "999999", step: "0.01", size: "6", name: "price", value: "#{@price.to_f}"}
+        %input#id(type="hidden" name="id" value="#{@id}")
+      %li
+        %input(type="submit" value="Ανανέωση") ή <a href="/panel">Ακύρωσε</a>

@@ -1,0 +1,91 @@
+%h4 Προβολή προϊόντος
+%div.column1of2
+  %div#img
+    - if @product.img_url
+      %img{class: 'imgframe', src: "/images/users/#{@user.id}/products/#{@product.img_url}"}
+    - else
+      %img{class: 'imgframe', src: "/images/default.jpg"}
+  %table
+    %legend Περιγραφή Προϊόντος
+    %tr
+      %th.style1 Ονομασία: 
+      %td.style1 #{@product.name}
+    %tr 
+      %th.style1 Κατηγορία:
+      %td.style1 #{@product.category}
+    %tr 
+      %th.style1 Κατηγορία ΦΠΑ:
+      %td.style1 #{@product.vat_category.to_s}%
+    %tr
+      %th.style1 Barcode:
+      %td.style1 #{@product.barcode}
+    %tr
+      %th.style1 Καταχώρηση:
+      %td.style1 #{@product.created_at.strftime("%d/%m/%Y")}
+%div.column2of2
+  %table
+    %legend Οικονομικά Στοιχεία (ανά τεμάχιο)
+    %tr
+      %th.style1
+      %th.style1 Χωρίς ΦΠΑ
+      %th.style1 Με ΦΠΑ
+    %tr
+      %th.style1 Αγορά:
+      %td.number #{@cost}
+      %td.number #{@cost_plus_vat}
+    %tr
+      %th.style1 Λιανική:
+      %td.number= @price_without_vat 
+      %td.number= @price
+    %tr
+      %th.style1 MarkUp:
+      %td{colspan: '2', class: 'style1'} #{@markup}
+    %tr
+      %th.style1 Margin:
+      %td{colspan: '2', class: 'style1'} #{@margin}
+
+%br{:style => "clear:both"}/
+
+%p#product_desc
+  <strong>Περιγραφή:</strong> #{@product.description}
+
+%form{:action => "/update_product/:#{@product.id}"}
+  %input{:type => "submit", :value => "Αλλαγή στοιχείων"}/
+
+%h4 Λιανικές Τιμές Πώλησης
+- unless @latest_prices.empty?
+  %p.small_blue{style: "text-align: left"}
+    * Ημερομηνία τελευταίας ενημέρωσης
+  %table{align: 'left'}
+    %tr
+      %th.style1
+      - @latest_prices.each do |p|
+        %th.style1 #{p.source}
+    %tr
+      %th.style1 Τιμή
+      - @latest_prices.each do |p|
+        %td.style1 
+          #{MyHelpers.cents_to_euro p.price}
+          %br
+          %p.small_blue 
+            #{p.created_at.strftime("%d/%m/%y")}
+    %tr
+      %td.style1
+      - @latest_prices.each do |p|
+        %td.style1-simple
+          %p.small_bold_black
+            %a{href: "/update_source_np/:#{p.id}"} Προσθήκη Τιμής
+            %br
+            %a{href: "/delete_source/:#{p.id}"} Διαγραφή
+            |
+            %a{href: "/update_source/:#{p.id}"} Μετατροπή
+- else
+  %p 
+    %a{href: "/manage_source"} Προσθήκη
+%div{:style => "clear: both;"}  
+
+- unless @data.nil?
+  %div.graph
+    = line_chart @data.map {|name, values| {name: name, data: values}}, id: 'product_price_graph'
+
+%div{:style => "clear: both;"}  

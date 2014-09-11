@@ -24,15 +24,15 @@ module Skroutz
         wait = (Time.at(response.headers['x-ratelimit-reset'].to_i).utc - Time.now.utc).to_i + 1
         @log.info("Skroutz API Limit reached, waiting #{wait} seconds for reset!") 
         sleep(wait)
-      # else
-      #   @log.info("API limit is #{response.headers['x-ratelimit-remaining']}")
+      else
+         @log.info("API limit is #{response.headers['x-ratelimit-remaining']}")
       end
     end
 
     # OAuth2 client object
     def client
       begin
-        client ||= OAuth2::Client.new(MySecrets::SKROUTZ_OAUTH_CID, MySecrets::SKROUTZ_OAUTH_PAS, site: 'https://skroutz.gr', authorize_url: "/oauth2/authorizations/new", token_url: "/oauth2/token", user_agent: 'pritory')
+        client ||= OAuth2::Client.new(MySecrets::SKROUTZ_OAUTH_CID, MySecrets::SKROUTZ_OAUTH_PAS, site: 'https://skroutz.gr', authorize_url: "/oauth2/authorizations/new", token_url: "/oauth2/token", user_agent: 'pritory', ssl:{ca_file: MySecrets::CERTFILE})
       rescue OAuth2::Error => e
         @log.error("Skroutz OAuth2 error: #{e}")
       end
@@ -53,7 +53,7 @@ module Skroutz
       begin
         raise ArgumentError.new("Keyword is too small!") if keyword.length < 3
         token =  get_token.token
-        con = Faraday.new
+        con = Faraday::Connection.new(ssl:{ca_file: MySecrets::CERTFILE})
         con.params = {oauth_token: token}
         con.headers = {user_agent: 'pritory'}
         con.headers = {'Accept' => 'application/vnd.skroutz+json; version=3'}
@@ -73,7 +73,7 @@ module Skroutz
     def query_skroutz2 id, name
       begin
         token =  get_token.token
-        con = Faraday.new
+        con = Faraday::Connection.new(ssl:{ca_file: MySecrets::CERTFILE})
         con.params = {oauth_token: token}
         con.headers = {user_agent: 'pritory'}
         con.headers = {'Accept' => 'application/vnd.skroutz+json; version=3'}
@@ -92,7 +92,7 @@ module Skroutz
     def query_skroutz3 id
       begin
         token =  get_token.token
-        con = Faraday.new
+        con = Faraday::Connection.new(ssl:{ca_file: MySecrets::CERTFILE})
         con.params = {oauth_token: token}
         con.headers = {user_agent: 'pritory'}
         con.headers = {'Accept' => 'application/vnd.skroutz+json; version=3'}
@@ -111,7 +111,7 @@ module Skroutz
     def skroutz_check id
       begin
         token =  get_token.token
-        con = Faraday.new
+        con = Faraday::Connection.new(ssl:{ca_file: MySecrets::CERTFILE})
         con.params = {oauth_token: token}
         con.headers = {user_agent: 'pritory'}
         con.headers = {'Accept' => 'application/vnd.skroutz+json; version=3'}

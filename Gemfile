@@ -2,6 +2,7 @@ source "https://rubygems.org"
 gem 'sinatra'
 gem 'clockwork'
 gem 'redis'
+gem 'sinatra-cache'
 gem 'lazy_high_charts'
 gem 'mini_magick'
 gem 'thin'

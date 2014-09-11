@@ -1,6 +1,7 @@
 # encoding: utf-8
 require 'sinatra'
 require 'clockwork'
+require 'sinatra/cache'
 require 'sinatra/session'
 require 'fileutils'
 require 'sinatra/partial'
@@ -32,6 +33,7 @@ class Pritory < Sinatra::Base
   error_logger.sync = true
 
   configure do
+		register Sinatra::Cache
     register Sinatra::Session
     register Sinatra::Partial
     register Sinatra::Flash
@@ -45,7 +47,7 @@ class Pritory < Sinatra::Base
     set :session_secret, MySecrets::SESSION_SECRET
 
     # Setup environemnt 	
-    set :environment, :production
+    set :environment, MySecrets::ENVIRONMENT.to_sym
     set :default_encoding, 'utf-8'
     set :dump_errors, true
 
@@ -54,8 +56,7 @@ class Pritory < Sinatra::Base
     set :public_dir, "#{File.dirname(__FILE__)}/public"
     set :public_folder, 'public'
 
-    # Dump Rack access logs to access_logger
-    use ::Rack::CommonLogger, access_logger
+    # Dump Rack access logs to access_logger use ::Rack::CommonLogger, access_logger
   end
 
   configure :production do

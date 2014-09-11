@@ -45,7 +45,7 @@ class Pritory < Sinatra::Base
     set :session_secret, MySecrets::SESSION_SECRET
 
     # Setup environemnt 	
-    set :environment, :development
+    set :environment, :production
     set :default_encoding, 'utf-8'
     set :dump_errors, true
 
@@ -118,35 +118,6 @@ class Pritory < Sinatra::Base
       end
     end
 
-<<<<<<< HEAD
-  # http://developer.skroutz.gr/authentication/permissions/
-  get '/callback' do
-	  # do nothing
-  end
-
-  get '/auth' do
-    #access_token = client.auth_code.get_token(params[:code], redirect_uri: redirect_uri)
-    t = client.client_credentials.get_token
-    session[:access_token] = t.methods.sort.join(', ')
-    @message = "Successfully authenticated with the server"
-    @access_token = session[:access_token]
-    $log.info("#{@message}: #{@access_token}")
-    #@tablets = get_response('http://skroutz.gr/api/search?q=Tablets')
-    haml :success
-  end
-
-  def redirect_uri
-    uri = URI.parse(request.url)
-    uri.path = '/callback'
-    uri.query = nil
-    uri.to_s
-  end 
-
-  def get_response(url)
-	  access_token = OAuth2::AccessToken.new(client, session[:access_token])
-	  JSON.parse(access_token.get("#{url}").body)
-  end
-=======
     # Accessible product only by user who product belongs to
     def protected_product!(id)
       begin
@@ -161,7 +132,6 @@ class Pritory < Sinatra::Base
         redirect '/panel'
       end
     end
->>>>>>> f1160afc7e60da3c54486900a0a4b9428c702392
 
     # When Page Not Found
     not_found do

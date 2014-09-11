@@ -47,7 +47,7 @@ class Pritory < Sinatra::Base
     set :session_secret, MySecrets::SESSION_SECRET
 
     # Setup environemnt 	
-    set :environment, MySecrets::ENVIRONMENT.to_sym
+    set :environment, MySecrets::ENVIR.to_sym
     set :default_encoding, 'utf-8'
     set :dump_errors, true
 

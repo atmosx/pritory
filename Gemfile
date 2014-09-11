@@ -2,6 +2,8 @@ source "https://rubygems.org"
 gem 'sinatra'
 gem 'clockwork'
 gem 'redis'
+gem 'cssmin'
+gem 'jsmin'
 gem 'sinatra-cache'
 gem 'lazy_high_charts'
 gem 'mini_magick'

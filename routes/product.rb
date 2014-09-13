@@ -20,8 +20,8 @@ class Pritory < Sinatra::Base
       end
       # Get AVG from arrays for markup/margin. 
       # See here for neat ways: http://stackoverflow.com/questions/1341271/how-do-i-create-an-average-from-a-ruby-array
-      @avg_markup = "#{markup_list.instance_eval { reduce(:+) / size.to_f } * 100} €"
-      @avg_margin = "#{margin_list.instance_eval { reduce(:+) / size.to_f }.round(2)} %"
+      @avg_markup = "#{(markup_list.instance_eval { reduce(:+) / size.to_f }).round(2)} €"
+      @avg_margin = "#{(margin_list.instance_eval { reduce(:+) / size.to_f } * 100).round(2)} %"
     end
     haml :panel
   end

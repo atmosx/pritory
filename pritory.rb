@@ -33,7 +33,7 @@ class Pritory < Sinatra::Base
   error_logger.sync = true
 
   configure do
-		register Sinatra::Cache
+		register(Sinatra::Cache)
     register Sinatra::Session
     register Sinatra::Partial
     register Sinatra::Flash
@@ -74,6 +74,9 @@ class Pritory < Sinatra::Base
   configure :development do
     # Faraday won't check SSL for ssl in 'development mode'
     # OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
+    set :cache_enabled, false
+    set :cache_output_dir, "#{File.dirname(__FILE__)}/cache"
+    set :cache_logging, false
 
     set :css_files, MinifyResources::CSS_FILES
     set :js_files,  MinifyResources::JS_FILES

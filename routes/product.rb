@@ -48,8 +48,8 @@ class Pritory < Sinatra::Base
       settings.log.warn("[SECURITY] user #{@user} tried to access product that doesn't exist, with id #{id}!")
       redirect '/panel'
     end
+    # MAJOR CLEAN UP NEEDED
     @cost = MyHelpers.cents_to_euro(@product.cost)
-    @cost_plus_vat = MyHelpers.cents_to_euro(@product.cost * ((@product.vat_category/100)+1))
     # Sort prices for products on our store. Display the latest is '.last'
     sorted = @product.source_dataset.where(source: @store).sort_by {|h| h[:created_at]}
     @price = MyHelpers.cents_to_euro(sorted.last[:price])
@@ -61,13 +61,15 @@ class Pritory < Sinatra::Base
       sorted = @product.source_dataset.where(source: s).sort_by {|h| h[:created_at]}
       @latest_prices << sorted.last
     end
-    # Margin and MarkUp explained simply http://www.qwerty.gr/howto/margin-vs-markup
-    current_price_no_vat = MyHelpers.numeric_no_vat(sorted.last[:price], @product.vat_category)
-    cost_no_vat = MyHelpers.numeric_to_float(@product.cost)
-    @markup = "#{(current_price_no_vat - cost_no_vat).round(2)} €"
-    @margin = "#{(((current_price_no_vat - cost_no_vat)/ current_price_no_vat) * 100).round(2)} %"
-    @data = MyHelpers.make_graph(@product.source)
-    haml :view_product
+   # Margin and MarkUp explained simply http://www.qwerty.gr/howto/margin-vs-markup
+   # current_price_no_vat = MyHelpers.numeric_no_vat(sorted.last[:price].to_f, @product.vat_category).to_f
+   current_price_no_vat = @price_without_vat.split(' ')[0].sub(',','.').to_f
+   cost = MyHelpers.numeric_to_float(@product.cost)
+   @markup = "#{(current_price_no_vat - cost).round(2)} €"
+   # @margin = "#{(((current_price_no_vat - cost)/ current_price_no_vat) * 100).round(2)} %"
+   @margin = "#{current_price_no_vat} %"
+   @data = MyHelpers.make_graph(@product.source)
+   haml :view_product
   end
 
   # Post product
@@ -103,7 +105,7 @@ class Pritory < Sinatra::Base
         # if images.include? "public/images/#{user.id}/products/#{filename}"
         #   raise ArgumentError.new("Παρακαλώ αλλάξτε όνομα στην εικόνα!") 
         # end
-        
+
         image_path = images_dir + params['image'][:filename]
         File.open(image_path, "w") do |f|
           f.write(params['image'][:tempfile].read)

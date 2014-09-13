@@ -179,11 +179,20 @@
 	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
 }
 
-
-.column1of2, .column2of2 {
-width: 450px;
+.column1of4 {
+  width: 150px;
+  float: left;
+}
+.column2of4, .column3of4 {
+width: 280px;
 float: left;
 margin: 2px;
+}
+
+.column4of4 {
+  width: 400px;
+  float: left;
+  margin: 2px;
 }
 
 .graph {

@@ -12,8 +12,6 @@
     %script{:src => "http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"}
     %script{:src => "http://code.highcharts.com/highcharts.js"}
     %script{src: "/js/chartkick.js"}
-    -#  %script{src: "/js/highcharts.js"}
-    -#  %script{src: "/js/jquery.min.js"}
     %title= @title
     - if settings.css_files == :blob
       %link(type="text/css" rel="stylesheet" href="/blob.css?modified=#{File.mtime('public/blob.css').to_i}" )

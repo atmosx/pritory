@@ -1,10 +1,11 @@
 %h4 Προβολή προϊόντος
-%div.column1of2
+%div.column1of4
   %div#img
     - if @product.img_url
       %img{class: 'imgframe', src: "/images/users/#{@user.id}/products/#{@product.img_url}"}
     - else
       %img{class: 'imgframe', src: "/images/default.jpg"}
+%div.column2of4
   %table
     %legend Περιγραφή Προϊόντος
     %tr
@@ -22,7 +23,7 @@
     %tr
       %th.style1 Καταχώρηση:
       %td.style1 #{@product.created_at.strftime("%d/%m/%Y")}
-%div.column2of2
+%div.column3of4
   %table
     %legend Οικονομικά Στοιχεία (ανά τεμάχιο)
     %tr
@@ -30,23 +31,29 @@
       %th.style1 Χωρίς ΦΠΑ
       %th.style1 Με ΦΠΑ
     %tr
-      %th.style1 Αγορά:
-      %td.number #{@cost}
-      %td.number #{@cost_plus_vat}
-    %tr
       %th.style1 Λιανική:
       %td.number= @price_without_vat 
       %td.number= @price
+    %tr
+      %th.style1 Αγορά: 
+      %td{colspan: '2', class: 'style1'} #{@cost}
     %tr
       %th.style1 MarkUp:
       %td{colspan: '2', class: 'style1'} #{@markup}
     %tr
       %th.style1 Margin:
       %td{colspan: '2', class: 'style1'} #{@margin}
+%div.column4of4
+  %p
+    <strong>Σημειώσεις:</strong> #{@product.notes}
+  %p.small_blue{style: "text-align: left"}
+    * Markup: τιμή πώλησης - κόστος αγοράς
+    %br
+    * Margin: (τιμή πώλησης - κόστος αγοράς)/τιμή πώλησης
 
 %br{:style => "clear:both"}/
 
-%p#product_desc
+%p
   <strong>Περιγραφή:</strong> #{@product.description}
 
 %form{:action => "/update_product/:#{@product.id}"}

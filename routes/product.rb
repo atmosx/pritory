@@ -16,7 +16,8 @@ class Pritory < Sinatra::Base
         # Take the most recent price entry
         price = MyHelpers.numeric_no_vat(sorted.last[:price], p.vat_category)
         markup_list << (price - cost).round(2) 
-        margin_list << ((price - cost)/price).round(2)
+        margin_list << ((price - cost)/price)
+        puts "#{p.name}: price #{price}, cost: #{cost}"
       end
       # Get AVG from arrays for markup/margin. 
       # See here for neat ways: http://stackoverflow.com/questions/1341271/how-do-i-create-an-average-from-a-ruby-array

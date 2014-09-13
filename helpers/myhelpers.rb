@@ -48,13 +48,13 @@ module MyHelpers
   # Convert DB Numeric to float (EUR)
   def self.numeric_to_float value
     raise ArgumentError, 'Value is not numeric!' unless value.is_a? Numeric
-    (value.to_i/100).to_f.round(2)
+    (value.to_f/100).to_f
   end
 
   # Convert BD Numeric to float without vat
   def self.numeric_no_vat value, vat
     raise ArgumentError, 'Value is not numeric!' unless value.is_a? Numeric
     raise ArgumentError, 'Vat is not float!' unless vat.is_a? Float
-    ((value.to_i/100).to_f / (1 + vat/100).to_f).to_f
+    ((value.to_f/100).to_f / (1 + vat/100).to_f).to_f
   end
 end

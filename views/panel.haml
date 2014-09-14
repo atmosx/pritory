@@ -17,7 +17,7 @@
     %legend Κατάσταση προϊόντων
     %tbody
       %tr
-        - %w{Α/Α Προϊόν Κατηγορία Barcode Τιμή Καταχώρηση}.each do |entry|
+        - %w{Α/Α Προϊόν Κατηγορία Barcode Καταχώρηση}.each do |entry|
           %th.style1= entry
       - @products.each do |p|
         %tr
@@ -27,7 +27,6 @@
           %td.style1= p[:barcode]
           -# This call is based on the convention that the first item in the Source array
           -# is our store's price. It works but could fail if we delete our source
-          %td.style1= MyHelpers.cents_to_euro p.source[0][:price]
           %td.style1= p[:created_at].strftime("%m/%d/%Y")
           %td.style1-simple
             %a{href: "/view_product/:#{p.id}"} Προβολή

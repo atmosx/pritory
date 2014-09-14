@@ -17,12 +17,11 @@ class Pritory < Sinatra::Base
         price = MyHelpers.numeric_no_vat(sorted.last[:price], p.vat_category)
         markup_list << (price - cost).round(2) 
         margin_list << ((price - cost)/price)
-        puts "#{p.name}: price #{price}, cost: #{cost}"
       end
       # Get AVG from arrays for markup/margin. 
       # See here for neat ways: http://stackoverflow.com/questions/1341271/how-do-i-create-an-average-from-a-ruby-array
-      @avg_markup = "#{(markup_list.instance_eval { reduce(:+) / size.to_f }).round(2)} €"
-      @avg_margin = "#{(margin_list.instance_eval { reduce(:+) / size.to_f } * 100).round(2)} %"
+      @avg_markup = "#{(markup_list.instance_eval { reduce(:+) / size.to_f }).round(2).to_s.gsub('.',',')} €"
+      @avg_margin = "#{(margin_list.instance_eval { reduce(:+) / size.to_f } * 100).round(2).to_s.gsub('.',',')} %"
     end
     haml :panel
   end
@@ -66,9 +65,9 @@ class Pritory < Sinatra::Base
    # current_price_no_vat = MyHelpers.numeric_no_vat(sorted.last[:price].to_f, @product.vat_category).to_f
    current_price_no_vat = @price_without_vat.split(' ')[0].sub(',','.').to_f
    cost = MyHelpers.numeric_to_float(@product.cost)
-   @markup = "#{(current_price_no_vat - cost).round(2)} €"
+   @markup = "#{(current_price_no_vat - cost).round(2).to_s.sub('.',',')} €"
    # @margin = "#{(((current_price_no_vat - cost)/ current_price_no_vat) * 100).round(2)} %"
-   @margin = "#{current_price_no_vat} %"
+   @margin = "#{current_price_no_vat.to_s.sub('.',',')} %"
    @data = MyHelpers.make_graph(@product.source)
    haml :view_product
   end

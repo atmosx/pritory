@@ -4,10 +4,13 @@ class Pritory < Sinatra::Base
   # Get category (step 1)
   get '/skroutz_add/:name' do
     protected!
-    @name = params['name'].delete(':')
-    @res = settings.squick.query_skroutz(@name)
-    redirect '/panel' if @res.nil?
-    haml :skroutz_add
+    p @res = settings.squick.query_skroutz(@name)
+    if @res["categories"].nil?
+      redirect '/panel'
+    else
+      @name = params['name'].delete(':')
+      haml :skroutz_add
+    end
   end
 
   post '/skroutz_add' do

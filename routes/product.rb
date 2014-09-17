@@ -77,6 +77,10 @@ class Pritory < Sinatra::Base
     protected!
     user = User.first(username: session['name'])
     img = params['image']
+    if params['name'].empty?
+      flash[:error] = "Δεν μπορεί να καταχωρηθεί προϊόν χωρίς όνομα!"
+      redirect '/panel'
+    end
     begin
       a = Product.create(
         user_id: user.id, 

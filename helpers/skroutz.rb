@@ -51,7 +51,6 @@ module Skroutz
     # Skroutz search product category (step 1)
     def query_skroutz keyword
       begin
-        raise ArgumentError.new("Keyword is too small!") if keyword.length < 3
         token =  get_token.token
         con = Faraday::Connection.new(ssl:{ca_file: MySecrets::CERTFILE})
         con.params = {oauth_token: token}
@@ -62,8 +61,7 @@ module Skroutz
       rescue OAuth2::Error => e
         @log.error "\nResponse headers (query_skroutz): #{e.response.headers}"
         @log.error "\nError (query_skroutz): #{e}"
-      rescue ArgumentError => e
-        @log.error("Name query error: #{e}")
+        return e.class
       end
       # check limit after execution ended
       check_limit r1

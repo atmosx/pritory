@@ -52,3 +52,4 @@ test.rb
 todo.markdown
 dump.rdb
 public/images/users/
+Gemfile.lock

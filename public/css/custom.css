@@ -180,11 +180,11 @@
 }
 
 .column1of4 {
-  width: 150px;
+  width: 190px;
   float: left;
 }
 .column2of4, .column3of4 {
-width: 280px;
+width: 300px;
 float: left;
 margin: 2px;
 }

@@ -12,9 +12,6 @@ DB.create_table?(:users, engine: 'InnoDB') do
 	primary_key :id
 	String :username, null: false, unique: true
 	String :password_hash, 	null: false
-  String :realname
-  String :email, null: false, unique: true
-  String :store_name, default: "MyStore"
 	DateTime :created_at, default: TZInfo::Timezone.get('Europe/Athens').now
 end
 
@@ -45,6 +42,20 @@ DB.create_table?(:sources, engine: 'InnoDB') do
 	DateTime :created_at, default: TZInfo::Timezone.get('Europe/Athens').now
 end
 
+# User settings
+DB.create_table?(:settings, engine: 'InnoDB') do
+  primary_key :id
+  Integer :user_id, null: false
+  String :store_name, default: "MyStore"
+  String :email
+  String :realname
+  String :vat_categories
+  String :skroutz_oauth_cid
+  String :skroutz_oauth_pas
+	DateTime :created_at, default: TZInfo::Timezone.get('Europe/Athens').now
+end
+
 require_relative 'user'
 require_relative 'product'
 require_relative 'source'
+require_relative 'setting'

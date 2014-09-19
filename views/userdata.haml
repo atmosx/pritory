@@ -1,5 +1,5 @@
 - if protected?
   - user = User.first(username: session['name'])
   #userdata
-    %p= "| #{user.realname}, #{user.store_name} |"
+    %p= "| #{user.settings[0].realname}, #{user.settings[0].store_name} |"
       

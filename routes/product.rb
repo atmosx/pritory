@@ -12,7 +12,7 @@ class Pritory < Sinatra::Base
       markup_list = []
       @products.each do |p|
         cost = MyHelpers.numeric_to_float(p[:cost])
-        sorted = p.source_dataset.where(source: @user.store_name).sort_by {|h| h[:created_at]}
+        sorted = p.source_dataset.where(source: @user.settings[0].store_name).sort_by {|h| h[:created_at]}
         # Take the most recent price entry
         price = MyHelpers.numeric_no_vat(sorted.last[:price], p.vat_category)
         markup_list << (price - cost).round(2) 
@@ -41,7 +41,7 @@ class Pritory < Sinatra::Base
     id = params['id'].delete(':')
     protected_product!(id)
     @user = User.first(username: session['name'])
-    @store = @user.store_name
+    @store = @user.settings[0].store_name
     @product = Product.find(id: id)
     if @product.nil?
       flash[:error] = "Το προϊόν που ψάχνετε δεν υπάρχει!"
@@ -95,7 +95,7 @@ class Pritory < Sinatra::Base
       )
       Source.create(
         product_id: a.id,
-        source: user.store_name,
+        source: user.settings[0].store_name,
         price: MyHelpers.euro_to_cents(params['price']),
         created_at: TZInfo::Timezone.get('Europe/Athens').now
       )
@@ -189,7 +189,7 @@ class Pritory < Sinatra::Base
     img = params['image']
     a = Product.find(id: params['id'].to_i)
     user = User.first(username: session['name'])
-    store = user.store_name
+    store = user.settings[0].store_name
     begin
       a.update(
         category: params['category'],

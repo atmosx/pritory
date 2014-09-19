@@ -3,6 +3,7 @@ require 'sequel'
 
 class User < Sequel::Model
   one_to_many :products
+  one_to_one  :settings
   
   # Password encrypted and salted - using bcrypt 
 	def self.login_user_id(username, password)

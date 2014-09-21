@@ -1,6 +1,32 @@
 %h3 Ρυθμίσεις Χρήστη
 
-%form(action="/manage_source" method="post")
+
+%form(action="/update_settings" method="post")
   %fieldset
-    %legend Στοιχεία χρήστη
+    %legend Στοιχεία χρήστη 
+    %p
+      Για να κάνετε οποιαδήποτε αλλαγή, απλά πληκτρολογήστε την νέα τιμή στο κατάλληλο πεδίο και πατήστε «καταχώρηση».
+    %ul
+      %li
+        %label(for="country") Χώρα:
+        %select{id: 'country', name: 'country'}
+          - @countries.each do |entry|
+            %option= entry
+      %li
+        %label(for="realname") Επωνυμία:
+        %input#name(type="text" name="realname" value="#{@realname}")
+      %li
+        %label(for="email") email:
+        %input#name(type="text" name="email" value="#{@email}")
+      %li
+        %label(for="storename") Ονομασία Κασταστήματος:
+        %input#name(type="text" name="storename" value="#{@storename}")
+      %li
+        %label(for="skroutz_cid") Skroutz CID:
+        %input#name(type="text" name="skroutz_cid" value="#{@skroutz_cid}")
+      %li
+        %label(for="skroutz_pas") Skroutz PAS:
+        %input#name(type="text" name="skroutz_pas" value="#{@skroutz_pas}")
+      %li
+        %input(type="submit" value="Καταχώρηση") ή <a href="/panel">Ακύρωσε</a>
 

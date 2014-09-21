@@ -4,8 +4,7 @@ require 'tzinfo'
 require_relative "#{File.dirname(__FILE__)}/../mysecrets"
 
 # Database options
-DB = Sequel.mysql2 'pritory', user:MySecrets::DBUSER, password: MySecrets::DBPASS, host:'localhost'
-# Not dynamic, change it in the next version to UTC. All dates in the DB should be in UTC
+DB = Sequel.mysql2 'pritory', user:MySecrets::DBUSER, password: MySecrets::DBPASS, host:'localhost' # Not dynamic, change it in the next version to UTC. All dates in the DB should be in UTC
 
 # Create user table
 DB.create_table?(:users, engine: 'InnoDB') do 
@@ -49,13 +48,26 @@ DB.create_table?(:settings, engine: 'InnoDB') do
   String :store_name, default: "MyStore"
   String :email
   String :realname
-  String :vat_categories
   String :skroutz_oauth_cid
   String :skroutz_oauth_pas
 	DateTime :created_at, default: TZInfo::Timezone.get('Europe/Athens').now
+end
+
+DB.create_table?(:vats, engine: 'InnoDB') do
+  primary_key :id
+  String :country, null: false
+  String :state # US has VAT categories on a per state basis
+  String :code
+  Float :vat, null: false
+end
+
+DB.create_table?(:categories, engine: 'InnoDB') do
+  primary_key :id
+  String :category_name, null: false
 end
 
 require_relative 'user'
 require_relative 'product'
 require_relative 'source'
 require_relative 'setting'
+require_relative 'vat'

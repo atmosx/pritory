@@ -1,0 +1,74 @@
+---
+- :country: Greece
+  :state: 
+  :code: EL
+  :vat:
+  - 6.5
+  - 13
+  - 19
+  - 23
+- :country: Bulgaria
+  :state: 
+  :code: GR
+  :vat:
+  - 9
+  - 20
+- :country: Germany
+  :state: 
+  :code: DE
+  :vat:
+  - 7
+  - 19
+- :country: Denmark
+  :state: 
+  :code: DK
+  :vat:
+  - 25
+- :country: Cyprus
+  :state: 
+  :code: CY
+  :vat:
+  - 5
+  - 9
+  - 19
+- :country: Italy
+  :state: 
+  :code: IT
+  :vat:
+  - 4
+  - 10
+  - 22
+- :country: France
+  :state: 
+  :code: FR
+  :vat:
+  - 2.1
+  - 5.5
+  - 10
+  - 20
+- :country: Spain
+  :state: 
+  :code: ES
+  :vat:
+  - 4
+  - 10
+  - 21
+- :country: Netherlands
+  :state: 
+  :code: NL
+  :vat:
+  - 6
+  - 21
+- :country: Austria
+  :state: 
+  :code: AT
+  :vat:
+  - 10
+  - 20
+  - 12
+- :country: United Kingdom
+  :state: 
+  :code: UK
+  :vat:
+  - 5
+  - 10

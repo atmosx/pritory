@@ -11,7 +11,7 @@
       %li
         %label(for="vat_category") Κατηφορία ΦΠΑ:
         %select{id: 'vat_category', name: 'vat_category'}
-          - %w{23 13 }.each do |entry|
+          - @vats.each do |entry|
             %option= entry
       %li
         %label(for="name") Προϊόν:

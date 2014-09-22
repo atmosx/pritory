@@ -1,14 +1,14 @@
 %h3 Ρυθμίσεις Χρήστη
 
 
-%form(action="/update_settings" method="post")
+%form(action="/settings" method="post")
   %fieldset
     %legend Στοιχεία χρήστη 
     %p
       Για να κάνετε οποιαδήποτε αλλαγή, απλά πληκτρολογήστε την νέα τιμή στο κατάλληλο πεδίο και πατήστε «καταχώρηση».
     %ul
       %li
-        %label(for="country") Χώρα:
+        %label(for="country") Χώρα (τρέχουσα: #{@country}) :
         %select{id: 'country', name: 'country'}
           - @countries.each do |entry|
             %option= entry

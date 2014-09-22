@@ -47,6 +47,8 @@ DB.create_table?(:settings, engine: 'InnoDB') do
   Integer :user_id, null: false
   String :store_name, default: "MyStore"
   String :email
+  String :country
+  String :storename
   String :realname
   String :skroutz_oauth_cid
   String :skroutz_oauth_pas

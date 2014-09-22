@@ -12,7 +12,7 @@ class Pritory < Sinatra::Base
       markup_list = []
       @products.each do |p|
         cost = MyHelpers.numeric_to_float(p[:cost])
-        sorted = p.source_dataset.where(source: @user.settings[0].store_name).sort_by {|h| h[:created_at]}
+        sorted = p.sources_dataset.where(source: @user.setting.storename).sort_by {|h| h[:created_at]}
         # Take the most recent price entry
         price = MyHelpers.numeric_no_vat(sorted.last[:price], p.vat_category)
         markup_list << (price - cost).round(2) 
@@ -30,6 +30,7 @@ class Pritory < Sinatra::Base
   get '/manage_product' do
     protected!
     user = User.first(username: session['name'])
+    @vats = Vat.where(country: user.setting.country).select_map(:vat)
     @products = user.products
     haml :manage_product
   end
@@ -41,7 +42,7 @@ class Pritory < Sinatra::Base
     id = params['id'].delete(':')
     protected_product!(id)
     @user = User.first(username: session['name'])
-    @store = @user.settings[0].store_name
+    @store = @user.setting.storename
     @product = Product.find(id: id)
     if @product.nil?
       flash[:error] = "Το προϊόν που ψάχνετε δεν υπάρχει!"
@@ -51,14 +52,14 @@ class Pritory < Sinatra::Base
     # MAJOR CLEAN UP NEEDED
     @cost = MyHelpers.cents_to_euro(@product.cost)
     # Sort prices for products on our store. Display the latest is '.last'
-    sorted = @product.source_dataset.where(source: @store).sort_by {|h| h[:created_at]}
+    sorted = @product.sources_dataset.where(source: @store).sort_by {|h| h[:created_at]}
     @price = MyHelpers.cents_to_euro(sorted.last[:price])
     @price_without_vat = MyHelpers.cents_to_euro(sorted.last[:price] / ((@product.vat_category/100)+1))
     list_of_sources = []
-    @product.source.each {|e| list_of_sources << e[:source] unless list_of_sources.include? e[:source]}
+    @product.sources.each {|e| list_of_sources << e[:source] unless list_of_sources.include? e[:source]}
     @latest_prices = [] 
     list_of_sources.each do |s|
-      sorted = @product.source_dataset.where(source: s).sort_by {|h| h[:created_at]}
+      sorted = @product.sources_dataset.where(source: s).sort_by {|h| h[:created_at]}
       @latest_prices << sorted.last
     end
    # Margin and MarkUp explained simply http://www.qwerty.gr/howto/margin-vs-markup
@@ -68,7 +69,7 @@ class Pritory < Sinatra::Base
    @markup = "#{(current_price_no_vat - cost).round(2).to_s.sub('.',',')} €"
    # @margin = "#{(((current_price_no_vat - cost)/ current_price_no_vat) * 100).round(2)} %"
    @margin = "#{current_price_no_vat.to_s.sub('.',',')} %"
-   @data = MyHelpers.make_graph(@product.source)
+   @data = MyHelpers.make_graph(@product.sources)
    haml :view_product
   end
 
@@ -95,7 +96,7 @@ class Pritory < Sinatra::Base
       )
       Source.create(
         product_id: a.id,
-        source: user.settings[0].store_name,
+        source: user.setting.storename,
         price: MyHelpers.euro_to_cents(params['price']),
         created_at: TZInfo::Timezone.get('Europe/Athens').now
       )
@@ -169,9 +170,9 @@ class Pritory < Sinatra::Base
         redirect '/panel'
       end
       @cost = MyHelpers.cents_to_euro(@product.cost)
-      @price = MyHelpers.cents_to_euro(@product.source[0][:price])
-      margin = (@product.source[0][:price] - @product.cost)/@product.source[0][:price]
-      @markup = MyHelpers.cents_to_euro(@product.source[0][:price] - @product.cost)
+      @price = MyHelpers.cents_to_euro(@product.sources[0][:price])
+      margin = (@product.source[0][:price] - @product.cost)/@product.sources[0][:price]
+      @markup = MyHelpers.cents_to_euro(@product.sources[0][:price] - @product.cost)
       @margin = MyHelpers.numeric_to_percentage(margin)
       user = User.first(username: session['name'])
       img = params['image']
@@ -189,7 +190,7 @@ class Pritory < Sinatra::Base
     img = params['image']
     a = Product.find(id: params['id'].to_i)
     user = User.first(username: session['name'])
-    store = user.settings[0].store_name
+    store = user.setting.storename
     begin
       a.update(
         category: params['category'],
@@ -202,7 +203,7 @@ class Pritory < Sinatra::Base
       )
 
       # find source_id
-      # NOTE: We could use a more elegant solution like: a.source_dataset.where(store: "Metropolis Pharmacy")
+      # NOTE: We could use a more elegant solution like: a.sources_dataset.where(store: "Metropolis Pharmacy")
       sid = nil
       a.source.each do |entry|
         if (entry[:product_id] == params['id'].to_i && entry[:source] == store)

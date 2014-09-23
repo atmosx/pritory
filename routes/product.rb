@@ -125,8 +125,13 @@ class Pritory < Sinatra::Base
         process_image.write image_path
         a.update(img_url: params['image'][:filename])
       end
-      flash[:success] = "Το προϊόν προστέθηκε στην βάση δεδομένων"
-      redirect "/skroutz_add/:#{params['name']}"
+      p s = params['squick']
+      if s == 'yes'
+        redirect "/skroutz_add/:#{params['name']}" 
+      else
+        redirect "/panel"
+        flash[:success] = "Το προϊόν προστέθηκε στην βάση δεδομένων"
+      end
     rescue Sequel::Error => e
       flash[:error] = "An SQL error occured!"
       settings.log.error("ERROR SQL: #{e}")
@@ -145,7 +150,7 @@ class Pritory < Sinatra::Base
     protected_product!(id)
     begin
       product = Product.find(id: id)
-      product.source.each {|s| s.delete}
+      product.sources.each {|s| s.delete}
       img_path = "/public/users/#{product.user_id}/products/#{product.img_url}"
       FileUtils.rm(img_path) if File.exist? img_path
       product.delete

@@ -30,6 +30,7 @@ class Pritory < Sinatra::Base
        skroutz_oauth_pas: params['skroutz_pas']
       )
     else
+      old_storename_name = user.setting.storename
       user.setting.update(
        country: params['country'],
        realname: params['realname'],
@@ -38,6 +39,14 @@ class Pritory < Sinatra::Base
        skroutz_oauth_cid: params['skroutz_cid'],
        skroutz_oauth_pas: params['skroutz_pas']
       )
+      new_storename_name = user.setting.storename
+      if old_storename_name != new_storename_name
+        user.products.each do |p|
+          p.sources.each do |s|
+            s.update(source: new_storename_name) if s[:source] == old_storename_name
+          end
+        end
+      end
     end
     flash[:success] = "Οι ρυθμίσεις ενημερώθηκαν!"
     redirect '/settings'

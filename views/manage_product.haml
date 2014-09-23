@@ -35,5 +35,7 @@
         %label(for="image") Εικόνα:
         %input#description(type="file" name="image")
       %li
+        %input{type: 'hidden', name: 'squick', value: 'no'}
+        %input{type: 'checkbox', name: 'squick', value: 'yes'} Ψάξε στο Skroutz
+      %li
         %input(type="submit" value="Προσθήκη") ή <a href="/panel">Ακύρωσε</a>
-

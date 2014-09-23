@@ -176,7 +176,7 @@ class Pritory < Sinatra::Base
       end
       @cost = MyHelpers.cents_to_euro(@product.cost)
       @price = MyHelpers.cents_to_euro(@product.sources[0][:price])
-      margin = (@product.source[0][:price] - @product.cost)/@product.sources[0][:price]
+      margin = (@product.sources[0][:price] - @product.cost)/@product.sources[0][:price]
       @markup = MyHelpers.cents_to_euro(@product.sources[0][:price] - @product.cost)
       @margin = MyHelpers.numeric_to_percentage(margin)
       user = User.first(username: session['name'])

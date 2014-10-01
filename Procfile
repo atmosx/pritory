@@ -1,4 +1,4 @@
-web:         thin start
-sidekiq_web: thin -R sidekiq.ru start -p 3001
-sidekiq:     sidekiq -r './jobs/update_skroutz_prices.rb'
-clockwork:   clockwork jobs/update_skroutz_prices.rb
+web:         bundle exec thin start
+sidekiq_web: bundle exec thin -R sidekiq.ru start -p 3001
+sidekiq:     bundle exec sidekiq -r './jobs/update_skroutz_prices.rb'
+clockwork:   bundle exec clockwork jobs/update_skroutz_prices.rb

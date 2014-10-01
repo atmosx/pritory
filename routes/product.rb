@@ -210,7 +210,7 @@ class Pritory < Sinatra::Base
       # find source_id
       # NOTE: We could use a more elegant solution like: a.sources_dataset.where(store: "Metropolis Pharmacy")
       sid = nil
-      a.source.each do |entry|
+      a.sources.each do |entry|
         if (entry[:product_id] == params['id'].to_i && entry[:source] == store)
           sid = entry[:id]
         end
@@ -221,13 +221,13 @@ class Pritory < Sinatra::Base
       )
       if img
         filename = params['image'][:filename]
-        images_dir = Dir["public/images/users/#{@user.id}/products/"]
+        images_dir = Dir["public/images/users/#{user.id}/products/"]
 
         # Check for overwrites - DOESNT WORK
         if images_dir.include? "#{images_dir}/#{filename}"
           raise ArgumentError.new("Παρακαλώ αλλάξτε όνομα στην εικόνα!") 
         end
-        image_path = images_dir + params['image'][:filename]
+        image_path = "#{images_dir[0]}/#{params['image'][:filename]}"
         File.open(image_path, "w") do |f|
           f.write(params['image'][:tempfile].read)
         end

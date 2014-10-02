@@ -125,6 +125,8 @@ class Pritory < Sinatra::Base
         process_image.write image_path
         a.update(img_url: params['image'][:filename])
       end
+      # run skroutz?
+      s = params['squick']
       if s == 'yes'
         redirect "/skroutz_add/:#{params['name']}" 
       else

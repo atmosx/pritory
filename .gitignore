@@ -53,3 +53,7 @@ todo.markdown
 dump.rdb
 public/images/users/
 Gemfile.lock
+cache/
+public/blob.css
+public/blob.js
+

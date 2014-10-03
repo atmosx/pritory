@@ -1,0 +1,13 @@
+el:
+  panel: "Αρχική"
+  add_product: "Προσθήκη προϊόντος"
+  add_source: "Προσθήκη πηγής"
+  settings: "Ρυθμίσεις"
+  logout: "Έξοδος"
+  pritory: "Pritory"
+  tagline: "Σύστημα παρακολούθησης τιμών για εμπορικά καταστήματα!"
+  entrance: "Είσοδος"
+  username: "Χρήστης"
+  password: "Κωδικός"
+  submit: "Αποστολή"
+  cancel: "Ακύρωση"

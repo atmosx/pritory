@@ -63,7 +63,7 @@ end
 # Tags support
 DB.create_table?(:tags, engine: 'InnoDB') do
   primary_key :id
-  String :tag_name, null: false
+  String :name, null: false
 end
 
 # Create join table to add handy methods

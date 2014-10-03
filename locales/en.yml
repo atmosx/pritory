@@ -1,0 +1,13 @@
+en:
+  panel: "Panel"
+  add_product: "Add product"
+  add_source: "Add source"
+  settings: "Settings"
+  logout: "Logout"
+  pritory: "Pritory"
+  tagline: "Price monitoring system for small business!"
+  entrance: "Login"
+  username: "User"
+  password: "Password"
+  submit: "submit"
+  cancel: "cancel"

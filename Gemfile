@@ -1,6 +1,8 @@
 source "https://rubygems.org"
 gem 'sinatra'
+gem 'pony'
 gem 'clockwork'
+gem 'i18n'
 gem 'redis'
 gem 'cssmin'
 gem 'jsmin'

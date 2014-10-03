@@ -1,11 +1,11 @@
 # encoding: utf-8
 require 'sinatra'
-require 'clockwork'
 require 'sinatra/cache'
 require 'sinatra/session'
-require 'fileutils'
 require 'sinatra/partial'
 require 'sinatra/flash'
+require 'fileutils'
+require 'clockwork'
 require 'bluecloth'
 require 'mini_magick'
 require 'haml'
@@ -14,6 +14,9 @@ require 'openssl'
 require 'redis'
 require 'sidekiq'
 require 'logger'
+require 'i18n'
+require 'i18n/backend/fallbacks'
+require 'pony'
 
 require_relative 'minify_resources'
 require_relative 'mysecrets'
@@ -33,7 +36,7 @@ class Pritory < Sinatra::Base
   error_logger.sync = true
 
   configure do
-		register(Sinatra::Cache)
+    register(Sinatra::Cache)
     register Sinatra::Session
     register Sinatra::Partial
     register Sinatra::Flash
@@ -57,6 +60,13 @@ class Pritory < Sinatra::Base
     set :public_folder, 'public'
 
     # Dump Rack access logs to access_logger use ::Rack::CommonLogger, access_logger
+
+    # Locale Load
+    # I18n::Backend::Simple.send(:include, I18n::Backend::Fallbacks)
+    I18n.load_path = Dir[File.join(settings.root, 'locales', '*.yml')]
+    # I18n.backend.load_translations
+    I18n.config.enforce_available_locales = true
+    I18n.default_locale = 'el'
   end
 
   configure :production do
@@ -92,6 +102,16 @@ class Pritory < Sinatra::Base
     include Rack::Utils
     # include Sidekiq::Worker
     alias_method :h, :escape_html
+
+    # Just a simple alias
+    def t(*args)
+      I18n.t(*args, locale: session[:locale])
+    end	 
+		
+    # Load active users
+    def load_active_user
+			User.first(username: session['name'])
+		end
 
     # Login required
     # Halt [ 401, 'Not Authorized' ] unless session? 
@@ -135,6 +155,14 @@ class Pritory < Sinatra::Base
         settings.log.error("ERROR (protected_product - NoMethodError): #{e}")
         redirect '/panel'
       end
+    end
+    
+    # i18n - Locale setup in session
+    before do
+      session[:locale] = params[:locale] if params[:locale] #the r18n system will load it automatically
+      # session[:locale] = 'el' if params[:locale] == nil
+      load_active_user  # pull user from database or whatever based on session info.
+      session[:locale] = @active_user.locale if @active_user != nil && session[:locale] == nil
     end
 
     # When Page Not Found

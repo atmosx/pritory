@@ -1,17 +1,16 @@
 .container
   .sixteen.columns
-    %h1 Pritory
-    :markdown 
-      Σύστημα παρακούθησης τιμών για εμπορικά καταστήματα.
+    %h1= "#{t 'pritory'}"
+    %p= "#{t 'tagline'}"
   .one-third.column
     %img{src: "/images/pritory_logo.png"}
   .two-third.column
     %form(action="/panel" method="post")
       %fieldset
-        %legend Είσοδος
+        %legend #{t 'entrance'}
         %div{:class => 'centerize'}
-          %label(for="username") Χρήστης:
+          %label(for="username") #{t 'username'}:
           %input#username(type="text" name="username")
-          %label(for="password") Κωδικός:
+          %label(for="password") #{t 'password'}:
           %input#password(type="password" name="password")
-          %input(type="submit" value="Αποστολή") || <a href="/">Ακύρωση</a>
+          %input(type="submit" value="#{t 'submit'}") || <a href="/">#{t 'cancel'}</a>

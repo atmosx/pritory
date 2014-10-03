@@ -18,11 +18,9 @@ end
 DB.create_table?(:products, engine: 'InnoDB') do
 	primary_key :id
   Integer :user_id, null: false
-  String :category, null: false
   Float  :vat_category, null: false
   String :name, null: false
   String :barcode
-  String :description
   String :img_url
   # For details: http://stackoverflow.com/questions/3730019/why-not-use-double-or-float-to-represent-currency
 	Numeric :cost, size: [10,2] , null: false 
@@ -50,11 +48,10 @@ DB.create_table?(:settings, engine: 'InnoDB') do
   String :country
   String :storename
   String :realname
-  String :skroutz_oauth_cid
-  String :skroutz_oauth_pas
 	DateTime :created_at, default: TZInfo::Timezone.get('Europe/Athens').now
 end
 
+# VAT system (countries have to be added manually)
 DB.create_table?(:vats, engine: 'InnoDB') do
   primary_key :id
   String :country, null: false
@@ -63,9 +60,17 @@ DB.create_table?(:vats, engine: 'InnoDB') do
   Float :vat, null: false
 end
 
-DB.create_table?(:categories, engine: 'InnoDB') do
+# Tags support
+DB.create_table?(:tags, engine: 'InnoDB') do
   primary_key :id
-  String :category_name, null: false
+  String :tag_name, null: false
+end
+
+# Correlate tags to products
+DB.create_table?(:ptags, engine: 'InnoDB') do
+  primary_key :id
+  Integer :product_id, null: false
+  Integer :tag_id, null: false
 end
 
 require_relative 'user'
@@ -73,3 +78,5 @@ require_relative 'product'
 require_relative 'source'
 require_relative 'setting'
 require_relative 'vat'
+require_relative 'tag'
+require_relative 'ptag'

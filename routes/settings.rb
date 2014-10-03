@@ -4,15 +4,13 @@ class Pritory < Sinatra::Base
     protected!
     @username = User.first(username: session['name'])
     a = @username.setting
-    a ||= {realname: 'Pikos Apikos', email: 'pikos@frouto.pia', country: 'Froutopia', storename: 'Lemonostyfen', skroutz_oauth_cid: '', skroutz_oauth_pas: ''}
+    a ||= {realname: 'Pikos Apikos', email: 'pikos@frouto.pia', country: 'Froutopia', storename: 'Lemonostyfen'}
     countries = [] ; Vat.each {|x| countries << x[:country]}
     @countries = countries.uniq
     @country = a[:country]
     @realname = a[:realname]
     @email = a[:email]
     @storename = a[:storename]
-    @skroutz_cid = a[:skroutz_oauth_cid]
-    @skroutz_pas = a[:skroutz_oauth_pas]
     haml :settings
   end
 
@@ -25,9 +23,7 @@ class Pritory < Sinatra::Base
        country: params['country'],
        realname: params['realname'],
        email: params['email'],
-       storename: params['storename'],
-       skroutz_oauth_cid: params['skroutz_cid'],
-       skroutz_oauth_pas: params['skroutz_pas']
+       storename: params['storename']
       )
     else
       old_storename_name = user.setting.storename
@@ -35,9 +31,7 @@ class Pritory < Sinatra::Base
        country: params['country'],
        realname: params['realname'],
        email: params['email'],
-       storename: params['storename'],
-       skroutz_oauth_cid: params['skroutz_cid'],
-       skroutz_oauth_pas: params['skroutz_pas']
+       storename: params['storename']
       )
       new_storename_name = user.setting.storename
       if old_storename_name != new_storename_name

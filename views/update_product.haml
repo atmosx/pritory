@@ -6,11 +6,6 @@
       Για να κάνετε οποιαδήποτε αλλαγή, απλά πληκτρολογήστε την νέα τιμή στο κατάλληλο πεδίο και πατήστε «καταχώρηση».
     %ul
       %li
-        %label(for="category") Κατηγορία:
-        %select{id: 'category', name: 'category'}
-          - %w{Καλλυντικά Συμπληρώματα Παραφάρμακα Βρεφικά}.each do |entry|
-            %option= entry
-      %li
         %label(for="vat_category") Κατηφορία ΦΠΑ:
         %select{id: 'vat_category', name: 'vat_category'}
           - %w{23 13}.each do |entry|
@@ -19,11 +14,11 @@
         %label(for="name") Προϊόν:
         %input#name(type="text" name="name" value="#{@product.name}")
       %li
+        %label(for="tags") Ετικέτες:
+        %input#barcode(type="text" name="tags" value="#{@tags.join(', ')}")
+      %li
         %label(for="barcode") Barcode:
         %input#barcode(type="text" name="barcode" value="#{@product.barcode}")
-      %li
-        %label(for="description") Περιγραφή:
-        %input#description(type="text" name="description" value="#{@product.description}")
       %li
         %label(for="cost") Αγορά (Χωρίς Φ.Π.Α.):
         %input#cost{type: "number", min: "0", max: "999999", step: "0.01", size: "6", name: "cost", value: "#{@cost.to_f}"}
@@ -35,7 +30,7 @@
         %input#comment(type="text" name="comment" value="#{@product.notes}")
       %li
         %label(for="image") Εικόνα:
-        %input#description(type="file" name="image")
+        %input#image(type="file" name="image")
         %input#name(type="hidden" name="id" value="#{@id}")
       %li
         %input(type="submit" value="Καταχώρηση") ή <a href="/panel">Ακύρωσε</a>

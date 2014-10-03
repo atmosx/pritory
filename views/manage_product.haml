@@ -4,11 +4,6 @@
     %legend Προσθήκη προϊόντος
     %ul
       %li
-        %label(for="category") Κατηγορία:
-        %select{id: 'category', name: 'category'}
-          - %w{Καλλυντικά Συμπληρώματα Παραφάρμακα Βρεφικά}.each do |entry|
-            %option= entry
-      %li
         %label(for="vat_category") Κατηφορία ΦΠΑ:
         %select{id: 'vat_category', name: 'vat_category'}
           - @vats.each do |entry|
@@ -20,8 +15,8 @@
         %label(for="barcode") Barcode:
         %input#barcode(type="text" name="barcode")
       %li
-        %label(for="description") Περιγραφή:
-        %input#description(type="text" name="description")
+        %label(for="tags") Ετικέτες:
+        %input#tags(type="text" name="tags" value="default")
       %li
         %label(for="cost") Κόστος (Χωρίς Φ.Π.Α.):
         %input#cost{type: "number", min: "0", max: "999999", step: "0.01", size: "6", name: "cost"}
@@ -33,7 +28,7 @@
         %input#comment(type="text" name="comment")
       %li
         %label(for="image") Εικόνα:
-        %input#description(type="file" name="image")
+        %input#image(type="file" name="image")
       %li
         %input{type: 'hidden', name: 'squick', value: 'no'}
         %input{type: 'checkbox', name: 'squick', value: 'yes'} Ψάξε στο Skroutz

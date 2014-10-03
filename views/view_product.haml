@@ -12,9 +12,6 @@
       %th.style1 Ονομασία: 
       %td.style1 #{@product.name}
     %tr 
-      %th.style1 Κατηγορία:
-      %td.style1 #{@product.category}
-    %tr 
       %th.style1 Κατηγορία ΦΠΑ:
       %td.style1 #{@product.vat_category.to_s}%
     %tr
@@ -53,8 +50,7 @@
 
 %br{:style => "clear:both"}/
 
-%p
-  <strong>Περιγραφή:</strong> #{@product.description}
+%p ετικέτες: #{@tags.join(', ')}
 
 %form{:action => "/update_product/:#{@product.id}"}
   %input{:type => "submit", :value => "Αλλαγή στοιχείων"}/

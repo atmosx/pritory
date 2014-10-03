@@ -4,7 +4,7 @@ require 'tzinfo'
 require_relative "#{File.dirname(__FILE__)}/../mysecrets"
 
 # Database options
-DB = Sequel.mysql2 'pritory', user:MySecrets::DBUSER, password: MySecrets::DBPASS, host:'localhost' # Not dynamic, change it in the next version to UTC. All dates in the DB should be in UTC
+DB = Sequel.mysql2 'pritory', user:MySecrets::DBUSER, password: MySecrets::DBPASS, host:'localhost' 
 
 # Create user table
 DB.create_table?(:users, engine: 'InnoDB') do 
@@ -32,10 +32,10 @@ end
 DB.create_table?(:sources, engine: 'InnoDB') do
   primary_key :id
   Integer :product_id, null: false
-  String :source, null: false
-  Integer :skroutz_id, default: 0
+  String :name, null: false
+  # Integer :skroutz_id, default: 0
 	Numeric :price, size: [10,2] , null: false 
-  # for some reason I can't tell, this returns always the esame exact time!
+  # For some reason I can't tell, this returns always the esame exact time!
 	DateTime :created_at, default: TZInfo::Timezone.get('Europe/Athens').now
 end
 
@@ -66,12 +66,11 @@ DB.create_table?(:tags, engine: 'InnoDB') do
   String :tag_name, null: false
 end
 
-# Correlate tags to products
-DB.create_table?(:ptags, engine: 'InnoDB') do
-  primary_key :id
-  Integer :product_id, null: false
-  Integer :tag_id, null: false
-end
+# Create join table to add handy methods
+DB.create_join_table?(product_id: :products, tag_id: :tags)
+
+# Create join table to add handy methods
+DB.create_join_table?(product_id: :products, source_id: :sources)
 
 require_relative 'user'
 require_relative 'product'
@@ -79,4 +78,3 @@ require_relative 'source'
 require_relative 'setting'
 require_relative 'vat'
 require_relative 'tag'
-require_relative 'ptag'

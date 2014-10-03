@@ -1,7 +1,7 @@
 class Product < Sequel::Model
   many_to_one :user
   one_to_many :sources
-  one_to_many :ptags
+  many_to_many :tags
   # plugin :association_dependencies, :source => :delete
 end
 

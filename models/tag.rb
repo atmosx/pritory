@@ -1,4 +1,4 @@
 class Tag < Sequel::Model
-  one_to_many :ptag
+  many_to_many :products
 end
 

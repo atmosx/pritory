@@ -1,5 +1,16 @@
 /* custom CSS */
 
+/* flags - locale */
+
+#locale {
+  width: auto;
+  /* position: relative; */
+  margin-right: 100px;
+  padding: 2px;
+  text-align: right;
+}
+
+
 /* Main menu */
 #menu-bar {
   width: 95%;

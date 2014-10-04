@@ -11,3 +11,4 @@ el:
   password: "Κωδικός"
   submit: "Αποστολή"
   cancel: "Ακύρωση"
+  language: "Γλώσσα"

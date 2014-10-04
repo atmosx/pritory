@@ -19,8 +19,8 @@ class SkroutzWorker
         current_price = squick.skroutz_check entry[:skroutz_id]
         if db_price != current_price
           price = MyHelpers.euro_to_cents(current_price)
-          product_id, skroutz_id, source = entry[:product_id], entry[:skroutz_id], entry[:source]
-          Source.create(price: price, product_id: product_id, source: source, skroutz_id: skroutz_id)
+          product_id, skroutz_id, source = entry[:product_id], entry[:skroutz_id], entry[:name]
+          Source.create(price: price, product_id: product_id, name: source, skroutz_id: skroutz_id)
           @log.info("Price update for #{Product.find(id: entry[:product_id]).name}")
           # else
           #   @log.info("Price for #{Product.find(id: entry[:product_id]).name} was not updated")

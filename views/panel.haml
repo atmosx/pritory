@@ -1,24 +1,24 @@
-%h3 Πίνακας Ελέγχου
+%h3 #{t 'controlpanel'}
 - if @products
   %table{align: 'right'} 
     %tbody
       %tr
-        %th.style1{colspan: "3"} Μέσος Όρος
+        %th.style1{colspan: "3"} #{t 'averagevalues'}
       %tr
-        %th.style1 Προϊόντα
-        %th.style1 Markup 
-        %th.style1 Margin 
+        %th.style1 #{t 'products'}
+        %th.style1 #{t 'markup'} 
+        %th.style1 #{t 'margin'} 
       %tr
         %td.style1= @products.length
         %td.style1= @avg_markup
         %td.style1= @avg_margin
 
   %table{align: 'left'}
-    %legend Κατάσταση προϊόντων
+    %legend #{t 'productsummary'}
     %tbody
       %tr
-        - %w{Α/Α Προϊόν Κατηγορία Barcode Καταχώρηση}.each do |entry|
-          %th.style1= entry
+        - %w{serialnumber product tags barcode entrydate}.each do |entry|
+          %th.style1 #{ t "#{entry}"}
       - @products.each do |p|
         %tr
           %td.style1= p[:id]
@@ -29,10 +29,10 @@
           -# is our store's price. It works but could fail if we delete our source
           %td.style1= p[:created_at].strftime("%m/%d/%Y")
           %td.style1-simple
-            %a{href: "/view_product/:#{p.id}"} Προβολή
+            %a{href: "/view_product/:#{p.id}"} #{ t 'show'}
             |
-            %a{href: "/delete_product/:#{p.id}"} Διαγραφή
+            %a{href: "/delete_product/:#{p.id}"} #{ t 'delete'}
 
   %br{:style => "clear:both"}/
 - else
-  %p Δεν υπάρχει κανένα προϊόν
+  %p #{t 'noproducts'}

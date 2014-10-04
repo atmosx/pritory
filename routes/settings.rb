@@ -4,10 +4,11 @@ class Pritory < Sinatra::Base
     protected!
     @username = User.first(username: session['name'])
     a = @username.setting
-    a ||= {realname: 'Pikos Apikos', email: 'pikos@frouto.pia', country: 'Froutopia', storename: 'Lemonostyfen'}
+    a ||= {realname: 'Pikos Apikos', currency: 'EUR', email: 'pikos@frouto.pia', country: 'Froutopia', storename: 'Lemonostyfen'}
     countries = [] ; Vat.each {|x| countries << x[:country]}
     @countries = countries.uniq
     @country = a[:country]
+    @currency = a[:currency]
     @realname = a[:realname]
     @email = a[:email]
     @storename = a[:storename]
@@ -21,6 +22,7 @@ class Pritory < Sinatra::Base
       Setting.create(
        user_id: user.id,
        country: params['country'],
+       currency: params['currency'],
        realname: params['realname'],
        email: params['email'],
        storename: params['storename']
@@ -29,6 +31,7 @@ class Pritory < Sinatra::Base
       old_storename_name = user.setting.storename
       user.setting.update(
        country: params['country'],
+       currency: params['currency'],
        realname: params['realname'],
        email: params['email'],
        storename: params['storename']

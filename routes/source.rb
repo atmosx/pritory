@@ -2,7 +2,7 @@
 class Pritory < Sinatra::Base
 
   # Add Source
-  get '/manage_source' do
+  get '/add_source' do
     protected!
     user = User.first(username: session['name'])
     @products = user.products
@@ -10,7 +10,7 @@ class Pritory < Sinatra::Base
   end
 
   # Post source
-  post '/manage_source' do
+  post '/add_source' do
     protected!
     pro = Product.find(name: params['name'])
     price_in_cents = MyHelpers.euro_to_cents(params['price'])

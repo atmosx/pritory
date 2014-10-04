@@ -46,6 +46,7 @@ DB.create_table?(:settings, engine: 'InnoDB') do
   String :store_name, default: "MyStore"
   String :email
   String :country
+  String :currency
   String :storename
   String :realname
 	DateTime :created_at, default: TZInfo::Timezone.get('Europe/Athens').now

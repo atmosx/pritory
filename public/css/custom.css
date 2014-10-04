@@ -10,17 +10,16 @@
   text-align: right;
 }
 
-
 /* Main menu */
 #menu-bar {
-  width: 95%;
+  width: auto;
   margin: 0px 0px 0px 0px;
   padding: 6px 6px 4px 6px;
   height: 40px;
   line-height: 100%;
-  border-radius: 13px;
-  -webkit-border-radius: 13px;
-  -moz-border-radius: 13px;
+  /* border-radius: 13px; */
+  /* -webkit-border-radius: 13px; */
+  /* -moz-border-radius: 13px; */
   box-shadow: 2px 2px 3px #666666;
   -webkit-box-shadow: 2px 2px 3px #666666;
   -moz-box-shadow: 2px 2px 3px #666666;
@@ -48,8 +47,8 @@
   margin: 0;
   margin-bottom: 6px;
   border-radius: 10px;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
+  /* -webkit-border-radius: 10px; */
+  /* -moz-border-radius: 10px; */
   text-shadow: 2px 2px 3px #000000;
 }
 #menu-bar li ul li a {

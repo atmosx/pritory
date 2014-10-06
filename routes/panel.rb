@@ -1,6 +1,5 @@
 # encoding: utf-8
 class Pritory < Sinatra::Base
-
   # User panel
   get "/panel" do
     protected!
@@ -25,4 +24,5 @@ class Pritory < Sinatra::Base
     end
     haml :panel
   end
+
 end

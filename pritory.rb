@@ -66,7 +66,7 @@ class Pritory < Sinatra::Base
     I18n.load_path = Dir[File.join(settings.root, 'locales', '*.yml')]
     # I18n.backend.load_translations
     I18n.config.enforce_available_locales = true
-    I18n.default_locale = 'el'
+    I18n.default_locale = 'en'
   end
 
   configure :production do
@@ -100,7 +100,6 @@ class Pritory < Sinatra::Base
   # Helpers magic!
   helpers do
     include Rack::Utils
-    # include Sidekiq::Worker
     alias_method :h, :escape_html
 
     # Just a simple alias

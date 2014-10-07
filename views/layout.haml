@@ -24,13 +24,16 @@
       - settings.js_files.each do |js|
         %script(type="text/javascript" src="/js/#{js}")
   %body
+    = partial :menu
     - if flash[:success]
       .alert-success
         = flash[:success]
     - if flash[:error]
       .alert-error
         = flash[:error]
-    = partial :menu
+    - if flash[:warn]
+      .alert-warning
+        = flash[:warn]
     #content
       %br
         =yield

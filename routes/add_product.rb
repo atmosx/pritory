@@ -1,12 +1,17 @@
 class Pritory < Sinatra::Base
-
   # Add product
   get '/add_product' do
     protected!
     user = User.first(username: session['name'])
-    @vats = Vat.where(country: user.setting.country).select_map(:vat)
-    @products = user.products
-    haml :manage_product
+    r = user.setting.nil? rescue true
+    unless r 
+      @vats = Vat.where(country: user.setting.country).select_map(:vat) 
+      @products = user.products
+      haml :add_product
+    else
+      flash[:error] = "#{t 'error_no_country'}"
+      redirect "/settings"
+    end
   end
 
   # Post product
@@ -15,11 +20,11 @@ class Pritory < Sinatra::Base
     user = User.first(username: session['name'])
     img = params['image']
     if params['name'].empty?
-      flash[:error] = "Δεν μπορεί να καταχωρηθεί προϊόν χωρίς όνομα!"
+      flash[:error] = "#{t 'error_product_name'}"
       redirect '/panel'
     end
     if params['tags'].empty?
-      flash[:error] = "Δεν γίνεται το προϊόν να μην έχει τουλάχιστον 1 ετικέτα!"
+      flash[:error] = "#{t 'error_product_tag'}"
       redirect '/panel'
     end
     begin
@@ -33,22 +38,18 @@ class Pritory < Sinatra::Base
         created_at: TZInfo::Timezone.get('Europe/Athens').now
       )
 
-      # Create and/or associate tags to products
+      # Associate tags to products
       params['tags'].split(',').each do |t|
-        if Tag.find(tag_name: t).nil?
-          b = Tag.create(tag_name: t)
-          Ptag.create(product_id: a.id, tag_id: b.id)
-        else
-          Ptag.create(product_id: a.id, tag_id: Tag.find(tag_name: t).id)
-        end
+        a.add_tag(name: t)
       end
 
-      Source.create(
-        product_id: a.id,
-        source: user.setting.storename,
+      # Add source to storename
+      a.add_source(
+        name: user.setting.storename,
         price: MyHelpers.euro_to_cents(params['price']),
         created_at: TZInfo::Timezone.get('Europe/Athens').now
       )
+
       if img
         filename = params['image'][:filename]
         images_dir = "public/images/users/#{user.id}/products/"
@@ -74,20 +75,22 @@ class Pritory < Sinatra::Base
         process_image.write image_path
         a.update(img_url: params['image'][:filename])
       end
-      if params['squick'] == 'yes'
-        redirect "/skroutz_add/:#{params['name']}" 
-      else
-        redirect "/panel"
-        flash[:success] = "Το προϊόν προστέθηκε στην βάση δεδομένων"
-      end
+      redirect '/panel'
+      # NOTE: we could use a partial here to make it modular
+      # if params['squick'] == 'yes'
+      #   redirect "/skroutz_add/:#{params['name']}" 
+      # else
+      #   redirect "/panel"
+      #   flash[:success] = "Το προϊόν προστέθηκε στην βάση δεδομένων"
+      # end
     rescue Sequel::Error => e
-      flash[:error] = "An SQL error occured!"
-      settings.log.error("ERROR SQL: #{e}")
-      redirect "/manage_product"
+      flash[:error] = "#{t 'error_sql_random'}"
+      settings.log.error("ERROR SQL [x1]: #{e}")
+      redirect "/add_product"
     rescue ArgumentError => e
       flash[:error] = "ArgumentError occured!"
       settings.log.error("ERROR ArgumentError: #{e}")
-      redirect "/manage_product"
+      redirect "/add_product"
     end
   end
 end

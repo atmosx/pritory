@@ -4,6 +4,7 @@ class Pritory < Sinatra::Base
   # Main page
   get "/" do
     @title = "Σύστημα Pritory"				
+    redirect '/panel' if session?
     haml :main
   end
 

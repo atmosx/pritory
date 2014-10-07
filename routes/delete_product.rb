@@ -6,16 +6,20 @@ class Pritory < Sinatra::Base
       protected_product!(id)
       begin
         product = Product.find(id: id)
-        product.sources.each {|s| s.delete}
         img_path = "/public/users/#{product.user_id}/products/#{product.img_url}"
+        # remove tags and sources
+        product.remove_all_tags
+        product.remove_all_sources
+        # remove image if exists
         FileUtils.rm(img_path) if File.exist? img_path
+        # delete product from database
         product.delete
-        flash[:success] = "Το προϊόν έχει διαγραφεί με επιτυχία από την βάση δεδομένων!"
+        flash[:success] = "#{t 'product_delete_success'}"
         redirect "/panel"
       rescue => e
         flash[:error] = "#{e}"
         settings.log.error("ERROR: #{e}")
-        redirect "/manage_product"
+        redirect "/add_product"
       end
     end
 end

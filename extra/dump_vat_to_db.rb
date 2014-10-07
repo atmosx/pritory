@@ -12,9 +12,9 @@ require 'yaml'
 require 'sequel'
 require_relative "#{File.expand_path File.dirname(__FILE__)}/../models/init"
 
-a = YAML::load(File.open("#{File.expand_path File.dirname(__FILE__)}/../extra/country_vat.yml"))
+entries = YAML::load(File.open("#{File.expand_path File.dirname(__FILE__)}/../extra/country_vat.yml"))
 
-a.each do |entry|
+entries.each do |entry|
   entry[:vat].each do |v|
     # Check if VAT is already in DB else, remove
     Vat.create(country: entry[:country], state: entry[:state], vat: v, code: entry[:code]) if Vat.where(country: entry[:country], state: entry[:state], vat: v, code: entry[:code]).empty?

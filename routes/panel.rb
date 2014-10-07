@@ -24,5 +24,4 @@ class Pritory < Sinatra::Base
     end
     haml :panel
   end
-
 end

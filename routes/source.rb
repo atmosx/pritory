@@ -6,7 +6,7 @@ class Pritory < Sinatra::Base
     protected!
     user = User.first(username: session['name'])
     @products = user.products
-    haml :manage_source
+    haml :add_source
   end
 
   # Post source
@@ -21,12 +21,12 @@ class Pritory < Sinatra::Base
         price: price_in_cents,
         created_at: TZInfo::Timezone.get('Europe/Athens').now
       )
-      redirect '/manage_source'
+      redirect '/add_source'
       flash[:result] = "Η πηγή καταχωρήθηκε στην βάση δεδομένων"
     rescue Sequel::Error => e
       settings.log.error("(route/source.rb:27) #{e}")
       flash[:error] = "#{e}"
-      redirect '/manage_source'
+      redirect '/add_source'
     end
   end
 

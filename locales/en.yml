@@ -26,3 +26,8 @@ en:
   show: "Show"
   delete: "Delete"
   noproduct: "There are no products to display!"
+  error_settings: "Before adding any product, please submit your settings!"
+  error_product_name: "Sorry, you need to name the product!"
+  error_product_tag: "Sorry, the product must have at least one tag!"
+  error_sql_random: "A random SQL error occured! Contact the admin! ERROR No: [x1]"
+  product_delete_success: "The product has been successfully deleted from the database!"

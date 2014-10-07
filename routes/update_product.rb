@@ -27,7 +27,7 @@ class Pritory < Sinatra::Base
     rescue => e
       flash[:error] = "#{e}"
       settings.log.error("ERROR: (routes/product.rb:121): #{e}")
-      redirect "/manage_product"
+      redirect "/add_product"
     end
   end
 
@@ -103,11 +103,11 @@ class Pritory < Sinatra::Base
     rescue Sequel::Error => e
       settings.log.error("ERROR: #{e}")
       flash[:error] = "#{e}"
-      redirect "/manage_product"
+      redirect "/add_product"
     rescue ArgumentError => e
       settings.log.error("ERROR: #{e}")
       flash[:error] = "#{e}"
-      redirect "/manage_product"
+      redirect "/add_product"
     end
   end
 end

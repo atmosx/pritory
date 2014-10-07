@@ -63,7 +63,7 @@
     %tr
       %th.style1
       - @latest_prices.each do |p|
-        %th.style1 #{p.source}
+        %th.style1 #{p.name}
     %tr
       %th.style1 Τιμή
       - @latest_prices.each do |p|
@@ -84,7 +84,7 @@
             %a{href: "/update_source/:#{p.id}"} Μετατροπή
 - else
   %p 
-    %a{href: "/manage_source"} Προσθήκη
+    %a{href: "/add_product"} Προσθήκη
 %div{:style => "clear: both;"}  
 
 - unless @data.nil?

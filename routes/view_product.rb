@@ -34,13 +34,8 @@ class Pritory < Sinatra::Base
     # @margin = "#{(((current_price_no_vat - cost)/ current_price_no_vat) * 100).round(2)} %"
     @margin = "#{current_price_no_vat.to_s.sub('.',',')} %"
     @data = MyHelpers.make_graph(@product.sources)
-
-    # Retrieving tags to create an array here. This can be optimized!
-    tags = []
-    @product.tags.each do |e|
-      tags << e[:name]
-    end
-    @tags = tags
+    # Retrieving tags in array form
+    @tags = @product.tags.map{|x| x.name}
     haml :view_product
   end
 end

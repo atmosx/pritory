@@ -1,29 +1,27 @@
-%h3 Ρυθμίσεις Χρήστη
+%h3 #{t 'settings'}
 
 
 %form(action="/settings" method="post")
   %fieldset
-    %legend Στοιχεία χρήστη 
-    %p
-      Για να κάνετε οποιαδήποτε αλλαγή, απλά πληκτρολογήστε την νέα τιμή στο κατάλληλο πεδίο και πατήστε «καταχώρηση».
+    %legend  #{t 'user_data'}
     %ul
       %li
-        %label(for="country") Χώρα (τρέχουσα: #{@country}) :
+        %label(for="country") #{t 'country'} (#{ t 'current'}: #{@country}) :
         %select{id: 'country', name: 'country'}
           - @countries.each do |entry|
             %option= entry
       %li
-        %label(for="realname") Ονοματεπώνυμο χρήστη:
+        %label(for="realname") #{t 'user_name'}:
         %input#name(type="text" name="realname" value="#{@realname}")
       %li
-        %label(for="realname") Νόμισμα:
+        %label(for="realname") #{t 'currency'}:
         %input#name(type="text" name="currency" value="#{@currency}")
       %li
-        %label(for="email") email:
+        %label(for="email") #{t 'email'}:
         %input#name(type="text" name="email" value="#{@email}")
       %li
-        %label(for="storename") Ονομασία Κασταστήματος:
+        %label(for="storename") #{t 'storename'}:
         %input#name(type="text" name="storename" value="#{@storename}")
       %li
-        %input(type="submit" value="Καταχώρηση") ή <a href="/panel">Ακύρωσε</a>
+        %input(type="submit" value="#{t 'submit'}") #{t 'or'} <a href="/panel">#{t 'cancel'}</a>
 

@@ -1,22 +1,21 @@
 -# coding: UTF-8
-%h4 Διαχείριση πηγής
+%h4 #{t 'add_source'}
 %form(action="/add_source" method="post")
   %fieldset
-    %legend Προσθήκη
     %ul
       %li
-        %label(for="source") Πηγή:
+        %label(for="source") #{t 'source'}:
         %input#source(type="text" name="source")
       %li
-        %label(for="name") Προϊόν:
+        %label(for="name") #{t 'product'}:
         %select{id: 'name', name: 'name'}
           -if @products.empty?
-            %option Δεν υπάρχει προϊόν
+            %option #{t 'no_product'}
           - else
             - @products.each do |p|
               %option= p.name
       %li
-        %label(for="price") Τιμή (EUR):
+        %label(for="price") #{t 'price'}:
         %input#price{type: "number", min: "0", max: "999999", step: "0.01", size: "6", name: "price"}
       %li
-        %input(type="submit" value="Καταχώριση") ή <a href="/panel">Ακύρωσε</a>
+        %input(type="submit" value="#{t 'submit'}") #{t 'or' } <a href="/panel">#{t 'cancel'}</a>

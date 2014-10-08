@@ -20,9 +20,7 @@ class Pritory < Sinatra::Base
       user = User.first(username: session['name'])
       img = params['image']
       # Retrieving tags to create an array here. This can be optimized!
-      tags_array = []
-      tags = @product.ptags.each {|x| tags_array << Tag.find(id: x.tag_id).tag_name}
-      @tags = tags_array
+      @tags = @product.tags.map{|x| x.name}
       haml :update_product
     rescue => e
       flash[:error] = "#{e}"

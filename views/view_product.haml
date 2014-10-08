@@ -1,4 +1,4 @@
-%h4 Προβολή προϊόντος
+%h4 #{t 'product_view'}
 %div.column1of4
   %div#img
     - if @product.img_url
@@ -7,65 +7,65 @@
       %img{class: 'imgframe', src: "/images/default.jpg"}
 %div.column2of4
   %table
-    %legend Περιγραφή Προϊόντος
+    %legend #{t 'product_description'}
     %tr
-      %th.style1 Ονομασία: 
+      %th.style1 #{t 'product'}: 
       %td.style1 #{@product.name}
     %tr 
-      %th.style1 Κατηγορία ΦΠΑ:
+      %th.style1 #{t 'vat_category'}:
       %td.style1 #{@product.vat_category.to_s}%
     %tr
-      %th.style1 Barcode:
+      %th.style1 #{t 'barcode'}:
       %td.style1 #{@product.barcode}
     %tr
-      %th.style1 Καταχώρηση:
+      %th.style1 #{t 'entry_date'}:
       %td.style1 #{@product.created_at.strftime("%d/%m/%Y")}
 %div.column3of4
   %table
-    %legend Οικονομικά Στοιχεία (ανά τεμάχιο)
+    %legend #{t 'financial_data_per_pcs'}
     %tr
       %th.style1
-      %th.style1 Χωρίς ΦΠΑ
-      %th.style1 Με ΦΠΑ
+      %th.style1 #{t 'without_vat'}
+      %th.style1 #{t 'with_vat'}
     %tr
-      %th.style1 Λιανική:
+      %th.style1 #{t 'price'}:
       %td.number= @price_without_vat 
       %td.number= @price
     %tr
-      %th.style1 Αγορά: 
+      %th.style1 #{t 'cost'}: 
       %td{colspan: '2', class: 'style1'} #{@cost}
     %tr
-      %th.style1 MarkUp:
+      %th.style1 #{t 'markup'}:
       %td{colspan: '2', class: 'style1'} #{@markup}
     %tr
-      %th.style1 Margin:
+      %th.style1 #{t 'margin'}:
       %td{colspan: '2', class: 'style1'} #{@margin}
 %div.column4of4
   %p
-    <strong>Σημειώσεις:</strong> #{@product.notes}
+    <strong>#{t 'notes'}:</strong> #{@product.notes}
   %p.small_blue{style: "text-align: left"}
-    * Markup: τιμή πώλησης - κόστος αγοράς
+    * #{t 'markup_expl'}
     %br
-    * Margin: (τιμή πώλησης - κόστος αγοράς)/τιμή πώλησης
+    * #{t 'margin_expl'}
 
 %br{:style => "clear:both"}/
 
-%p ετικέτες: #{@tags.join(', ')}
+%p #{t 'tags'}: #{@tags.join(', ')}
 
 %form{:action => "/update_product/:#{@product.id}"}
-  %input{:type => "submit", :value => "Αλλαγή στοιχείων"}/
+  %input{:type => "submit", :value => "#{t 'update'}"}/
 
-%h4 Λιανικές Τιμές Πώλησης
+%h4 #{t 'list_prices'}
 - unless @latest_prices.empty?
   %p.small_blue{style: "text-align: left"}
-    * Ημερομηνία τελευταίας ενημέρωσης
+    * #{t 'last_update_date'}
   %table{align: 'left'}
     %tr
       %th.style1
       - @latest_prices.each do |p|
         %th.style1 #{p.name}
     %tr
-      %th.style1 Τιμή
+      %th.style1 #{t 'price'}
       - @latest_prices.each do |p|
         %td.style1 
           #{MyHelpers.cents_to_euro p.price}
@@ -77,14 +77,14 @@
       - @latest_prices.each do |p|
         %td.style1-simple
           %p.small_bold_black
-            %a{href: "/update_source_np/:#{p.id}"} Προσθήκη Τιμής
+            %a{href: "/update_source_np/:#{p.id}"} #{t 'price_add'}
             %br
-            %a{href: "/delete_source/:#{p.id}"} Διαγραφή
+            %a{href: "/delete_source/:#{p.id}"} #{t 'delete'}
             |
-            %a{href: "/update_source/:#{p.id}"} Μετατροπή
+            %a{href: "/update_source/:#{p.id}"} #{t 'edit'}
 - else
   %p 
-    %a{href: "/add_product"} Προσθήκη
+    %a{href: "/add_product"} #{t 'add'}
 %div{:style => "clear: both;"}  
 
 - unless @data.nil?

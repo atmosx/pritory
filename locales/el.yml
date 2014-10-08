@@ -9,7 +9,7 @@ el:
   entrance: "Είσοδος"
   username: "Χρήστης"
   password: "Κωδικός"
-  submit: "Αποστολή"
+  submit: "Προσθήκη"
   cancel: "Ακύρωση"
   language: "Γλώσσα"
   controlpanel: "Πίνακας Ελέγχου"
@@ -31,3 +31,40 @@ el:
   error_product_tag: "Το προϊόν πρέπει να έχει τουλάχιστον μία ετικέτα!"
   error_sql_random: "Σφάλμα στην SQL! Επικοινωνήστε με τον διαχειριστή! ΣΦΑΛΜΑ No: [x1]"
   product_delete_success: "Το προϊόν έχει διαγραφεί από την βάση δεδομένων!"
+  product_add: "Προσθήκη προϊόντος"
+  vat_category: "ΦΠΑ"
+  no_vat_cost: "Κόστος (Χωρίς ΦΠΑ)"
+  product_name: "Όνομα Προϊόντος"
+  sell_price: "Λιανική (με ΦΠΑ)"
+  price: "Τιμή"
+  notes: "Σχόλια"
+  image: "Προσθήκη Εικόνας"
+  or: ' ή '
+  source: "Πηγή Τιμής"
+  no_product: "Δεν υπάρχουν προϊόντα"
+  product_update: "Ενημέρωση προϊόντος για"
+  update: "Ενημέρωση"
+  user_data: 'Στοιχεία Χρήστη'
+  country: 'Χώρα'
+  current: 'τρέχουσα'
+  user_name: "Ονοματεπώνυμο Χρήστη"
+  currency: 'Νόμισμα'
+  email: 'eMail'
+  storename: 'Ονομασία Καταστήματος'
+  product_view: 'Προβολή προϊόντος'
+  product_description: 'Περιγραφή προϊόντος'
+  product_name: 'Όνομα Προϊόντος'
+  entry_date: 'Ημ. Καταχώρησης'
+  financial_data_per_pcs: "Οικονομικά στοιχεία (ανά τεμάχιο)"
+  without_vat: 'Χωρίς ΦΠΑ'
+  with_vat: 'Με ΦΠΑ'
+  cost: 'Κόστος Αγοράς'
+  markup: 'Markup'
+  margin: 'Margin'
+  markup_expl: 'Markup: τιμή πώλησης - κόστος αγοράς'
+  margin_expl: 'Margin: (τιμή πώλησης - κόστος αγοράς)/τιμή πώλησης'
+  list_prices: 'Λιανικές Τιμές Πώλησης Καταστημάτων'
+  last_update_date: 'Ημερομηνία τελευταίας ενημέρωσης'
+  price_add: 'Προσθήκη τιμής'
+  edit: 'Αλλαγή'
+  source_added: 'Η πηγή καταχωρήθηκε στην βάση δεδομένων'

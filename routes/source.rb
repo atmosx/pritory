@@ -15,14 +15,13 @@ class Pritory < Sinatra::Base
     pro = Product.find(name: params['name'])
     price_in_cents = MyHelpers.euro_to_cents(params['price'])
     begin
-      Source.create(
-        product_id: pro.id,
-        source: params['source'],
+      pro.add_source(
+        name: params['source'],
         price: price_in_cents,
         created_at: TZInfo::Timezone.get('Europe/Athens').now
       )
       redirect '/add_source'
-      flash[:result] = "Η πηγή καταχωρήθηκε στην βάση δεδομένων"
+      flash[:result] = "#{t 'source_added'}"
     rescue Sequel::Error => e
       settings.log.error("(route/source.rb:27) #{e}")
       flash[:error] = "#{e}"
@@ -53,7 +52,7 @@ class Pritory < Sinatra::Base
     protected_source!(id)
     begin
       a = Source.find(id: id)
-      @source = a.source
+      @source = a.name
       @pid = a.product_id
       @name = a.product[:name]
       @price = MyHelpers.cents_to_euro(a.price)
@@ -68,7 +67,7 @@ class Pritory < Sinatra::Base
   post '/update_source_np' do
     protected!
     begin
-      Source.create(source: params['source'], product_id: params['pid'], price: MyHelpers.euro_to_cents(params['price']), created_at: TZInfo::Timezone.get('Europe/Athens').now)
+      Source.create(name: params['source'], product_id: params['pid'], price: MyHelpers.euro_to_cents(params['price']), created_at: TZInfo::Timezone.get('Europe/Athens').now)
       redirect '/panel'
     rescue Exception => e
       settings.log.error("(route/source.rb:74) #{e}")
@@ -84,7 +83,7 @@ class Pritory < Sinatra::Base
     protected_source!(id)
     begin
       a = Source.find(id: id)
-      @source = a.source
+      @source = a.name
       @id = a.id
       @name = a.product[:name]
       @price = MyHelpers.cents_to_euro(a.price)
@@ -100,7 +99,7 @@ class Pritory < Sinatra::Base
     protected!
     begin
       a = Source.find(id: params['id'])
-      a.update(source: params['source'], price: MyHelpers.euro_to_cents(params['price']))
+      a.update(name: params['source'], price: MyHelpers.euro_to_cents(params['price']))
       redirect '/panel'
     rescue Exception => e
       settings.log.error("(route/source.rb:105) #{e}")

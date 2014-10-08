@@ -9,8 +9,8 @@ en:
   entrance: "Login"
   username: "User"
   password: "Password"
-  submit: "submit"
-  cancel: "cancel"
+  submit: "Submit"
+  cancel: "Cancel"
   language: "Language"
   controlpanel: "Control Panel"
   averagevalues: "Average values"
@@ -31,3 +31,39 @@ en:
   error_product_tag: "Sorry, the product must have at least one tag!"
   error_sql_random: "A random SQL error occured! Contact the admin! ERROR No: [x1]"
   product_delete_success: "The product has been successfully deleted from the database!"
+  vat_category: "VAT"
+  no_vat_cost: "Cost (without VAT)"
+  product_name: "Product Name"
+  sell_price: "Sell Price (with VAT)"
+  price: "Price"
+  notes: "Notes"
+  image: "Add Picture"
+  or: ' or '
+  source: "Price Source"
+  no_product: "There's no product!"
+  product_update: "Product update for"
+  update: "Update"
+  user_data: 'User Settings'
+  country: 'Country'
+  current: 'current'
+  user_name: "User Name and Surname"
+  currency: 'Currency'
+  email: 'eMail'
+  storename: 'User Store Name'
+  product_view: 'Product View'
+  product_description: 'Product Description'
+  product_name: 'Product Name'
+  entry_date: 'Entry Date'
+  financial_data_per_pcs: "Financial data (per piece)"
+  without_vat: 'Without VAT'
+  with_vat: 'With VAT'
+  cost: 'Cost'
+  markup: 'Markup'
+  margin: 'Margin'
+  markup_expl: 'Markup: selling price - acq. cost'
+  margin_expl: 'Margin: (selling price - acq. cost)/selling price'
+  list_prices: 'Store table prices'
+  last_update_date: 'Last update date'
+  price_add: 'Add price'
+  edit: 'Edit'
+  source_added: 'The source has been added in the database'

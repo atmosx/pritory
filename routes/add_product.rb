@@ -40,7 +40,7 @@ class Pritory < Sinatra::Base
 
       # Associate tags to products
       params['tags'].split(',').each do |t|
-        a.add_tag(name: t)
+        a.add_tag(name: t.strip)
       end
 
       # Add source to storename

@@ -46,38 +46,25 @@ class Pritory < Sinatra::Base
       )
 
       # Update dates
-      tags_array = []
-      a.ptags.each {|x| tags_array << Tag.find(id: x.tag_id).tag_name}
-      old_tags = tags_array
+      old_tags = a.tags.map{|x| x.name}
       new_tags = params['tags'].split(',')
-
-      # Optimize THIS plz!
-      # Remove old tags
-      unless old_tags.sort == new_tags.sort 
-        # Delete only ptag entries. 
-        old_tags.each do |t|
-          Tag.find(tag_name: t).each {|tag| Ptag.delete(tag.ptag[0].id)}
-        end
-        # Write a 'job' that will remove all tags with no ptag association!
-
-        # Add new tags
-        new_tags.each do |t|
-          if Tag.find(tag_name: t).nil?
-            b = Tag.create(tag_name: t)
-            Ptag.create(product_id: a.id, tag_id: b.id)
-          else
-            Ptag.create(product_id: a.id, tag_id: Tag.find(tag_name: t).id)
-          end
+      old_tags.each do |e|
+        unless new_tags.include? e
+          a.remove_tag(Tag.find(name: e).id)
         end
       end
+
+      new_tags.each do |e|
+        a.add_tag(e.strip)
+      end
+
       # find source_id
       # NOTE: We could use a more elegant solution like: a.sources_dataset.where(store: "Metropolis Pharmacy")
-      sid = nil
-      a.sources.each do |entry|
-        if (entry[:product_id] == params['id'].to_i && entry[:source] == store)
-          sid = entry[:id]
-        end
+      a.first.sources_dataset.where(name: user.setting.storename).each do |e|
       end
+      #################
+      # CONTINUE HERE #
+      #################
       b = Source.find(id: sid)
       b.update(
         price: MyHelpers.euro_to_cents(params['price'])

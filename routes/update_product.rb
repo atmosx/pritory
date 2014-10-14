@@ -48,25 +48,21 @@ class Pritory < Sinatra::Base
       # Update dates
       old_tags = a.tags.map{|x| x.name}
       new_tags = params['tags'].split(',')
-      old_tags.each do |e|
-        unless new_tags.include? e
-          a.remove_tag(Tag.find(name: e).id)
+      if old_tags != new_tags
+        old_tags.each do |e|
+          unless new_tags.include? e
+            a.remove_tag(Tag.find(name: e).id)
+          end
+        end
+
+        new_tags.each do |e|
+          a.add_tag(name: e.strip)
         end
       end
 
-      new_tags.each do |e|
-        a.add_tag(e.strip)
-      end
-
       # find source_id
-      # NOTE: We could use a more elegant solution like: a.sources_dataset.where(store: "Metropolis Pharmacy")
-      a.first.sources_dataset.where(name: user.setting.storename).each do |e|
-      end
-      #################
-      # CONTINUE HERE #
-      #################
-      b = Source.find(id: sid)
-      b.update(
+      s = a.sources_dataset.where(name: user.setting.storename).first
+      s.update(
         price: MyHelpers.euro_to_cents(params['price'])
       )
       if img

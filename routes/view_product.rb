@@ -33,7 +33,7 @@ class Pritory < Sinatra::Base
     @markup = "#{(current_price_no_vat - cost).round(2).to_s.sub('.',',')}"
     # @margin = "#{(((current_price_no_vat - cost)/ current_price_no_vat) * 100).round(2)} %"
     @margin = "#{current_price_no_vat.to_s.sub('.',',')} %"
-    @data = MyHelpers.make_graph(@product.sources)
+    p @data = MyHelpers.make_graph(@product.sources)
     # Retrieving tags in array form
     @tags = @product.tags.map{|x| x.name}
     haml :view_product

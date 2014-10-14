@@ -1,6 +1,7 @@
 source "https://rubygems.org"
 gem 'sinatra'
 gem 'pony'
+gem 'rerun'
 gem 'clockwork'
 gem 'i18n'
 gem 'redis'
@@ -21,6 +22,7 @@ gem 'haml'
 gem 'mysql2'
 gem 'sequel'
 gem 'sidekiq'
+gem 'rb-fsevent'
 gem 'bcrypt'
 
 group :test do

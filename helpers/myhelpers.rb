@@ -30,12 +30,12 @@ module MyHelpers
   # Make graph out of @product.source array
   def self.make_graph array
     stores = []
-    array.each {|e| stores << e[:source] unless stores.include? e[:source]}
+    array.each {|e| stores << e[:name] unless stores.include? e[:name]}
     h = {}
     stores.each do |s|
       h1 = {}
       array.each do |e|
-        if e[:source] == s
+        if e[:name] == s
           h1[e[:created_at]] = (e[:price].to_i/100).to_f
         end
       end

@@ -67,3 +67,5 @@ en:
   price_add: 'Add price'
   edit: 'Edit'
   source_added: 'The source has been added in the database'
+  plugins: 'Plugins'
+  plugins_text: "This directory contains that you might want to activate in your account. To activate or disactivate a plugin just click the 'install' button."

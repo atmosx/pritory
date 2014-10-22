@@ -33,7 +33,6 @@ DB.create_table?(:sources, engine: 'InnoDB') do
   primary_key :id
   Integer :product_id, null: false
   String :name, null: false
-  # Integer :skroutz_id, default: 0
   Numeric :price, size: [10,2] , null: false 
   # For some reason I can't tell, this returns always the esame exact time!
   DateTime :created_at, default: TZInfo::Timezone.get('Europe/Athens').now
@@ -66,11 +65,20 @@ DB.create_table?(:tags, engine: 'InnoDB') do
   String :name, null: false
 end
 
+# Skroutz Table
+DB.create_table?(:skroutzs, engine: 'InnoDB') do
+  primary_key :id
+  Integer :id, null: false
+end
+
 # Create join table to add handy methods
 DB.create_join_table?(product_id: :products, tag_id: :tags)
 
 # Create join table to add handy methods
 DB.create_join_table?(product_id: :products, source_id: :sources)
+
+# Create join table to add handy methods
+DB.create_join_table?(product_id: :products, skroutz_id: :skroutzs)
 
 require_relative 'user'
 require_relative 'product'
@@ -78,3 +86,4 @@ require_relative 'source'
 require_relative 'setting'
 require_relative 'vat'
 require_relative 'tag'
+require_relative 'skroutz'

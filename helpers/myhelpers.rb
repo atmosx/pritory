@@ -7,9 +7,9 @@ module MyHelpers
   def self.cents_to_euro value
     raise ArgumentError, 'Price is not numeric!' unless value.is_a? Numeric
     euro = value.to_f/100
-    p = sprintf("%0.2f", euro)
+    c = sprintf("%0.2f", euro)
     # display value in European format
-    p.to_s.sub('.', ',') + " €"
+    c.to_s.sub('.', ',') + " €"
   end
 
   # Convert EUR (String) to cents (Numeric) in order to save the data into MySQL as Numeric
@@ -22,9 +22,9 @@ module MyHelpers
   def self.numeric_to_percentage value
     raise ArgumentError, 'Value is not numeric' unless value.is_a? Numeric
     v = value.to_f*100
-    p = sprintf("%0.2f", v)
+    c = sprintf("%0.2f", v)
     # display value in European format
-    p.to_s.sub('.', ',') + " %"
+    c.to_s.sub('.', ',') + " %"
   end
 
   # Make graph out of @product.source array

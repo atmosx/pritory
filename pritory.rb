@@ -145,7 +145,7 @@ class Pritory < Sinatra::Base
     def protected_product!(id)
       begin
         unless User.find(id: Product.find(id: id).user_id).username == session['name'] 
-          settings.log.error("[SECURITY]: user #{sesion['name']} tried to access foreign product with id: #{id}")
+          settings.log.error("[SECURITY]: user #{session['name']} tried to access foreign product with id: #{id}")
           flash[:error] = 'ΠΡΟΣΟΧΗ: Το προϊόν ανήκει σε άλλο χρήστη!!!!'  
           redirect '/panel'
         end

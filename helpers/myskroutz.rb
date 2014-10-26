@@ -9,7 +9,7 @@ require 'logger'
 require_relative "#{File.expand_path File.dirname(__FILE__)}/../mysecrets"
 
 # Handle Sroutz API Calls
-module Skroutz
+module MySkroutz
   class Query
     
     # Logger class

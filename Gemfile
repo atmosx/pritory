@@ -26,11 +26,10 @@ gem 'rb-fsevent'
 gem 'bcrypt'
 
 group :test do
+  gem 'did_you_mean'
 	gem 'rspec'
 	gem 'rack-test'
 	gem 'ZenTest'
-	gem 'autotest-fsevent'
-	gem 'autotest-growl'
 	gem 'capybara'
 end
 

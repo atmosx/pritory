@@ -42,7 +42,7 @@ class Pritory < Sinatra::Base
     register Sinatra::Flash
 
     # Make object accessible through routes - not sure if it's thread-safe e.g. better than $squick!
-    set :squick, Skroutz::Query.new
+    set :squick, MySkroutz::Query.new
     set :log, Logger.new(info_log)
 
     # Security measures for sessions	

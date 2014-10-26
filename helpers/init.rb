@@ -8,5 +8,5 @@ Pritory.helpers NiceBytes
 require_relative 'myhelpers'
 Pritory.helpers MyHelpers
 
-require_relative 'skroutz'
-Pritory.helpers Skroutz
+require_relative 'myskroutz'
+Pritory.helpers MySkroutz

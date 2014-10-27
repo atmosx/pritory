@@ -56,4 +56,5 @@ Gemfile.lock
 cache/
 public/blob.css
 public/blob.js
+ideas.markdown
 

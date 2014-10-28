@@ -61,8 +61,10 @@
 
 <p>First install the MySQL database and configure the root user. Here are some guides for <a href="https://help.ubuntu.com/12.04/serverguide/mysql.html">Ubuntu</a>, <a href="http://jackal.livejournal.com/2160464.html">MacPorts</a> and <a href="http://www.freebsddiary.org/mysql.php">FreeBSD</a>. You can find guides for your system online.</p>
 
-<p>Now create a MySQL database called <code>pritory</code>with the following command:
-<code>CREATE DATABASE tomato DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;</code></p>
+<p>Now create a MySQL database called <code>pritory</code>with the following command:</p>
+
+<pre><code>CREATE DATABASE tomato DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+</code></pre>
 
 <p>Now let's create a MySQL user and grant privileges to manipulate our new database:</p>
 

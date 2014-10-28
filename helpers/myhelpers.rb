@@ -27,7 +27,7 @@ module MyHelpers
     p.to_s.sub('.', ',') + " %"
   end
 
-  # Make graph out of @product.source array
+  # Collect data (hash) for Multiple Line Chart
   def self.make_graph array
     stores = []
     array.each {|e| stores << e[:name] unless stores.include? e[:name]}
@@ -57,4 +57,9 @@ module MyHelpers
     raise ArgumentError, 'Vat is not float!' unless vat.is_a? Float
     ((value.to_f/100).to_f / (1 + vat/100).to_f).to_f
   end
+
+  # Make graph for Column Chart
+  def self.make_column_chart array
+  end
+
 end

@@ -36,6 +36,14 @@ class Pritory < Sinatra::Base
     @data = MyHelpers.make_graph(@product.sources)
     # Retrieving tags in array form
     @tags = @product.tags.map{|x| x.name}
+    column_graph = []
+    list_of_prices = @latest_prices.map{|e| MyHelpers.numeric_to_float(e[:price])}
+    @average_market_price = (list_of_prices.reduce(:+).to_f / list_of_prices.size).round(2)
+    @latest_prices.each do |e|
+      price = MyHelpers.numeric_to_float e[:price]
+      column_graph << [e[:name],  price]
+    end
+    @column_graph = column_graph
     haml :view_product
   end
 end

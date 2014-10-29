@@ -1,22 +1,3 @@
-pritory
-=======
+[![PullReview stats](https://www.pullreview.com/github/atmosx/pritory/badges/refactor.svg?)](https://www.pullreview.com/github/atmosx/pritory/reviews/refactor)
 
-Παρατηρητήριο τιμών για εμπορικά καταστήματα
-
-# Περιγραφή
-
-Προγράμμα για παρακολούθηση τιμών [...]
-
-# Εγκατάσταση
-
-Το pritory μπορεί να εγκατασταθεί σε οποιοδήποτε λειτουργικό σύστημα υποστηρίζει την γλώσσα προγραμματισμού [ruby](https://www.ruby-lang.org/en/).
-
-Για την επεξεργασία φωτογραφίων που γίνεται κατά την προσθήκη εικόνας, απαιτείτε το [ImageMagick](http://www.imagemagick.org/).
-
-Στο σύστημα πρέπει να τρέχουν οι υπηρεσίες [MySQL](http://www.mysql.com/) και [Redis](http://redis.io/).
-
-TODO
-
-# Άδεια Χρήσης
-
-MIT License
+README - TODO

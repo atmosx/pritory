@@ -57,9 +57,4 @@ module MyHelpers
     raise ArgumentError, 'Vat is not float!' unless vat.is_a? Float
     ((value.to_f/100).to_f / (1 + vat/100).to_f).to_f
   end
-
-  # Make graph for Column Chart
-  def self.make_column_chart array
-  end
-
 end

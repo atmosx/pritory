@@ -26,4 +26,3 @@ RSpec.configure do |c|
   set :raise_errors, true
   set :logging, false
 end
-

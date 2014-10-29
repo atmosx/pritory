@@ -3,7 +3,9 @@ class Pritory < Sinatra::Base
 
   # Update product
   get '/update_product/:id' do
+
     protected
+
     @id = params['id'].delete(':')
     protected_product(@id)
     begin
@@ -31,7 +33,9 @@ class Pritory < Sinatra::Base
 
   # Post product
   post '/update_product' do
+
     protected
+
     img = params['image']
     a = Product.find(id: params['id'])
     user = User.first(username: session['name'])

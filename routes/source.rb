@@ -3,7 +3,9 @@ class Pritory < Sinatra::Base
 
   # Add Source
   get '/add_source' do
+
     protected
+
     user = User.first(username: session['name'])
     @products = user.products
     haml :add_source
@@ -11,7 +13,9 @@ class Pritory < Sinatra::Base
 
   # Post source
   post '/add_source' do
+
     protected
+
     pro = Product.find(name: params['name'])
     price_in_cents = MyHelpers.euro_to_cents(params['price'])
     begin
@@ -31,7 +35,9 @@ class Pritory < Sinatra::Base
 
   # Delete source
   get '/delete_source/:id' do
+
     protected
+
     id = params['id'].delete(':')
     protected_source(id)
     begin
@@ -47,7 +53,9 @@ class Pritory < Sinatra::Base
 
   # Add new price to the source
   get '/update_source_np/:id' do
+
     protected
+
     id = params['id'].delete(':')
     protected_source(id)
     begin
@@ -65,7 +73,9 @@ class Pritory < Sinatra::Base
   end
 
   post '/update_source_np' do
+    
     protected
+
     begin
       Source.create(name: params['source'], product_id: params['pid'], price: MyHelpers.euro_to_cents(params['price']), created_at: TZInfo::Timezone.get('Europe/Athens').now)
       redirect '/panel'
@@ -78,7 +88,9 @@ class Pritory < Sinatra::Base
 
   # Update current source price
   get '/update_source/:id' do
+
     protected
+
     id = params['id'].delete(':')
     protected_source(id)
     begin
@@ -96,7 +108,9 @@ class Pritory < Sinatra::Base
   end
 
   post '/update_source' do
+
     protected
+
     begin
       a = Source.find(id: params['id'])
       a.update(name: params['source'], price: MyHelpers.euro_to_cents(params['price']))

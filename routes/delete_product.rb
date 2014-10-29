@@ -1,7 +1,9 @@
 class Pritory < Sinatra::Base
   # Delete Product
     get '/delete_product/:id' do
+
       protected
+
       id = params['id'].delete(':')
       protected_product(id)
       begin

@@ -1,7 +1,7 @@
 # encoding: utf-8
 class Pritory < Sinatra::Base
   get '/settings' do
-    protected!
+    protected
     @username = User.first(username: session['name'])
     a = @username.setting
     a ||= {realname: 'Pikos Apikos', currency: 'EUR', email: 'pikos@frouto.pia', country: 'Froutopia', storename: 'Lemonostyfen'}
@@ -16,7 +16,7 @@ class Pritory < Sinatra::Base
   end
 
   post '/settings' do
-    protected!
+    protected
     user = User.first(username: session['name'])
     if user.setting.nil?
       Setting.create(

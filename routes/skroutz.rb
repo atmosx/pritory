@@ -3,7 +3,7 @@ class Pritory < Sinatra::Base
 
   # Get category (step 1)
   get '/skroutz_add/:name' do
-    protected!
+    protected
     @name = params['name'].delete(':')
     @res = settings.squick.query_skroutz(@name)
     if @res["categories"].empty?

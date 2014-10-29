@@ -1,9 +1,9 @@
 class Pritory < Sinatra::Base
   # Delete Product
     get '/delete_product/:id' do
-      protected!
+      protected
       id = params['id'].delete(':')
-      protected_product!(id)
+      protected_product(id)
       begin
         product = Product.find(id: id)
         img_path = "/public/users/#{product.user_id}/products/#{product.img_url}"

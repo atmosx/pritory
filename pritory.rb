@@ -114,7 +114,7 @@ class Pritory < Sinatra::Base
 
     # Login required
     # Halt [ 401, 'Not Authorized' ] unless session? 
-    def protected! 
+    def protected 
       unless session?
         flash[:error] = '401 - Not Authorized'
         redirect '/'
@@ -127,7 +127,7 @@ class Pritory < Sinatra::Base
     end
 
     # Accessible source only by user who source belongs to
-    def protected_source!(id)
+    def protected_source(id)
       begin
         unless User.find(id: Source.find(id: id).product.user_id).username == session['name'] 
           settings.log.error("[SECURITY]: user #{sesion['name']} tried to access foreign source with id: #{id}")
@@ -142,7 +142,7 @@ class Pritory < Sinatra::Base
     end
 
     # Accessible product only by user who product belongs to
-    def protected_product!(id)
+    def protected_product(id)
       begin
         unless User.find(id: Product.find(id: id).user_id).username == session['name'] 
           settings.log.error("[SECURITY]: user #{sesion['name']} tried to access foreign product with id: #{id}")
@@ -159,7 +159,7 @@ class Pritory < Sinatra::Base
     # i18n - Locale setup in session
     before do
       session[:locale] = params[:locale] if params[:locale] #the r18n system will load it automatically
-      # session[:locale] = 'el' if params[:locale] == nil
+      session[:locale] = 'en' if params[:locale] == nil
       load_active_user  # pull user from database or whatever based on session info.
       session[:locale] = @active_user.locale if @active_user != nil && session[:locale] == nil
     end

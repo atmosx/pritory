@@ -2,9 +2,9 @@ class Pritory < Sinatra::Base
   # View Product and related info
   # That's the main panel
   get '/view_product/:id' do
-    protected!
+    protected
     id = params['id'].delete(':')
-    protected_product!(id)
+    protected_product(id)
     @user = User.first(username: session['name'])
     @store = @user.setting.storename
     @product = Product.find(id: id)

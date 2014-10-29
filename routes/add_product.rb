@@ -1,7 +1,7 @@
 class Pritory < Sinatra::Base
   # Add product
   get '/add_product' do
-    protected!
+    protected
     user = User.first(username: session['name'])
     r = user.setting.nil? rescue true
     unless r 
@@ -16,7 +16,7 @@ class Pritory < Sinatra::Base
 
   # Post product
   post '/add_product' do
-    protected!
+    protected
     user = User.first(username: session['name'])
     img = params['image']
     if params['name'].empty?

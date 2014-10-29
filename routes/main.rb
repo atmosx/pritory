@@ -3,7 +3,6 @@ class Pritory < Sinatra::Base
 
   # Main page
   get "/" do
-    @title = "Σύστημα Pritory"				
     redirect '/panel' if session?
     haml :main
   end
@@ -14,12 +13,12 @@ class Pritory < Sinatra::Base
     if User.login_user_id(username, password)
       session_start!
       session[:name] = username
-      flash[:success] = "Καλώς ορίσατε στο Pritory!"
+      flash[:success] = "#{t 'welcome_message'}"
       redirect "/panel" 
     else
       # fix this IP variable at some point in time.
       settings.log.error("[SECURITY]: bad username and password from <IP>")
-      flash[:error] = "Δεν βρέθηκε το όνομα χρήστη ή o κωδικός"
+      flash[:error] = "#{t 'login_failed_message'}"
       redirect '/'
     end
   end
@@ -27,7 +26,7 @@ class Pritory < Sinatra::Base
   # Logout
   get '/logout' do
     session_end!
-    flash[:success] = "Έχετε αποσυνδεθεί από το σύστημα"
+    flash[:success] = "#{t 'logout_message'}"
     redirect '/'
   end
 end

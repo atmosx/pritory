@@ -74,3 +74,6 @@ el:
   price_graph: "Γράφημα Τιμών"
   your_market_value: "Στοιχεία αγοράς" 
   average_market_price: "Τιμή αγοράς (μ.ο.)"
+  welcome_message: "Καλώς ορίσατε!"
+  login_failed_message: "Αποτυχία σύνδεσης, το όνομα χρήστη ή ο κωδικός σας ήταν λανθασμένος!"
+  logout_message: "Έχετε αποσυνδεθεί από το σύστημα"

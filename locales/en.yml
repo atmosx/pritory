@@ -73,3 +73,6 @@ en:
   price_graph: "Prices graph"
   your_market_value: "Your market in numbers" 
   average_market_price: "Market price (avg)"
+  welcome_message: "Welcome to pritory"
+  login_failed_message: "Sorry, you issued a wrong username or password."
+  logout_message: "You have successfully logged out"

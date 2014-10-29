@@ -1,19 +1,18 @@
 source "https://rubygems.org"
 gem 'sinatra'
 gem 'pony'
-gem 'rerun'
 gem 'clockwork'
 gem 'i18n'
 gem 'redis'
 gem 'cssmin'
 gem 'jsmin'
-gem 'sinatra-cache'
 gem 'mini_magick'
 gem 'thin'
 gem 'chartkick'
 gem 'foreman'
 gem 'oauth2'
 gem 'json'
+gem 'sinatra-cache'
 gem 'sinatra-session'
 gem 'sinatra-flash'
 gem 'sinatra-partial'
@@ -23,6 +22,12 @@ gem 'mysql2'
 gem 'sequel'
 gem 'sidekiq'
 gem 'bcrypt'
+
+group :development do
+  gem 'sinatra-sequel'
+  gem 'sqlite3'
+  gem 'rerun'
+end
 
 group :test do
 	gem 'ZenTest'

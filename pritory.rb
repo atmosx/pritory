@@ -4,6 +4,7 @@ require 'sinatra/cache'
 require 'sinatra/session'
 require 'sinatra/partial'
 require 'sinatra/flash'
+require 'sinatra/sequel'
 require 'fileutils'
 require 'clockwork'
 require 'bluecloth'
@@ -17,6 +18,7 @@ require 'logger'
 require 'i18n'
 require 'i18n/backend/fallbacks'
 require 'pony'
+require 'sqlite3'
 
 require_relative 'minify_resources'
 require_relative 'mysecrets'
@@ -74,7 +76,7 @@ class Pritory < Sinatra::Base
     set :cache_enabled, true
     set :cache_output_dir, "#{File.dirname(__FILE__)}/cache"
     set :cache_logging, true
-    set :haml, { :ugly=>true }
+    set :haml, { ugly: true }
     set :clean_trace, true
     set :css_files, :blob
     set :js_files,  :blob
@@ -90,6 +92,10 @@ class Pritory < Sinatra::Base
 
     set :css_files, MinifyResources::CSS_FILES
     set :js_files,  MinifyResources::JS_FILES
+  end
+
+  configure :test do
+    set :database, 'sqlite3::memory:'
   end
 
   # set 'env' before every request and dump errors to error_logger

@@ -22,13 +22,16 @@ gem 'haml'
 gem 'mysql2'
 gem 'sequel'
 gem 'sidekiq'
-gem 'rb-fsevent'
 gem 'bcrypt'
 
 group :test do
-	gem 'rspec'
-	gem 'rack-test'
 	gem 'ZenTest'
+	gem 'rspec'
+  gem 'rspec-autotest'
+  gem 'rb-fsevent'
+  gem 'autotest-growl'
+  gem 'autotest-fsevent'
+	gem 'rack-test'
 	gem 'capybara'
 end
 

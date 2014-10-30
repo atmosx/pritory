@@ -99,9 +99,7 @@ class Pritory < Sinatra::Base
   end
 
   # set 'env' before every request and dump errors to error_logger
-  before {
-    env["rack.errors"] = error_logger
-  }
+  before { env["rack.errors"] = error_logger }
 
   # Helpers magic!
   helpers do
@@ -112,11 +110,11 @@ class Pritory < Sinatra::Base
     def t(*args)
       I18n.t(*args, locale: session[:locale])
     end	 
-		
+
     # Load active users
     def load_active_user
-			User.first(username: session['name'])
-		end
+      User.first(username: session['name'])
+    end
 
     # Login required
     # Halt [ 401, 'Not Authorized' ] unless session? 
@@ -161,7 +159,7 @@ class Pritory < Sinatra::Base
         redirect '/panel'
       end
     end
-    
+
     # i18n - Locale setup in session
     before do
       session[:locale] = params[:locale] if params[:locale] #the r18n system will load it automatically

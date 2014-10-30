@@ -1,7 +1,6 @@
 # encoding: utf-8
 class Pritory < Sinatra::Base
   get '/settings' do
-
     protected
 
     @username = User.first(username: session['name'])

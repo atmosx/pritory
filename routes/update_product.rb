@@ -3,7 +3,6 @@ class Pritory < Sinatra::Base
 
   # Update product
   get '/update_product/:id' do
-
     protected
 
     @id = params['id'].delete(':')
@@ -33,7 +32,6 @@ class Pritory < Sinatra::Base
 
   # Post product
   post '/update_product' do
-
     protected
 
     img = params['image']

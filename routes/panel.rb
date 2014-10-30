@@ -2,7 +2,6 @@
 class Pritory < Sinatra::Base
   # User panel
   get "/panel" do
-
     protected
 
     @user = User.first(username: session['name'])

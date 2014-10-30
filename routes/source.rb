@@ -3,7 +3,6 @@ class Pritory < Sinatra::Base
 
   # Add Source
   get '/add_source' do
-
     protected
 
     user = User.first(username: session['name'])
@@ -13,7 +12,6 @@ class Pritory < Sinatra::Base
 
   # Post source
   post '/add_source' do
-
     protected
 
     pro = Product.find(name: params['name'])
@@ -35,7 +33,6 @@ class Pritory < Sinatra::Base
 
   # Delete source
   get '/delete_source/:id' do
-
     protected
 
     id = params['id'].delete(':')
@@ -53,7 +50,6 @@ class Pritory < Sinatra::Base
 
   # Add new price to the source
   get '/update_source_np/:id' do
-
     protected
 
     id = params['id'].delete(':')
@@ -73,7 +69,6 @@ class Pritory < Sinatra::Base
   end
 
   post '/update_source_np' do
-    
     protected
 
     begin
@@ -88,7 +83,6 @@ class Pritory < Sinatra::Base
 
   # Update current source price
   get '/update_source/:id' do
-
     protected
 
     id = params['id'].delete(':')
@@ -108,7 +102,6 @@ class Pritory < Sinatra::Base
   end
 
   post '/update_source' do
-
     protected
 
     begin

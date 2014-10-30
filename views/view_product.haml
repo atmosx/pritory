@@ -55,8 +55,8 @@
 %form{:action => "/update_product/:#{@product.id}"}
   %input{:type => "submit", :value => "#{t 'update'}"}/
 
-%h4 #{t 'list_prices'}
 - unless @latest_prices.empty?
+  %h4 #{t 'list_prices'}
   %p.small_blue{style: "text-align: left"}
     * #{t 'last_update_date'}
   %table{align: 'left'}
@@ -82,12 +82,27 @@
             %a{href: "/delete_source/:#{p.id}"} #{t 'delete'}
             |
             %a{href: "/update_source/:#{p.id}"} #{t 'edit'}
+
+  %hr
+  %h4 #{t 'your_market_value'}
+  %table{align: 'center'}
+    %tr
+      %th.style1 #{t 'average_market_price'}
+    %tr
+      %td.style1 #{@average_market_price}
+
 - else
   %p 
     %a{href: "/add_product"} #{t 'add'}
 %div{:style => "clear: both;"}  
 
 - unless @data.nil?
+  %hr
+  %h4 #{t 'price_graph'}
+  %div.graph
+    = column_chart @column_graph, stacked: true
+  %hr
+  %h4 #{t 'price_over_time'}
   %div.graph
     = line_chart @data.map {|name, values| {name: name, data: values}}, id: 'product_price_graph'
 

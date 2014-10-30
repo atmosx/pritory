@@ -1,22 +1,24 @@
 class Pritory < Sinatra::Base
   # Add product
   get '/add_product' do
-    protected!
+    protected
+
     user = User.first(username: session['name'])
     r = user.setting.nil? rescue true
-    unless r 
+    if r 
+      flash[:error] = "#{t 'error_no_country'}"
+      redirect "/settings"
+    else
       @vats = Vat.where(country: user.setting.country).select_map(:vat) 
       @products = user.products
       haml :add_product
-    else
-      flash[:error] = "#{t 'error_no_country'}"
-      redirect "/settings"
     end
   end
 
   # Post product
   post '/add_product' do
-    protected!
+    protected
+
     user = User.first(username: session['name'])
     img = params['image']
     if params['name'].empty?

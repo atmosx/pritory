@@ -2,7 +2,8 @@
 class Pritory < Sinatra::Base
   # User panel
   get "/panel" do
-    protected!
+    protected
+
     @user = User.first(username: session['name'])
     @products = @user.products
     @avg_margin = @avg_markup = 0

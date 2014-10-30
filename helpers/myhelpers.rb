@@ -27,7 +27,7 @@ module MyHelpers
     c.to_s.sub('.', ',') + " %"
   end
 
-  # Make graph out of @product.source array
+  # Collect data (hash) for Multiple Line Chart
   def self.make_graph array
     stores = []
     array.each {|e| stores << e[:name] unless stores.include? e[:name]}

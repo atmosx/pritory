@@ -4,6 +4,7 @@ require 'sinatra/cache'
 require 'sinatra/session'
 require 'sinatra/partial'
 require 'sinatra/flash'
+require 'sinatra/sequel'
 require 'fileutils'
 require 'clockwork'
 require 'bluecloth'
@@ -17,6 +18,7 @@ require 'logger'
 require 'i18n'
 require 'i18n/backend/fallbacks'
 require 'pony'
+require 'sqlite3'
 
 require_relative 'minify_resources'
 require_relative 'mysecrets'
@@ -74,7 +76,7 @@ class Pritory < Sinatra::Base
     set :cache_enabled, true
     set :cache_output_dir, "#{File.dirname(__FILE__)}/cache"
     set :cache_logging, true
-    set :haml, { :ugly=>true }
+    set :haml, { ugly: true }
     set :clean_trace, true
     set :css_files, :blob
     set :js_files,  :blob
@@ -92,10 +94,12 @@ class Pritory < Sinatra::Base
     set :js_files,  MinifyResources::JS_FILES
   end
 
+  configure :test do
+    set :database, 'sqlite3::memory:'
+  end
+
   # set 'env' before every request and dump errors to error_logger
-  before {
-    env["rack.errors"] = error_logger
-  }
+  before { env["rack.errors"] = error_logger }
 
   # Helpers magic!
   helpers do
@@ -106,15 +110,15 @@ class Pritory < Sinatra::Base
     def t(*args)
       I18n.t(*args, locale: session[:locale])
     end	 
-		
+
     # Load active users
     def load_active_user
-			User.first(username: session['name'])
-		end
+      User.first(username: session['name'])
+    end
 
     # Login required
     # Halt [ 401, 'Not Authorized' ] unless session? 
-    def protected! 
+    def protected 
       unless session?
         flash[:error] = '401 - Not Authorized'
         redirect '/'
@@ -127,7 +131,7 @@ class Pritory < Sinatra::Base
     end
 
     # Accessible source only by user who source belongs to
-    def protected_source!(id)
+    def protected_source(id)
       begin
         unless User.find(id: Source.find(id: id).product.user_id).username == session['name'] 
           settings.log.error("[SECURITY]: user #{sesion['name']} tried to access foreign source with id: #{id}")
@@ -142,7 +146,7 @@ class Pritory < Sinatra::Base
     end
 
     # Accessible product only by user who product belongs to
-    def protected_product!(id)
+    def protected_product(id)
       begin
         unless User.find(id: Product.find(id: id).user_id).username == session['name'] 
           settings.log.error("[SECURITY]: user #{session['name']} tried to access foreign product with id: #{id}")
@@ -155,11 +159,11 @@ class Pritory < Sinatra::Base
         redirect '/panel'
       end
     end
-    
+
     # i18n - Locale setup in session
     before do
       session[:locale] = params[:locale] if params[:locale] #the r18n system will load it automatically
-      # session[:locale] = 'el' if params[:locale] == nil
+      session[:locale] = 'en' if params[:locale] == nil
       load_active_user  # pull user from database or whatever based on session info.
       session[:locale] = @active_user.locale if @active_user != nil && session[:locale] == nil
     end

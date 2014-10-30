@@ -1,23 +1,18 @@
-# In Rspec-2.x '/spec' loaded by default
+# In Rspec-2.x '/spec' directory is loaded by default
+
+# Load my configurations
 require 'spec_helper'
 
-describe "Routes testing" do
-
-	# testing standard paths
+describe 'Routes testing' do
 	%w{ / }.each do |page|
-		it "accessing '#{page}' page" do
+		it "accessing '#{page}'" do
 			get page
-			last_response.should be_ok
+			expect(last_response).to be_ok
 		end
 	end
 
-	it "should get 404" do
+	it 'non existant page 404' do
 		get '/non_existent_page'
-		last_response.status.should == 404
+		expect(last_response.status).to eq(404)
 	end
-
-	# it "should get 'not authorized'" do
-		# get '/admin'
-		# last_response.status.should == 401 # 401 = not authorized in http lang
-	# end
 end

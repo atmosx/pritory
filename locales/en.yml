@@ -69,3 +69,10 @@ en:
   source_added: 'The source has been added in the database'
   plugins: 'Plugins'
   plugins_text: "This directory contains that you might want to activate in your account. To activate or disactivate a plugin just click the 'install' button."
+  price_over_time: "Price change over time"
+  price_graph: "Prices graph"
+  your_market_value: "Your market in numbers" 
+  average_market_price: "Market price (avg)"
+  welcome_message: "Welcome to pritory"
+  login_failed_message: "Sorry, you issued a wrong username or password."
+  logout_message: "You have successfully logged out"

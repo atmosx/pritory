@@ -5,9 +5,10 @@ require 'spec_helper'
 
 before(:context) do
   User.create(username: 'test', password: 'pass')
+  @user = User.find(username: 'test')
 end
 
-describe 'Model Tests' do
+describe 'User tests' do
 
   it 'creates user' do
     expect(User.new(username: 'new_user', password: 'password').valid?).to eq(true)
@@ -29,8 +30,7 @@ describe 'Model Tests' do
     expect(User.login_user_id('test', 'pass_alt')).to eq(nil)
   end
 
-  # CONTINUE WRITING TESTS HERE
+end
 
-  # it 'update password' do #   ep
-  # end
+describe 'Products tests' do
 end

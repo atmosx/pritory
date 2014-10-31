@@ -1,6 +1,5 @@
 # encoding: utf-8
 class Pritory < Sinatra::Base
-
   # Main page
   get "/" do
     redirect '/panel' if session?

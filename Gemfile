@@ -30,12 +30,14 @@ group :development do
 end
 
 group :test do
+  gem 'growl'
 	gem 'ZenTest'
+  gem 'pry'
 	gem 'rspec'
-  gem 'rspec-autotest'
-  gem 'rb-fsevent'
-  gem 'autotest-growl'
-  gem 'autotest-fsevent'
+  gem 'spork', '~> 1.0rc'
+  gem 'guard'
+  gem 'guard-spork'
+  gem 'guard-rspec'
 	gem 'rack-test'
 	gem 'capybara'
 end

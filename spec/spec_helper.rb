@@ -6,13 +6,15 @@ require 'spork'
 ENV['RACK_ENV'] = 'test'
 
 Spork.prefork do
-  require 'rack/test'
-  require 'capybara/rspec'
 end
 
 Spork.each_run do
-  require File.expand_path '../../pritory.rb', __FILE__
 end
+
+require 'rack/test'
+require 'rspec/expectations'
+require 'capybara/rspec'
+require File.expand_path '../../pritory.rb', __FILE__
 
 module RSpecMixin
 	include Rack::Test::Methods

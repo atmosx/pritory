@@ -2,7 +2,7 @@
 # More info at https://github.com/guard/guard#readme
 notification :growl
 
-guard :rspec, cmd: 'bundle exec rspec' do
+guard :rspec, cmd: 'bundle exec rspec --drb' do
   watch('pritory.rb')
   watch(%r{^spec/.+_spec\.rb$})
   %w{ models helpers routes}.each do |k|
@@ -20,6 +20,6 @@ end
 
 # Fire up your server and switch to foreman?!
 guard 'shotgun', :server => 'thin', port: '3000' do
-  watch %r{.*\.(rb|haml|css|yml)}
+  watch %r{^(views|routes|helpers).*\.(rb|haml|css|yml)}
   watch 'config.ru'
 end

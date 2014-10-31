@@ -1,7 +1,9 @@
 # encoding: utf-8
 class Pritory < Sinatra::Base
+
   # Main page
   get "/" do
+    puts "#{ENV['RACK_ENV']}"
     redirect '/panel' if session?
     haml :main
   end

@@ -4,7 +4,11 @@ require 'tzinfo'
 require_relative "#{File.dirname(__FILE__)}/../mysecrets"
 
 # Database options
-DB = Sequel.mysql2 'pritory', user:MySecrets::DBUSER, password: MySecrets::DBPASS, host:'localhost' 
+if ENV['RACK_ENV'] == 'test'
+  DB = Sequel.sqlite
+else
+  DB = Sequel.mysql2 'pritory', user:MySecrets::DBUSER, password: MySecrets::DBPASS, host:'localhost' 
+end
 
 # Create user table
 DB.create_table?(:users, engine: 'InnoDB') do 

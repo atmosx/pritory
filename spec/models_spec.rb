@@ -3,12 +3,9 @@
 # Load my configurations
 require 'spec_helper'
 
-before(:context) do
-  User.create(username: 'test', password: 'pass')
-  @user = User.find(username: 'test')
-end
-
 describe 'User tests' do
+
+  @user = User.create(username: 'test', password: 'pass')
 
   it 'creates user' do
     expect(User.new(username: 'new_user', password: 'password').valid?).to eq(true)

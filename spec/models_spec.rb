@@ -92,4 +92,5 @@ describe 'Settings' do
   # it 'modify settings' do
   #   expect(u.setting.update(email: 'some@email.com').valid?).to eq(true)
   # end
+  
 end

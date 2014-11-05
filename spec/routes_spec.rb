@@ -1,5 +1,3 @@
-# In Rspec-2.x '/spec' directory is loaded by default
-
 # Load my configurations
 require 'spec_helper'
 

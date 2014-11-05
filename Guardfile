@@ -19,7 +19,7 @@ guard 'spork', :rspec_env => { 'ENV' => 'test' } do
 end
 
 # Fire up your server and switch to foreman?!
-guard 'shotgun', :server => 'thin', port: '3000' do
+guard 'shotgun', :server => 'thin', port: '9292' do
   watch %r{^(views|routes|helpers).*\.(rb|haml|css|yml)}
   watch 'config.ru'
 end

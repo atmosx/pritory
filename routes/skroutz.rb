@@ -32,7 +32,8 @@ class Pritory < Sinatra::Base
       haml :skroutz_add2
     rescue Faraday::ConnectionFailed => e
       flash[:error] = "Αποτυχία σύνδεσης!"
-      settings.log("Farrady connection failed for id: #{id} and name: #{name}, προσπάθεια #{tries}")
+      p e
+      # settings.log("Farrady connection failed for id: #{id} and name: #{name}, προσπάθεια #{tries}")
       if (tries -= 1) > 0
         retry
       else
@@ -49,7 +50,7 @@ class Pritory < Sinatra::Base
     source = Source.last
     Source.create(
       product_id: source.product_id,
-      source: 'Skroutz',
+      name: 'Skroutz',
       skroutz_id: id,
       price: MyHelpers.euro_to_cents(price),
       created_at: TZInfo::Timezone.get('Europe/Athens').now

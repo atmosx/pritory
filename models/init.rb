@@ -37,7 +37,7 @@ DB.create_table?(:sources, engine: 'InnoDB') do
   primary_key :id
   Integer :product_id, null: false
   String :name, null: false
-  # Integer :skroutz_id, default: 0
+  Integer :skroutz_id, default: 0
   Numeric :price, size: [10,2] , null: false 
   # For some reason I can't tell, this returns always the esame exact time!
   DateTime :created_at, default: TZInfo::Timezone.get('Europe/Athens').now

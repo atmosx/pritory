@@ -28,8 +28,8 @@
       %li
         %label(for="image") #{t 'image'}:
         %input#image(type="file" name="image")
-      -# %li
-      -#   %input{type: 'hidden', name: 'squick', value: 'no'}
-      -#   %input{type: 'checkbox', name: 'squick', value: 'yes'} Ψάξε στο Skroutz
+      %li
+        %input{type: 'hidden', name: 'squick', value: 'no'}
+        %input{type: 'checkbox', name: 'squick', value: 'yes'} Skroutz it!
       %li
         %input(type="submit" value="#{t 'submit'}") #{t 'or'} <a href="/panel">#{t 'cancel'}</a>

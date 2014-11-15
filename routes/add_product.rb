@@ -77,14 +77,14 @@ class Pritory < Sinatra::Base
         process_image.write image_path
         a.update(img_url: params['image'][:filename])
       end
-      redirect '/panel'
+      
       # NOTE: we could use a partial here to make it modular
-      # if params['squick'] == 'yes'
-      #   redirect "/skroutz_add/:#{params['name']}" 
-      # else
-      #   redirect "/panel"
-      #   flash[:success] = "Το προϊόν προστέθηκε στην βάση δεδομένων"
-      # end
+      if params['squick'] == 'yes'
+        redirect "/skroutz_add/:#{params['name']}" 
+      else
+        redirect "/panel"
+        flash[:success] = "Το προϊόν προστέθηκε στην βάση δεδομένων"
+      end
     rescue Sequel::Error => e
       flash[:error] = "#{t 'error_sql_random'}"
       settings.log.error("ERROR SQL [x1]: #{e}")

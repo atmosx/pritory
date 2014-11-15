@@ -12,5 +12,9 @@ task :start do
 	exec("rerun thin -R #{conf} --debug start")
 end
 
+task :push do
+	exec("git push")
+end
+
 # default
 task default: :spec

@@ -13,13 +13,13 @@ guard :rspec, cmd: 'bundle exec rspec --drb' do
   watch(%r{^views/(.+)/.*\.haml$}) { |m| "spec/features/#{m[1]}_spec.rb" }
 end
 
-guard 'spork', :rspec_env => { 'ENV' => 'test' } do
+guard 'spork', rspec_env: { 'ENV' => 'test' } do
   watch('Gemfile.lock')
   watch('spec/spec_helper.rb') { :rspec }
 end
 
 # Fire up your server and switch to foreman?!
-guard 'shotgun', :server => 'thin', port: '9292' do
+guard 'shotgun', server: 'thin', port: '9292' do
   watch %r{^(views|routes|helpers).*\.(rb|haml|css|yml)}
   watch 'config.ru'
 end

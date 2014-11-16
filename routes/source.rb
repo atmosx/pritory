@@ -58,6 +58,7 @@ class Pritory < Sinatra::Base
       a = Source.find(id: id)
       @source = a.name
       @pid = a.product_id
+      @skroutz_id = a.skroutz_id
       @name = a.product[:name]
       @price = MyHelpers.cents_to_euro(a.price)
       haml :update_source_np
@@ -72,7 +73,7 @@ class Pritory < Sinatra::Base
     protected
 
     begin
-      Source.create(name: params['source'], product_id: params['pid'], price: MyHelpers.euro_to_cents(params['price']), created_at: TZInfo::Timezone.get('Europe/Athens').now)
+      Source.create(name: params['source'], product_id: params['pid'], price: MyHelpers.euro_to_cents(params['price']), skroutz_id: params['skroutz_id'], created_at: TZInfo::Timezone.get('Europe/Athens').now)
       redirect '/panel'
     rescue Exception => e
       settings.log.error("(route/source.rb:74) #{e}")

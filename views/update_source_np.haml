@@ -8,6 +8,7 @@
         %label(for="price") Νέα Τιμή (EUR):
         %input#price{type: "number", min: "0", max: "999999", step: "0.01", size: "6", name: "price", value: "#{@price.to_f}"}
         %input#pid(type="hidden" name="pid" value="#{@pid}")
+        %input#skroutz_id(type="hidden" name="skroutz_id" value="#{@skroutz_id}")
         %input#source(type="hidden" name="source" value="#{@source}")
       %li
         %input(type="submit" value="Καταχώριση") ή <a href="/panel">Ακύρωσε</a>

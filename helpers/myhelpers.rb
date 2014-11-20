@@ -45,6 +45,17 @@ module MyHelpers
     return h
   end
 
+  # Create a string of links
+  def linked_array array
+    postfix = '</span>'
+    html = ''
+    array.each do |e|
+      prefix = %Q(<span style="";>)
+      html += prefix + e + postfix
+    end
+    return html
+  end
+
   # Convert DB Numeric to float (EUR)
   def self.numeric_to_float value
     raise ArgumentError, 'Value is not numeric!' unless value.is_a? Numeric
@@ -57,4 +68,5 @@ module MyHelpers
     raise ArgumentError, 'Vat is not float!' unless vat.is_a? Float
     ((value.to_f/100).to_f / (1 + vat/100).to_f).to_f
   end
+
 end

@@ -1,4 +1,4 @@
-%h3 #{t 'controlpanel'}
+%h3 #{t 'tags_title'}
 - if @products
   %table{align: 'right'} 
     %tbody
@@ -23,9 +23,7 @@
           - tags = []; p.tags.each {|x| tags << x[:name]}
           %td.style1= p[:id]
           %td.style1= p[:name]
-          %td.style1 
-            - tags.map do |tag| 
-              %a{href: "/tags/:#{tag}"} #{tag}
+          %td.style1= tags.join(', ')
           %td.style1= p[:barcode]
           -# This call is based on the convention that the first item in the Source array
           -# is our store's price. It works but could fail if we delete our source

@@ -3,9 +3,12 @@
     %li
       %a{href: "/panel"} #{t 'panel'}
     %li
-      %a{href: "/add_product"} #{t 'add_product'}
-    %li
-      %a{href: "/add_source"} #{t 'add_source'}
+      %a{:href => "#"} #{t 'add'}
+      %ul
+        %li
+          %a{href: "/add_product"} #{t 'add_product'}
+        %li
+          %a{href: "/add_source"} #{t 'add_source'}
     %li
       %a{href: "/settings"} #{t 'settings'}
     %li

@@ -47,20 +47,28 @@ class Pritory < Sinatra::Base
         notes: params['comment']
       )
 
-      # Update dates
+      # Update tags (removes old, add new)
       old_tags = a.tags.map{|x| x.name}
       new_tags = params['tags'].split(',')
-      if old_tags != new_tags
-        old_tags.each do |e|
-          unless new_tags.include? e
-            a.remove_tag(Tag.find(name: e).id)
+
+      if new_tags != old_tags
+
+        # remove all tags
+        a.tags.each do |tag|
+          puts "remove tag: #{tag}"
+          a.remove_tag(tag)
+          tag.delete
+        end
+
+        # Add new tags to the product
+        unless new_tags.empty?
+          new_tags.each do |tag|
+            a.add_tag(name: tag.strip)
           end
         end
 
-        new_tags.each do |e|
-          a.add_tag(name: e.strip)
-        end
       end
+
 
       # find source_id
       s = a.sources_dataset.where(name: user.setting.storename).first
@@ -86,11 +94,11 @@ class Pritory < Sinatra::Base
     rescue Sequel::Error => e
       settings.log.error("ERROR: #{e}")
       flash[:error] = "#{e}"
-      redirect "/add_product"
+      redirect "/panel"
     rescue ArgumentError => e
       settings.log.error("ERROR: #{e}")
       flash[:error] = "#{e}"
-      redirect "/add_product"
+      redirect "/panel"
     end
   end
 end

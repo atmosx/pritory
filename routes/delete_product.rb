@@ -13,17 +13,13 @@ class Pritory < Sinatra::Base
         # Load image path
         img_path = "/public/users/#{product.user_id}/products/#{product.img_url}"
         
-        # Remove and delete tags
-        product.tags.each do |tag| 
-          product.remove_tag(tag)
-          tag.delete
-        end
-
-        # Remove and delete sources
-        product.sources.each do |source| 
-          product.remove_source(source)
-          source.delete
-        end
+        # Remove and delete tags and sources
+        tags = product.tags
+        sources = product.sources
+        product.remove_all_tags
+        product.remove_all_sources
+        tags.each {|tag| tag.delete}
+        sources.each {|source| source.delete}
 
         # remove image if exists
         FileUtils.rm(img_path) if File.exist? img_path

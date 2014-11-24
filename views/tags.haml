@@ -1,4 +1,4 @@
-%h3 #{t 'tags_title'}
+%h3 #{t 'tags_title'}: #{@tag}
 - if @products
   %table{align: 'right'} 
     %tbody
@@ -16,22 +16,20 @@
   %table{align: 'left'}
     %tbody
       %tr
-        - %w{serialnumber product tags barcode entrydate}.each do |entry|
+        - %w{serialnumber product barcode entrydate}.each do |entry|
           %th.style1 #{ t "#{entry}"}
       - @products.each do |p|
         %tr
-          - tags = []; p.tags.each {|x| tags << x[:name]}
           %td.style1= p[:id]
           %td.style1= p[:name]
-          %td.style1= tags.join(', ')
           %td.style1= p[:barcode]
           -# This call is based on the convention that the first item in the Source array
           -# is our store's price. It works but could fail if we delete our source
           %td.style1= p[:created_at].strftime("%m/%d/%Y")
           %td.style1-simple
-            %a{href: "/view_product/:#{p.id}"} #{ t 'show'}
+            %a{href: "/view_product/:#{p[:id]}"} #{ t 'show'}
             |
-            %a{href: "/delete_product/:#{p.id}"} #{ t 'delete'}
+            %a{href: "/delete_product/:#{p[:id]}"} #{ t 'delete'}
 
   %br{:style => "clear:both"}/
 - else

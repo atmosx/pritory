@@ -6,13 +6,28 @@ class Pritory < Sinatra::Base
       id = params['id'].delete(':')
       protected_product(id)
       begin
+
+        # Find product
         product = Product.find(id: id)
+
+        # Load image path
         img_path = "/public/users/#{product.user_id}/products/#{product.img_url}"
-        # remove tags and sources
-        product.remove_all_tags
-        product.remove_all_sources
+        
+        # Remove and delete tags
+        product.tags.each do |tag| 
+          product.remove_tag(tag)
+          tag.delete
+        end
+
+        # Remove and delete sources
+        product.sources.each do |source| 
+          product.remove_source(source)
+          source.delete
+        end
+
         # remove image if exists
         FileUtils.rm(img_path) if File.exist? img_path
+
         # delete product from database
         product.delete
         flash[:success] = "#{t 'product_delete_success'}"

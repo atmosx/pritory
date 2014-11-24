@@ -1,6 +1,6 @@
 require 'rubygems'
 require 'spork'
-#require 'spork/ext/ruby-debug'
+# require 'spork/ext/ruby-debug'
 
 # Hardcode 'test' environment eitherwise the fuck it works!
 ENV['RACK_ENV'] = 'test'

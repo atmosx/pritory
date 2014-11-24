@@ -4,20 +4,24 @@ class Pritory < Sinatra::Base
   get "/tags/:tag" do
     protected
 
-    tag = params['tag'].delete(':')
+    @tag = params['tag'].delete(':')
     @user = User.first(username: session['name'])
-    products = []
-    Tag.where(name: tag).each {|t| products << t.products}
-
-    @avg_margin = @avg_markup = 0
-    unless @products.empty?
-      margin_list = []
-      markup_list = []
-      @products.each do |p|
-        cost = MyHelpers.numeric_to_float(p[:cost])
-        sorted = p.sources_dataset.where(name: @user.setting.storename).sort_by {|h| h[:created_at]}
+    @products = []
+    Tag.where(name: @tag).each do |e|
+      entry = e.products[0]
+      sorted = e.products[0].sources_dataset.where(name: @user.setting.storename).sort_by {|h| h[:created_at]}
+      if @user.id == entry.user_id
+        entry.values[:most_recent_price] = sorted.last[:price]
+        @products << entry.values
+      end
+    end
+    
+    unless @products.nil?
+      markup_list = margin_list = []
+      @products.each do |entry|
+        cost = MyHelpers.numeric_to_float(entry[:cost])
         # Take the most recent price entry
-        price = MyHelpers.numeric_no_vat(sorted.last[:price], p.vat_category)
+        price = MyHelpers.numeric_no_vat(entry[:most_recent_price], entry[:vat_category])
         markup_list << (price - cost).round(2) 
         margin_list << ((price - cost)/price)
       end
@@ -26,6 +30,8 @@ class Pritory < Sinatra::Base
       @avg_markup = "#{(markup_list.instance_eval { reduce(:+) / size.to_f }).round(2).to_s.gsub('.',',')} €"
       @avg_margin = "#{(margin_list.instance_eval { reduce(:+) / size.to_f } * 100).round(2).to_s.gsub('.',',')} %"
       haml :tags
+    else
+      'nothing'
     end
   end
 end

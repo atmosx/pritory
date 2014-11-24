@@ -20,6 +20,9 @@
     %tr
       %th.style1 #{t 'entry_date'}:
       %td.style1 #{@product.created_at.strftime("%d/%m/%Y")}
+    %tr
+      %th.style1 #{t 'average_market_price'}
+      %td.style1 #{@average_market_price}
 %div.column3of4
   %table
     %legend #{t 'financial_data_per_pcs'}
@@ -82,26 +85,12 @@
             %a{href: "/delete_source/:#{p.id}"} #{t 'delete'}
             |
             %a{href: "/update_source/:#{p.id}"} #{t 'edit'}
-
-  %hr
-  %h4 #{t 'your_market_value'}
-  %table{align: 'center'}
-    %tr
-      %th.style1 #{t 'average_market_price'}
-    %tr
-      %td.style1 #{@average_market_price}
-
 - else
   %p 
     %a{href: "/add_product"} #{t 'add'}
 %div{:style => "clear: both;"}  
 
 - unless @data.nil?
-  %hr
-  %h4 #{t 'price_graph'}
-  %div.graph
-    = column_chart @column_graph, stacked: true
-  %hr
   %h4 #{t 'price_over_time'}
   %div.graph
     = line_chart @data.map {|name, values| {name: name, data: values}}, id: 'product_price_graph'

@@ -1,5 +1,5 @@
 %h3 #{t 'controlpanel'}
-- if @products
+- unless @products.empty?
   %table{align: 'right'} 
     %tbody
       %tr

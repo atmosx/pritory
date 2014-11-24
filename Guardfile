@@ -10,7 +10,7 @@ guard :rspec, cmd: 'bundle exec rspec --drb' do
   end
 
   # Capybara features specs
-  watch(%r{^views/(.+)/.*\.haml$}) { |m| "spec/features/#{m[1]}_spec.rb" }
+  # watch(%r{^views/(.+)/.*\.haml$}) { |m| "spec/features/#{m[1]}_spec.rb" }
 end
 
 guard 'spork', rspec_env: { 'ENV' => 'test' } do

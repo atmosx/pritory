@@ -80,3 +80,4 @@ el:
   tags_title: "Ετικέτες"
   dbid: "ID"
   add: "Προσθήκη"
+  noproducts: "Δεν υπάρχουν προϊόντα!"

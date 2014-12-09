@@ -42,7 +42,6 @@ class Pritory < Sinatra::Base
       a.update(
         vat_category: params['vat_category'].to_f,
         name: params['name'], 
-        barcode: params['barcode'], 
         cost: MyHelpers.euro_to_cents(params['cost']), 
         notes: params['comment']
       )

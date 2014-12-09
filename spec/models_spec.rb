@@ -41,7 +41,7 @@ describe Product, 'tests' do
   end
 
   it 'create product' do
-    expect(@user.add_product(vat_category: '23', name: 'SomeProduct', barcode: '12345678910', cost: '3421', notes: 'Some Notes All Too Much').valid?).to eq(true)
+    expect(@user.add_product(vat_category: '23', name: 'SomeProduct', cost: '3421', notes: 'Some Notes All Too Much').valid?).to eq(true)
   end
 
   it 'add 1st source price' do

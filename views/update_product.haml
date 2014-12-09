@@ -15,16 +15,13 @@
         %input#name(type="text" name="name" value="#{@product.name}")
       %li
         %label(for="tags") Ετικέτες:
-        %input#barcode(type="text" name="tags" value="#{@tags.join(', ')}")
-      %li
-        %label(for="barcode") Barcode:
-        %input#barcode(type="text" name="barcode" value="#{@product.barcode}")
+        %input#tags(type="text" name="tags" value="#{@tags.join(', ')}")
       %li
         %label(for="cost") Αγορά (Χωρίς Φ.Π.Α.):
         %input#cost{type: "number", min: "0", max: "999999", step: "0.01", size: "6", name: "cost", value: "#{@cost.to_f}"}
       %li
         %label(for="price") Τιμή Πώλησης (Χωρίς Φ.Π.Α.):
-        %input#cost{type: "number", min: "0", max: "999999", step: "0.01", size: "6", name: "price", value: "#{@price.to_f}"}
+        %input#price{type: "number", min: "0", max: "999999", step: "0.01", size: "6", name: "price", value: "#{@price.to_f}"}
       %li
         %label(for="comment") Σχόλια (εκπτώσεις, κλπ.):
         %input#comment(type="text" name="comment" value="#{@product.notes}")

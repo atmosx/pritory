@@ -34,7 +34,6 @@ class Pritory < Sinatra::Base
         user_id: user.id, 
         vat_category: params['vat_category'].to_f,
         name: params['name'], 
-        barcode: params['barcode'], 
         cost: MyHelpers.euro_to_cents(params['cost']), 
         notes: params['comment'],
         created_at: TZInfo::Timezone.get('Europe/Athens').now

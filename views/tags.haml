@@ -16,13 +16,12 @@
   %table{align: 'left'}
     %tbody
       %tr
-        - %w{serialnumber product barcode entrydate}.each do |entry|
+        - %w{serialnumber product entrydate}.each do |entry|
           %th.style1 #{ t "#{entry}"}
       - @products.each do |p|
         %tr
           %td.style1= p[:id]
           %td.style1= p[:name]
-          %td.style1= p[:barcode]
           -# This call is based on the convention that the first item in the Source array
           -# is our store's price. It works but could fail if we delete our source
           %td.style1= p[:created_at].strftime("%m/%d/%Y")

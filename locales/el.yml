@@ -20,7 +20,6 @@ el:
   productsummary: "Κατάσταση Προϊόντων"
   product: "Προϊόν"
   tags: "Ετικέτες"
-  barcode: "Barcode"
   entrydate: "Ημ. Καταχώρησης"
   serialnumber: "Α/Α"
   show: "Προβολή"

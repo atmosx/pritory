@@ -79,3 +79,5 @@ en:
   dbid: "ID"
   add: "Add"
   noproducts: "There are no products to display!"
+  price_diff: "Price difference"
+  price_diff_expl: "Price difference: our_price - competition"

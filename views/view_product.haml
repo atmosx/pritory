@@ -1,4 +1,5 @@
-%h4 #{t 'product_view'}
+%h2 #{t 'product_view'}
+%p #{t 'product_description'}: <strong>#{@product.name}</strong>
 %div.column1of4
   %div#img
     - if @product.img_url
@@ -7,25 +8,20 @@
       %img{class: 'imgframe', src: "/images/default.jpg"}
 %div.column2of4
   %table
-    %legend #{t 'product_description'}
-    %tr
-      %th.style1 #{t 'product'}: 
-      %td.style1 #{@product.name}
     %tr 
       %th.style1 #{t 'vat_category'}:
       %td.style1 #{@product.vat_category.to_s}%
-    %tr
-      %th.style1 #{t 'barcode'}:
-      %td.style1 #{@product.barcode}
     %tr
       %th.style1 #{t 'entry_date'}:
       %td.style1 #{@product.created_at.strftime("%d/%m/%Y")}
     %tr
       %th.style1 #{t 'average_market_price'}
       %td.style1 #{@average_market_price}
+    %tr
+      %th.style1 #{t 'margin'}:
+      %td{colspan: '2', class: 'style1'} #{@margin}
 %div.column3of4
   %table
-    %legend #{t 'financial_data_per_pcs'}
     %tr
       %th.style1
       %th.style1 #{t 'without_vat'}
@@ -40,9 +36,6 @@
     %tr
       %th.style1 #{t 'markup'}:
       %td{colspan: '2', class: 'style1'} #{@markup}
-    %tr
-      %th.style1 #{t 'margin'}:
-      %td{colspan: '2', class: 'style1'} #{@margin}
 %div.column4of4
   %p
     <strong>#{t 'notes'}:</strong> #{@product.notes}

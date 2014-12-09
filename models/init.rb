@@ -24,7 +24,6 @@ DB.create_table?(:products, engine: 'InnoDB') do
   Integer :user_id, null: false
   Float  :vat_category, null: false
   String :name, null: false
-  String :barcode
   String :img_url
   # For details: http://stackoverflow.com/questions/3730019/why-not-use-double-or-float-to-represent-currency
   Numeric :cost, size: [10,2] , null: false 

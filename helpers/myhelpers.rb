@@ -79,24 +79,30 @@ module MyHelpers
     sources = []
     lowest_price = 0
     a.sources_dataset.exclude(name: storename).each {|x| sources << x[:name] unless sources.include? x[:name]}
-    sources.each do |s|
-      b = a.sources_dataset.where(name: s).last
-      price = b[:price].to_i
+    if sources.empty?
+      '-'
+    else
+      sources.each do |s|
+        b = a.sources_dataset.where(name: s).last
+        price = b[:price].to_i
 
-      case lowest_price
-      when 0
-        lowest_price = price
-      when lowest_price > price
-        lowest_price = price
-      else
-        # do nothing
+        case lowest_price
+        when 0
+          lowest_price = price
+        when lowest_price > price
+          lowest_price = price
+        else
+          # do nothing
+        end
       end
+      # If result is positive, competition price is higher
+      # if result is negative our price is lower
+      # if 0 competition price and our price are equal
+      diff_price = (my_price - lowest_price).to_f/100
+      diff_percentage = (diff_price/my_price).to_f * 100
+      h = {diff_price: diff_price, diff_percentage: diff_percentage}
+      h
     end
-    # If result is positive, competition price is higher
-    # if result is negative our price is lower
-    # if 0 competition price and our price are equal
-    result = (my_price - lowest_price).to_f/100
-    result
   end
 
 end

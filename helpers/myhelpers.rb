@@ -72,8 +72,10 @@ module MyHelpers
   # find lowest price of product in the market (except from our store)
   def self.price_diff id, storename
     a = Product.find(id: id)
+    # Find my most recent price for product
     sorted = a.sources_dataset.where(name: storename).sort_by {|h| h[:created_at]}
-    price = sorted.last[:price].to_i
+    my_price = sorted.last[:price].to_i
+    # Find the most recent price from competitors. Select the lowest price from competitors
     sources = []
     lowest_price = 0
     a.sources_dataset.exclude(name: storename).each {|x| sources << x[:name] unless sources.include? x[:name]}
@@ -93,7 +95,7 @@ module MyHelpers
     # If result is positive, competition price is higher
     # if result is negative our price is lower
     # if 0 competition price and our price are equal
-    result = (price - lowest_price).to_f/100
+    result = (my_price - lowest_price).to_f/100
     result
   end
 

@@ -2,6 +2,7 @@
 
 # Summary
 **Pritory** is an [open source](http://en.wikipedia.org/wiki/Open_source), **price tracking application for small businesses**. **Pritory** aims to help small business owners to keep an organized and up-to-date overview of their local, regional and possibly international market for their products. 
+Pritory is geared towards the Greek market, featuring a build-in ability to compare product prices against [Skroutz API](http://developer.skroutz.gr), the biggest price comparison engine in Greece.
 
 # Installation
 ## Introduction
@@ -9,25 +10,29 @@ This is a step-by-step installation guide to help get **Pritory** up and running
 
 ## Packages
 In order to install **Pritory** you need to install the following software packages to your server:
-* The ruby programming language, any version >= 2.x
-* A running MySQL database
-* A running Redis key-value storege engine
-* ImageMagick
-* Nginx, not strictly necessary but higly recommended!
+* The [ruby programming language](https://www.ruby-lang.org), any version >= 2.x
+* A running [MySQL database](http://www.mysql.com)
+* A running [Redis](http://redis.io) key-value storege engine
+* [ImageMagick](http://www.imagemagick.org)
+* [Nginx](http://nginx.org), not strictly necessary but higly recommended!
 
 ## Configure the MySQL database
+
 First install the MySQL database and configure the root user. Here are some guides for [Ubuntu](https://help.ubuntu.com/12.04/serverguide/mysql.html), [MacPorts](http://jackal.livejournal.com/2160464.html) and [FreeBSD](http://www.freebsddiary.org/mysql.php). You can find guides for your system online.
 
 Now create a MySQL database called `pritory` with the following command:
+
 ```
 CREATE DATABASE tomato DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 ```
 
 Now let's create a MySQL user and grant privileges to manipulate our new database:
+
 ```
 CREATE USER 'user'@'localhost' IDENTIFIED BY 'password';
 GRANT ALL PRIVILEGES ON pritory.* TO 'user'@'localhost' WITH GRANT OPTION;
 ```
+
 You can substitute `user` and `password` with whatever you like.
 
 ## Ruby, ImageMagick and Redis
@@ -36,6 +41,7 @@ Now install [ImageMagick](http://www.imagemagick.org) and [ruby](https://www.rub
 ## NGINX Configuration
 
 Aworking example of NGINX, with OpenSSL support:
+
 ```
 server {
   listen         80;
@@ -92,19 +98,23 @@ upstream thin {
   server 127.0.0.1:3000;
 }
 ```
+
 As you probably understood we will use [Thin](http://code.macournoyer.com/thin/usage/) as our default rack web server. Thin by default runs on port `3000`.
 
 ## Clone and install gems
 Now we are ready to clone `pritory` and fetch the required gems:
+
 ```
 mkdir $HOME/code && cd $HOME/code
 git clone https://github.com/atmosx/pritory
 cd pritory && bundle install
 ```
+
 Compilation of the gems might also take a while. Also note installation of additional software might be needed!
 
 ## Create the configuration file
 Create a configuration file called 'mysecrets.rb` in the project's root directory and pass the options the database options, like this:
+
 ```
 #!/usr/bin/env ruby
 module MySecrets
@@ -113,9 +123,11 @@ module MySecrets
     ENVIR = 'production'
 end
 ```
+
 Please note that this file **doesn't exist** and you'll have to create it yourself in the root directory of the project!
 
 Then create your user and any other user you like, manually via `irb` using the following commands:
+
 ```
 cd $HOME/code/pritory
 irb -r './pritory'
@@ -124,7 +136,7 @@ User.create(user: 'username', password: 'password')
 
 Now you can run `thin start` on a `tmux` session and launch `nginx`. Then connect to the web age and perform your first login! Go straight to the 'Settings' menu and change the settings to whatever suits your needs.
 
-#License
+# License
 **Pritory** is released under [LGPLv3](https://www.gnu.org/licenses/lgpl-3.0.txt).
 
 # Contact

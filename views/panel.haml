@@ -22,7 +22,7 @@
   %table{align: 'left'}
     %tbody
       %tr
-        - %w{serialnumber product tags entrydate price_diff}.each do |entry|
+        - %w{serialnumber product tags entrydate price_diff percent_diff}.each do |entry|
           %th.style1 #{ t "#{entry}"}
       - @products.each do |p|
         %tr
@@ -33,7 +33,13 @@
             - tags.map do |tag| 
               %a{href: "/tags/:#{tag}"} #{tag}
           %td.style1= p[:created_at].strftime("%m/%d/%Y")
-          %td.style1= MyHelpers.price_diff(p[:id], @user.setting.storename)
+          - h = MyHelpers.price_diff(p[:id], @user.setting.storename)
+          - if h.is_a?(Hash)
+            %td.style1= "#{h[:diff_price]} #{@user.setting.currency}"
+            %td.style1= "#{h[:diff_percentage].round(2)} %"
+          - else
+            %td.style1= "-"
+            %td.style1= "-"
           %td.style1-simple
             %a{href: "/view_product/:#{p.id}"} #{ t 'show'}
             |

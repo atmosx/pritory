@@ -1,7 +1,5 @@
 /* custom CSS */
 
-/* flags - locale */
-
 #locale {
   width: auto;
   /* position: relative; */
@@ -16,7 +14,7 @@
   margin: 0px 0px 0px 0px;
   padding: 6px 6px 4px 6px;
   height: 40px;
-  line-height: 100%;
+  line-height: 80%;
   /* border-radius: 13px; */
   /* -webkit-border-radius: 13px; */
   /* -moz-border-radius: 13px; */
@@ -28,6 +26,7 @@
   position:relative;
   z-index:999;
 }
+
 #menu-bar li {
   margin: 0px 0px 6px 0px;
   padding: 0px 6px 0px 6px;
@@ -35,9 +34,10 @@
   position: relative;
   list-style: none;
 }
+
 #menu-bar a {
   font-weight: bold;
-  font-family: georgia;
+  font-family: Arial;
   font-style: normal;
   font-size: 15px;
   color: #E7E5E5;
@@ -51,9 +51,11 @@
   /* -moz-border-radius: 10px; */
   text-shadow: 2px 2px 3px #000000;
 }
+
 #menu-bar li ul li a {
   margin: 0;
 }
+
 #menu-bar .active a, #menu-bar li:hover > a {
   background: #0399D4;
   background: linear-gradient(top,  #F7F7F7,  #BABABA);
@@ -74,6 +76,7 @@
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
 }
+
 #menu-bar ul a:hover {
   background: #0399D4 !important;
   background: linear-gradient(top,  #04ACEC,  #0186BA) !important;
@@ -86,6 +89,7 @@
   -moz-border-radius: 0;
   text-shadow: 2px 2px 3px #FFFFFF;
 }
+
 #menu-bar ul {
   background: #DDDDDD;
   background: linear-gradient(top,  #FFFFFF,  #CFCFCF);
@@ -107,14 +111,17 @@
   -moz-box-shadow: 2px 2px 3px #222222;
   box-shadow: 2px 2px 3px #222222;
 }
+
 #menu-bar li:hover > ul {
   display: block;
 }
+
 #menu-bar ul li {
   float: none;
   margin: 0;
   padding: 0;
 }
+
 #menu-bar ul a {
   padding:10px 0px 10px 15px;
   color:#424242 !important;
@@ -124,6 +131,7 @@
   font-weight: normal;
   text-shadow: 2px 2px 3px #FFFFFF;
 }
+
 #menu-bar ul li:first-child > a {
   border-top-left-radius: 10px;
   -webkit-border-top-left-radius: 10px;
@@ -132,6 +140,7 @@
   -webkit-border-top-right-radius: 10px;
   -moz-border-radius-topright: 10px;
 }
+
 #menu-bar ul li:last-child > a {
   border-bottom-left-radius: 10px;
   -webkit-border-bottom-left-radius: 10px;
@@ -140,6 +149,7 @@
   -webkit-border-bottom-right-radius: 10px;
   -moz-border-radius-bottomright: 10px;
 }
+
 #menu-bar:after {
   content: ".";
   display: block;
@@ -148,41 +158,17 @@
   line-height: 0;
   height: 0;
 }
+
 #menu-bar {
   display: inline-block;
 }
   html[xmlns] #menu-bar {
   display: block;
 }
+
 * html #menu-bar {
   height: 1%;
 }
-
-/***************************************/
-
-/* The old simple horizontal menu */
-/* #menu { */
-/*     width: auto; */
-/*     height: auto; */
-/*     font-size: 18px; */
-/*     font-weight: bold; */
-/*     text-align: center; */
-/* } */
-
-/* #menu a { */
-/* 	color: #01013c; */
-/* } */
-
-/* #menu ul { */
-/*     height: auto; */
-/*     padding: 2px 0px; */
-/*     margin: 0px; */
-/* } */
-
-/* #menu li { */ 
-/* display: inline; */ 
-/* padding: 5px; */ 
-/* } */
 
 #footer {
 	text-align: center;
@@ -193,6 +179,7 @@
   width: 190px;
   float: left;
 }
+
 .column2of4, .column3of4 {
 width: 300px;
 float: left;

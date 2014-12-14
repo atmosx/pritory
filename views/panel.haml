@@ -2,32 +2,36 @@
 - unless @products.empty?
   %p.small_blue{style: "text-align: left"}
     * #{t 'price_diff_expl'}
+  %p.small_blue{style: "text-align: left"}
+    * #{t 'avg_percent_expl'}
 
   %br
 
-  %table{align: 'right'} 
+  %table{align: 'center'} 
     %tbody
       %tr
-        %th.style1{colspan: "3"} #{t 'averagevalues'}
+        %th.style1{colspan: "4"} #{t 'averagevalues'}
       %tr
         %th.style1 #{t 'products'}
         %th.style1 #{t 'markup'} 
         %th.style1 #{t 'margin'} 
+        %th.style1 #{t 'avg_percent'} 
       %tr
         %td.style1= @products.length
         %td.style1= @avg_markup
         %td.style1= @avg_margin
+        %td.style1= @avg_percent
 
-
+  %br
   %table{align: 'left'}
     %tbody
       %tr
         - %w{serialnumber product tags entrydate price_diff percent_diff}.each do |entry|
           %th.style1 #{ t "#{entry}"}
-      - @products.each do |p|
+      - @products.each.with_index do |p, index|
         %tr
           - tags = []; p.tags.each {|x| tags << x[:name]}
-          %td.style1= p[:id]
+          %td.style1= index
           %td.style1= p[:name]
           %td.style1 
             - tags.map do |tag| 
@@ -35,8 +39,10 @@
           %td.style1= p[:created_at].strftime("%m/%d/%Y")
           - h = MyHelpers.price_diff(p[:id], @user.setting.storename)
           - if h.is_a?(Hash)
-            %td.style1= "#{h[:diff_price]} #{@user.setting.currency}"
-            %td.style1= "#{h[:diff_percentage].round(2)} %"
+            - pr = h[:diff_price] 
+            %td.style1= "%.2f #{@user.setting.currency}" % pr
+            - pc = h[:diff_percentage].round(2) * 100
+            %td.style1= "%.2f %" % pc
           - else
             %td.style1= "-"
             %td.style1= "-"

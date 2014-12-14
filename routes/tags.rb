@@ -18,17 +18,23 @@ class Pritory < Sinatra::Base
     
     unless @products.nil?
       markup_list = margin_list = []
+      margin_list = []
+      percent_list = []
+      price_diff_list = []
       @products.each do |entry|
         cost = MyHelpers.numeric_to_float(entry[:cost])
         # Take the most recent price entry
         price = MyHelpers.numeric_no_vat(entry[:most_recent_price], entry[:vat_category])
+        percentage_hash = MyHelpers.price_diff(entry[:id], @user.setting.storename)
         markup_list << (price - cost).round(2) 
         margin_list << ((price - cost)/price)
+        percent_list << percentage_hash[:diff_percentage].round(2)
+        price_diff_list << percentage_hash[:diff_price].round(2)
       end
-      # Get AVG from arrays for markup/margin. 
-      # See here for neat ways: http://stackoverflow.com/questions/1341271/how-do-i-create-an-average-from-a-ruby-array
       @avg_markup = "#{(markup_list.instance_eval { reduce(:+) / size.to_f }).round(2).to_s.gsub('.',',')} €"
       @avg_margin = "#{(margin_list.instance_eval { reduce(:+) / size.to_f } * 100).round(2).to_s.gsub('.',',')} %"
+      @avg_percent = "#{(percent_list.instance_eval {reduce(:+)/ size.to_f}).round(2) * 100} %"
+      @avg_diff = "#{(price_diff_list.instance_eval {reduce(:+)/ size.to_f}).round(2)} #{@user.setting.currency}"
       haml :tags
     else
       'nothing'

@@ -83,3 +83,6 @@ el:
   price_diff: "Διαφ. Τιμής"
   price_diff_expl: "Διαφ. Τιμής: δική μας τιμή - ανταγωνισμός."
   percent_diff: "Διαφ. Τιμ. %"
+  avg_percent: "Ποσοστό"
+  avg_diff: "Διαφορά"
+  avg_percent_expl: "Διαφορά σε % από τον ανταγωνισμό"

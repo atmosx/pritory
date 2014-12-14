@@ -1,30 +1,48 @@
 %h3 #{t 'tags_title'}: #{@tag}
 - if @products
-  %table{align: 'right'} 
+  %p.small_blue{style: "text-align: left"}
+    * #{t 'price_diff_expl'}
+    * #{t 'avg_percent_expl'}
+
+  %table{align: 'center'} 
     %tbody
       %tr
-        %th.style1{colspan: "3"} #{t 'averagevalues'}
+        %th.style1{colspan: "5"} #{t 'averagevalues'}
       %tr
         %th.style1 #{t 'products'}
         %th.style1 #{t 'markup'} 
         %th.style1 #{t 'margin'} 
+        %th.style1 #{t 'avg_percent'} 
+        %th.style1 #{t 'avg_diff'} 
       %tr
         %td.style1= @products.length
         %td.style1= @avg_markup
         %td.style1= @avg_margin
-
+        %td.style1= @avg_percent
+        %td.style1= @avg_diff
+  %br
   %table{align: 'left'}
     %tbody
       %tr
-        - %w{serialnumber product entrydate}.each do |entry|
+        - %w{serialnumber product entrydate price_diff percent_diff}.each do |entry|
           %th.style1 #{ t "#{entry}"}
-      - @products.each do |p|
+      - @products.each.with_index do |p, index|
         %tr
-          %td.style1= p[:id]
+          %td.style1= index + 1
           %td.style1= p[:name]
           -# This call is based on the convention that the first item in the Source array
           -# is our store's price. It works but could fail if we delete our source
           %td.style1= p[:created_at].strftime("%m/%d/%Y")
+          - h = MyHelpers.price_diff(p[:id], @user.setting.storename)
+          - if h.is_a?(Hash)
+            - pr = h[:diff_price] 
+            %td.style1= "%.2f #{@user.setting.currency}" % pr
+            - pc = h[:diff_percentage].round(2) * 100
+            %td.style1= "%.2f %" % pc
+          - else
+            %td.style1= "-"
+            %td.style1= "-"
+          
           %td.style1-simple
             %a{href: "/view_product/:#{p[:id]}"} #{ t 'show'}
             |

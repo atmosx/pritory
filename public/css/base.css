@@ -72,6 +72,14 @@
 	  font-weight: bold;
 	}
 
+  td.green {
+    color:  green;
+  }
+
+  td.red {
+    color: red;
+  }
+
 	th.style1 {
 	  background: #3B3B3B;
 	  border-color: white;

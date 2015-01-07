@@ -18,9 +18,12 @@ class SkroutzWorker
       tries ||= 3
       begin
         entry = Source.find(id: id)
+        @log.info("Trying to update price for #{Product.find(id: entry[:product_id]).name}")
         db_price = (((entry[:price].to_f)/100).to_f).to_s
         current_price = squick.skroutz_check(entry[:skroutz_id])
-        if db_price != current_price
+        # Here we need to adjust current price to .2 decimal points, otherwise it updates the price at every pull
+        if db_price != current_price.to_f.round(2).to_s
+          @log.debug("Price difference: #{db_price} - (#{db_price.class}) - different than #{current_price} - (#{current_price.class})")
           price = MyHelpers.euro_to_cents(current_price)
           product_id, skroutz_id, source = entry[:product_id], entry[:skroutz_id], entry[:name]
           Source.create(price: price, product_id: product_id, name: source, skroutz_id: skroutz_id, created_at: TZInfo::Timezone.get('Europe/Athens').now)

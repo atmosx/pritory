@@ -115,7 +115,7 @@ module Skroutz
         con.headers = {'Accept' => 'application/vnd.skroutz+json; version=3'}
         r1 = con.get "http://api.skroutz.gr/api/skus/#{id}/products"
         result = JSON.parse(r1.body)
-        return result['products'][0]['price'].to_s
+        return result['products'][0]['price'].round(2).to_s
       rescue JSON::ParserError => e
         @log.error("Parse error (skroutz_check): #{e}")
       rescue ArgumentError => e
